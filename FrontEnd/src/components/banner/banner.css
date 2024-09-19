@@ -16,6 +16,7 @@
 }
 
 .banner{
+  display: flex;
   margin-top: 100px;
 }
 
@@ -40,7 +41,7 @@
 .carousel-item.active.carousel-item > img{
   max-width: 100%;
   max-height: 100%;
- 
+  object-fit: cover;
   display: block;
   margin: 0 auto;
 }
@@ -50,5 +51,6 @@ span.carousel-control-next-icon  {
 span.carousel-control-prev-icon  {
   filter: invert(1) sepia(1) saturate(10) hue-rotate(180deg);
 }
+
 
 
