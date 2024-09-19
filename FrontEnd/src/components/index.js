@@ -1,10 +1,14 @@
 import NavBar from "./navbar/navbar";
 import Banner from "./banner/Banner"
 import News from "./news/News";
+import Social from "./social/Social";
+import Contact from "./contact/Contact";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export{
     NavBar,
     Banner,
-    News
+    News,
+    Social,
+    Contact
 }

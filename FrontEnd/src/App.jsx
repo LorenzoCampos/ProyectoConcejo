@@ -1,4 +1,4 @@
-import { NavBar,Banner,News } from "./components"
+import { NavBar,Banner,News, Contact, Social} from "./components"
 
 function App() {
 
@@ -7,7 +7,9 @@ function App() {
     <>
       <NavBar/>,
       <Banner/>,
-      <News/>
+      <News/>,
+      <Social/>,
+      <Contact/>,
     </>
   )
 }
