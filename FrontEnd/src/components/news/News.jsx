@@ -1,55 +1,114 @@
-
-
-
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { /*useEffect,*/ useState } from "react";
 
 import "./news.css";
 
 function News() {
+  //const [news, setNews] = useState([]);
+  const [visibleCards, setVisibleCards] = useState(6);
+
+  /* useEffect (()=>{
+    fetch('https://api.hnpwa.com/v0/news/1.json')
+    .then(resp => resp.json())
+    .then(data => data => setNews(data));
+  }, [])
+
+*/
+  const handleShowMoreCards = () => {
+    setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
+  };
+
+  // Datos simulados
+  const news = [
+    {
+      id: 1,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 1",
+      description: "Descripción de la noticia 1.",
+    },
+    {
+      id: 2,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 2",
+      description: "Descripción de la noticia 2.",
+    },
+    {
+      id: 3,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 3",
+      description: "Descripción de la noticia 3.",
+    },
+    {
+      id: 4,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 4",
+      description: "Descripción de la noticia 4.",
+    },
+    {
+      id: 5,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 5",
+      description: "Descripción de la noticia 5.",
+    },
+    {
+      id: 6,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 6",
+      description: "Descripción de la noticia 6.",
+    },
+    {
+      id: 7,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 7",
+      description: "Descripción de la noticia 7.",
+    },
+    {
+      id: 8,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 8",
+      description: "Descripción de la noticia 8.",
+    },
+    {
+      id: 9,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 9",
+      description: "Descripción de la noticia 9.",
+    },
+    {
+      id: 10,
+      image: "https://via.placeholder.com/150",
+      title: "Noticia 10",
+      description: "Descripción de la noticia 10.",
+    },
+  ];
+
   return (
-  <>
-        <div className="cards">
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px180" />
+    <>
+    <div className="cards-container">
+      <div className="cards">
+        {news.slice(0, visibleCards).map((item) => (
+          <Card key={item.id}>
+            <Card.Img variant="top" src={item.image} />
 
             <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the cards content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
+              <Card.Title>{item.title}</Card.Title>
+              <Card.Text>{item.description}</Card.Text>
+              <Button variant="primary">Ver más</Button>
             </Card.Body>
           </Card>
+        ))}
+      </div>
 
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px180" />
-
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the cards content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px180" />
-
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the cards content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+      {visibleCards < news.length && (
+        <div className="btn-container">
+          <Button onClick={handleShowMoreCards} className="btn-see-more">
+            Ver más
+          </Button>
         </div>
-  </>
+      )}
+      </div>
+    </>
   );
 }
 

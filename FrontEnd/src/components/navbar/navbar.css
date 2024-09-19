@@ -38,7 +38,16 @@ Nav .link-nav {
     padding: 8px;
     text-decoration: none;
     margin: 20px;
+    border-radius: 10px;
 }
+
+a.link-nav.nav-link:hover{
+
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
 nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
     justify-content: center;
     padding: 0;
