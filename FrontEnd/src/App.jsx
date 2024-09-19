@@ -1,11 +1,13 @@
-import { Home } from "./components"
+import { NavBar,Banner,News } from "./components"
 
 function App() {
 
 
   return (
     <>
-      <Home/>
+      <NavBar/>,
+      <Banner/>,
+      <News/>
     </>
   )
 }
