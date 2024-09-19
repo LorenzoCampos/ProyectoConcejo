@@ -1,7 +1,8 @@
 # Proyecto Consejo
 
 - FrontEnd
-  - Revisar Carousel
+  - Revisar footer (a debatir)
+  - Revisar iconos mal alineados
 
 
 -------------------------------------------
