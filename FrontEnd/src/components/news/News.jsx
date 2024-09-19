@@ -19,6 +19,10 @@ function News() {
     setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
   };
 
+  const handleShowLessCards = () => {
+    setVisibleCards((prevVisibleCards) => prevVisibleCards - 6);
+  }
+
   // Datos simulados
   const news = [
     {
@@ -107,6 +111,13 @@ function News() {
           </Button>
         </div>
       )}
+
+      {visibleCards > 6 && (
+        <Button onClick={handleShowLessCards} className="btn-see-more">
+          Ver menos
+        </Button>
+      )}
+
       </div>
     </>
   );
