@@ -22,21 +22,33 @@
   max-width: max-content;
   margin: 1%;
   padding: 1%;
-  border: #BE9A60 2px solid;
+  border: var(--primary-color) 2px solid;
   border-radius: 10px;
   background-color: var(--secondary-color);
   gap: 10px;
 }
 
-.item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 150px;
+.social-media{
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background-color); 
+  padding: 10px;
+  z-index: 1000;
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  font-size: 2rem;
+  color: var(--background-color);
+  margin: 10px 0;
+  transition: color 0.3s ease;
+}
+
+svg:hover {
+  transform: scale(1.2);
+  cursor: pointer;
 }

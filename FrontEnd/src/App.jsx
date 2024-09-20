@@ -1,4 +1,4 @@
-import { NavBar,Banner,News, Contact, Social} from "./components"
+import { NavBar,Banner,News, Contact, Social, Footer } from "./components"
 
 function App() {
 
@@ -10,6 +10,7 @@ function App() {
       <News/>,
       <Social/>,
       <Contact/>,
+      <Footer/>
     </>
   )
 }

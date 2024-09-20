@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+:root {
+    --background-color: #ffffff;
+    --primary-color: #102550;
+    --secondary-color: #e4e1e163;
+    --third-color: #BE9A60;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    border-top: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+    
+}
+.footer p{
+    margin: 0;
+    color: var(--background-color);
+}
