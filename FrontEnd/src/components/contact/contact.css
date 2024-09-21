@@ -15,6 +15,12 @@
     --third-color: #BE9A60;
 }
 
+.container-forms {
+  display: flex;
+  width: max-content;
+
+}
+
 .form {
   display: flex;
   flex-direction: column;

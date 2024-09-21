@@ -20,6 +20,7 @@
 
 .navbar{
     background-color: var(--background-color);
+    border-bottom: 1px solid var(--third-color);
 }
 nav.navbar.navbar-expand.navbar-light {
     padding: 0;
