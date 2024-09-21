@@ -15,9 +15,21 @@
     --third-color: #BE9A60;
 }
 
+
 .container-forms {
   display: flex;
   width: max-content;
+}
+
+.container-forms{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  
+  gap: 20px;
+  width: 100%;
+  border: #102550 2px solid;
+  background-color: var(--primary-color);
 
 }
 
@@ -26,10 +38,15 @@
   flex-direction: column;
   align-items: center;
   
-  max-width: max-content;
+  width: 500px;
   padding: 2%;
   margin: 2%;
 
-  border: #BE9A60 2px solid;
+  background-color: var(--background-color);
+  border: var(--third-color) 5px solid;
   border-radius: 10px;
+}
+
+.mb-3{
+  width: 100%;
 }

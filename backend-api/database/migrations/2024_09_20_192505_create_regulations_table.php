@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('regulations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-           /*  $table->timestamp('email_verified_at')->nullable(); */
-            $table->string('password');
-            /* $table->rememberToken();
-            $table->timestamps(); */
+            $table->integer('number');
+            $table->date('date');
+            $table->string('state');
+            $table->string('subject');
+            $table->string('pdf_path');
+            $table->foreignId('fk_user_creator')->constrained('users');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('regulations');
     }
 };
