@@ -2,14 +2,14 @@
 
 ## TODO LIST
 
-- Add time expire session token
+- Add expiration time for session tokens
 
 ## Resouces
 
-For basic API resouces
+For basic API resources:
  - sanctum
 
-For email verification and reset password
+For email verification and password resetting:
  - Laravel Breeze
 
 For roles and permissions:
