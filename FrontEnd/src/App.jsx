@@ -8,10 +8,12 @@ function App() {
     <>
       <BrowserRouter>
         <NavBar />
+        <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Normativas" element={<Normativas />} />
         </Routes>
+        </div>
         <Footer />
       </BrowserRouter>
     </>

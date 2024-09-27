@@ -10,7 +10,7 @@ function SearchFilter() {
 
           <div className="inputs-filter">
             <div>
-            <Form.Label>Por tipo de norma</Form.Label>
+            <Form.Label>Por tipo de norma:</Form.Label>
             <Form.Select aria-label="Default select example">
               <option>---selecciona una---</option>
               <option value="Ordenanza">Ordenanza</option>
@@ -22,23 +22,28 @@ function SearchFilter() {
             </div>
             <div>
             <Form.Group>
-              <Form.Label>Por texto</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" />
+              <Form.Label>Por texto:</Form.Label>
+              <Form.Control type="text" placeholder="palabras claves" />
             </Form.Group>
             </div>
             <div>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1">
-              <Form.Label>Example textarea</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+            <Form.Group>
+              <Form.Label>Por autor:</Form.Label>
+              <Form.Control type="text" placeholder="nombre del autor" />
             </Form.Group>
             </div>
+            <div>
+            <Form.Group>
+              <Form.Label>Por nro. de normativa:</Form.Label>
+              <Form.Control type="text" placeholder="nro. de normativa" />
+            </Form.Group>
+            </div>
+           
             
           </div>
           <div className="btn-container">
-          <button className="btn-form">Limpiar</button>
-          <button className="btn-form">Buscar</button>
+          <button className="btn-form" type="reset">Limpiar</button>
+          <button className="btn-form" type="submit">Buscar</button>
         </div>
         </Form>
       </div>

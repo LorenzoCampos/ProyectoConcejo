@@ -8,6 +8,18 @@
 
 }
 
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.content {
+  flex: 1; 
+}
+
+
 :root {
   --background-color: #ffffff;
     --primary-color: #102550;
@@ -16,54 +28,56 @@
     --form-color:#3058a6b3;
 }
 
-.filter-container{
-    display: flex;
-    justify-content: center;
-    height: 80vh;
-    margin-top: 120px;
-    background-color: var(--background-color);
+.filter-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 120px;
+  background-color: var(--background-color);
+  padding: 20px; 
+  overflow: hidden; 
 }
 
-.filter{
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    gap: 50px;
-    align-items: center;
-    background: rgb(16,37,80);
-    background: linear-gradient(0deg, rgba(16,37,80,1) 0%, rgba(48,88,166,1) 100%);
-    height: 500px;
-    width: 700px;
-    margin-top: 50px;
-    border-radius: 10px;
-    border: 2px solid var(--primary-color);
-    -webkit-box-shadow: 0px 0px 30px 10px rgba(16,37,80,0.29);
-    -moz-box-shadow: 0px 0px 30px 10px rgba(16,37,80,0.29);
-    box-shadow: 0px 0px 30px 10px rgba(16,37,80,0.29);
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 30px;
+  align-items: center;
+  background: linear-gradient(0deg, rgba(16, 37, 80, 1) 0%, rgba(48, 88, 166, 1) 100%);
+  height: auto; 
+  width: 700px; 
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0px 0px 30px 10px rgba(16, 37, 80, 0.29);
 }
+
 .filter h1{
   color: var(--background-color);
   font-weight: bold;
   font-size: 2rem;
+  margin: 20px 0 0 0;
 }
 
 .inputs-filter {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  gap: 30px;
+  width: 100%;
+ 
 }
 
 .inputs-filter div {
   display: flex;
-  align-items: center; 
-  justify-content: space-between; 
+  flex-direction: column;
+  width: 100%;
 }
 div label {
   flex: 1; 
-  margin-right: 10px; 
   color: var(--background-color); 
   white-space: nowrap;
+}
+.form-label {
+  margin: .5rem;
 }
 
 button.btn-form{
@@ -80,4 +94,19 @@ button.btn-form{
   display: flex;
   justify-content: center;
   gap: 20px;
+}
+
+.inputs-filter div input,
+.inputs-filter div select {
+    width: 100%; 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    box-sizing: border-box; 
+}
+
+.btn-form:hover{
+  color:var(--background-color);
+  background-color: var(--primary-color);
+  border: 1px solid var(--background-color);
 }
