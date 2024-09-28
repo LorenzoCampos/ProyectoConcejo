@@ -1,1 +1,43 @@
-/* estilos login */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito Sans", sans-serif;
+
+}
+
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.content {
+  flex: 1; 
+}
+
+
+:root {
+  --background-color: #ffffff;
+    --primary-color: #102550;
+    --secondary-color: #e4e1e163;
+    --third-color: #BE9A60;
+    --form-color:#3058a6b3;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 120px;
+  background-color: var(--background-color);
+  padding: 20px; 
+  overflow: hidden; 
+}
+
+
+
+
+
