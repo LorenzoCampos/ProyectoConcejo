@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Mod_regulation extends Model
+class ModRegulation extends Model
 {
     use HasFactory;
-
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'fk_regulation',
@@ -18,13 +15,15 @@ class Mod_regulation extends Model
         'fk_mod_regulation',
     ];
 
-    public function regulation(): BelongsTo
+    // Relación con Regulation
+    public function regulation()
     {
         return $this->belongsTo(Regulation::class, 'fk_regulation');
     }
 
-    public function modRegulation(): BelongsTo
+    // Relación con sí mismo (modificación de regulación)
+    public function modRegulation()
     {
-        return $this->belongsTo(Regulation::class, 'mod_regulation');
+        return $this->belongsTo(ModRegulation::class, 'fk_mod_regulation');
     }
 }
