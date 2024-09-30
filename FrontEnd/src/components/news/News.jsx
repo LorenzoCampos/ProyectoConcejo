@@ -4,15 +4,26 @@ import { /*useEffect,*/ useState } from "react";
 
 import "./news.css";
 
+//import axios from "axios";
+//const endpoint = 'http://localhost:8080/api'
 function News() {
   //const [news, setNews] = useState([]);
   const [visibleCards, setVisibleCards] = useState(6);
 
-  /* useEffect (()=>{
-    fetch('https://api.hnpwa.com/v0/news/1.json')
-    .then(resp => resp.json())
-    .then(data => data => setNews(data));
-  }, [])
+ /*
+    useEffect(()=>{
+      getAllNews()
+    })
+
+  const getAllNews = async ()=>{
+    try {
+      const response = await axios.get(${endpoint}/news)
+      setNews(response.data)
+
+    }catch (error) {
+      console.error('Error al obtener las noticias:', error);
+    }
+};
 
 */
   const handleShowMoreCards = () => {
