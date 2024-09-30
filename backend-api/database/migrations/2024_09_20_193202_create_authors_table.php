@@ -4,28 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateAuthorsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_regulation')->constrained('regulations');
+            $table->foreignId('fk_regulation')->constrained('regulations')->onDelete('restrict');
             $table->string('type');
-            $table->string('name');
-            $table->foreignId('fk_user')->nullable()->constrained('users');
+            $table->string('name')->nullable();
+            $table->foreignId('fk_user')->constrained('users')->onDelete('restrict');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('authors');
     }
-};
+}
