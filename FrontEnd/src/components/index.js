@@ -10,6 +10,8 @@ import SearchFilter from "./searchFilter/SearchFilter";
 import Login from "./login/Login";
 import Access from "./pages/Access";
 
+import Logout from "./logout/Logout";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export{
@@ -23,5 +25,6 @@ export{
     Contact,
     SearchFilter,
     Login,
-    Footer
+    Footer,
+    Logout
 }

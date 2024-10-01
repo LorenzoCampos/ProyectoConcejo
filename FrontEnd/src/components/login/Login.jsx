@@ -8,17 +8,8 @@ import { useState } from "react";
 
 import "./login.css";
 
-function getDeviceId() {
-  let deviceId = localStorage.getItem("deviceId");
+import { getDeviceId } from "./getDeviceId";
 
-  if (!deviceId) {
-    deviceId = "device_" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("deviceId", deviceId);
-  }
-  console.log(deviceId);
-
-  return deviceId;
-}
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -115,7 +106,7 @@ function Login() {
           </FloatingLabel>
           <Button variant="primary" type="submit">
             Iniciar Sesión
-          </Button>{" "}
+          </Button>
         </Form>
       </div>
     </div>
