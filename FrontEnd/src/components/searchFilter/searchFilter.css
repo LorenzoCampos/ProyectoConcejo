@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito Sans", sans-serif;
+
+}
+
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.content {
+  flex: 1; 
+}
+
+
+:root {
+  --background-color: #ffffff;
+    --primary-color: #102550;
+    --secondary-color: #e4e1e163;
+    --third-color: #BE9A60;
+    --form-color:#3058a6b3;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 120px;
+  background-color: var(--background-color);
+  padding: 20px; 
+  overflow: hidden; 
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 30px;
+  align-items: center;
+  background: linear-gradient(0deg, rgba(16, 37, 80, 1) 0%, rgba(48, 88, 166, 1) 100%);
+  height: auto; 
+  width: 700px; 
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0px 0px 30px 10px rgba(16, 37, 80, 0.29);
+}
+
+.filter h1{
+  color: var(--background-color);
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 20px 0 0 0;
+}
+
+.inputs-filter {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+ 
+}
+
+.inputs-filter div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+div label {
+  flex: 1; 
+  color: var(--background-color); 
+  white-space: nowrap;
+}
+.form-label {
+  margin: .5rem;
+}
+
+button.btn-form{
+  cursor: pointer;
+  color:var(--primary-color);
+  font-size: 1.2rem;
+  padding: 0 30px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+
+}
+.btn-container{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.inputs-filter div input,
+.inputs-filter div select {
+    width: 100%; 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    box-sizing: border-box; 
+}
+
+.btn-form:hover{
+  color:var(--background-color);
+  background-color: var(--primary-color);
+  border: 1px solid var(--background-color);
+}

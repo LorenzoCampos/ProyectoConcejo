@@ -4,9 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegulationsTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::create('regulations', function (Blueprint $table) {
             $table->id();
@@ -16,13 +19,16 @@ class CreateRegulationsTable extends Migration
             $table->string('state');
             $table->string('subject');
             $table->string('pdf_path');
-            $table->foreignId('fk_user_creator')->constrained('users')->onDelete('restrict');
+            $table->foreignId('fk_user_creator')->constrained('users');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('regulations');
     }
-}
+};

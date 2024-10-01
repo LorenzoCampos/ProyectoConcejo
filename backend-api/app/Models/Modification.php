@@ -4,40 +4,40 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Modification extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_modification';
+
     protected $fillable = [
-        'fk_regulation',
+        'id_regulation',
         'date',
         'name_cell',
         'old_cell',
-        'fk_old_user',
+        'old_user',
         'new_cell',
-        'fk_new_user',
+        'new_user',
     ];
 
     protected $casts = [
         'date' => 'datetime:Y-m-d H:i:s',
     ];
 
-    // Relación con Regulation
-    public function regulation()
+    public function regulation(): BelongsTo
     {
-        return $this->belongsTo(Regulation::class, 'fk_regulation');
+        return $this->belongsTo(Regulation::class, 'id');
     }
 
-    // Relación con User (usuario anterior)
-    public function oldUser()
+    public function oldUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'fk_old_user');
+        return $this->belongsTo(User::class, 'old_user');
     }
 
-    // Relación con User (nuevo usuario)
-    public function newUser()
+    public function newUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'fk_new_user');
+        return $this->belongsTo(User::class, 'new_user');
     }
 }

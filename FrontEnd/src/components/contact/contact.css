@@ -15,6 +15,12 @@
     --third-color: #BE9A60;
 }
 
+
+.container-forms {
+  display: flex;
+  width: max-content;
+}
+
 .container-forms{
   display: flex;
   flex-direction: row;
@@ -24,6 +30,7 @@
   width: 100%;
   border: #102550 2px solid;
   background-color: var(--primary-color);
+
 }
 
 .form {

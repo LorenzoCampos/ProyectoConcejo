@@ -4,11 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNewsTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('mod_news', function (Blueprint $table) {
             $table->id();
             $table->string('news_title');
             $table->date('news_date');
@@ -18,8 +21,11 @@ class CreateNewsTable extends Migration
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('mod_news');
     }
-}
+};

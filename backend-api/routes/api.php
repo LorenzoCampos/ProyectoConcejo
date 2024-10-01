@@ -2,22 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Auth\Events\Verified;
-use App\Http\Controllers\Auth\VerifyEmailController;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
-Route::get('/hola', function () {
-    return "hola masa";
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/vllc', function () {
+        return "Viva La Libertad Carajo";
+    });
 });
-
-Route::get('/email/verify', function (EmailVerificationRequest $request) {    
-})->middleware(['auth:sanctum', 'signed'])->name('verification.verify'); 
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
