@@ -1,32 +1,82 @@
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Button from 'react-bootstrap/Button';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import "./login.css";
+import {  useState } from "react";
+const endpoint = 'http://lkfc51ph-8000.brs.devtunnels.ms/api'
+
 
 function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+ 
+
+  const loginData = async (e)=>{
+    e.preventDefault();
+  
+    try {
+      const response = await axios.post(`${endpoint}/login`, {
+        email: email,
+        password: password,
+      });
+   
+      console.log(response.data);
+    
+
+    const token = response.data.token;
+    console.log(token);
+
+    // Almacena el token en el almacenamiento local
+    localStorage.setItem("authToken", token);
+
+
+    if(response.status === 200){
+      navigate("/Home");
+    }
+      
+    console.log(response.data); 
+    }catch(error){
+
+      console.error(error);
+    }
+  }
+
   return (
     <div className="container">
       <div className="login-container">
         <h2>Iniciar Sesión</h2>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Email address"
-          className="mb-3"
-        >
-          <Form.Control type="email" placeholder="name@example.com" />
-        </FloatingLabel>
+        <Form onSubmit={loginData}>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Email"
+            className="mb-3"
+          >
+            <Form.Control type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required placeholder="name@example.com" />
+          </FloatingLabel>
 
-        <FloatingLabel
-          controlId="floatingPassword"
-          label="Password"
-          className="mb-3"
-        >
-          <Form.Control type="password" placeholder="Password" />
-        </FloatingLabel>
-        <Button variant="primary" type="submit">Iniciar Sesión</Button>{' '}
+          <FloatingLabel
+            controlId="floatingPassword"
+            label="Contraseña"
+            className="mb-3"
+          >
+          <Form.Control type="password" placeholder="Password" value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required/>
+          </FloatingLabel>
+        <Button  variant="primary" type="submit">Iniciar Sesión</Button>{' '}
+        </Form>
+        
       </div>
     </div>
+    
   );
 }
 export default Login;

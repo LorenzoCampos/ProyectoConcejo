@@ -19,7 +19,7 @@ function NavBar() {
           <Nav className="links">
             <Nav.Link as={Link} to="/"  className='link-nav'>Home</Nav.Link>
               <Nav.Link as={Link} to="/normativas" className='link-nav'>Normativas</Nav.Link>
-              <Nav.Link as={Link} to="/funcionarios" className='link-nav'>Acceso a funcionarios</Nav.Link>
+              <Nav.Link as={Link} to="/login" className='link-nav'>Acceso a funcionarios</Nav.Link>
             
           </Nav>
         </Navbar.Collapse>
