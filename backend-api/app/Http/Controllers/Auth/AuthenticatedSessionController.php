@@ -17,34 +17,59 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        try {
+            try {
+                // Aunteticar el usuario
+                $request->authenticate();
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 401);
+            }
 
-        $user = $request->user();
+            $user = $request->user();
 
-        $user->tokens()->delete();
+            // Crear un nuevo token para el usuario
+            $deviceId = $request->header('Device-Id');
 
-        $token = $user->createToken("api-token");
+            // Eliminar el token existente
+            if ($user->tokens()->where('name', $deviceId)->exists()) {
+                $user->tokens()->where('name', $deviceId)->delete();
+            }
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token->plainTextToken
-        ], 200);
+            // Crear el nuevo token
+            $token = $user->createToken($deviceId);
 
-        // 1|Grf20TOslfD4N6dJz92RpK4gIIYv4FxqDSY4iPFS813dd165
-        // 3|kO55lJcIYglZPCcit8xrs18xkacTZ1oMrGHe1Upq5c7eb2ce
+            // Devolver el token
+            return response()->json([
+                'user' => $user,
+                'token' => $token->plainTextToken,
+            ], 200);
+        } catch (\Exception $e) {
+            // Manejar el error
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        try {
+            // Eliminar el token específico que se está utilizando para esta solicitud
+            $request->user()->currentAccessToken()->delete();
+            // Devolver el token
+            return response()->json([
+                'message' => 'Successfully logged out'
+            ], 200);
+        } catch (\Exception $e) {
+            // Manejar el error
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

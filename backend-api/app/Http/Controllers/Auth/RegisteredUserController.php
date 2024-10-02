@@ -21,27 +21,53 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            try {
+                // Validar los datos
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 401);
+            }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            try {
+                // Crear el usuario
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 422);
+            }
 
-        event(new Registered($user));
+            // Registrar el usuario
+            event(new Registered($user));
 
-        Auth::login($user);
+            // Asignar rol
+            if ($request->role) {
+                $user->assignRole($request->role);
+            } else {
+                $user->assignRole('user');
+            }
 
-        $token = $user->createToken('api-token');
+            // Devolver el usuario
+            return response()->json([
+                'user' => $user
+            ], 201);
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token->plainTextToken
-        ]);
+        } catch (\Exception $e) {
+            // Manejar el error
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }
