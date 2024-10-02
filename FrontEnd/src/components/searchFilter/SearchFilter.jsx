@@ -4,7 +4,8 @@ import "./searchFilter.css";
 function SearchFilter() {
   return (
     
-      <div className="filter-container">
+      <div className="content">
+        <div className="filter-container">
         <Form className="filter">
           <h1>BÚSQUEDA DE NORMATIVAS</h1>
 
@@ -46,6 +47,7 @@ function SearchFilter() {
           <button className="btn-form" type="submit">Buscar</button>
         </div>
         </Form>
+      </div>
       </div>
   );
 }

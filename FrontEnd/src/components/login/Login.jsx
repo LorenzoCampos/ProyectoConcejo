@@ -43,13 +43,25 @@ function Login() {
       // Obtiene el token de la respuesta
       const token = response.data.token;
 
+      const role = response.data.role;
+
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
 
       // console.log(token);
 
       if (response.status === 200) {
-        navigate("/"); // Home
+        if (role === "admin") {
+          navigate("/admin"); 
+        } else if (role === "user") {
+          navigate("/user"); 
+        } else if (role === "concejal") {
+          navigate("/concejal"); 
+        } else if (role === "CM") {
+          navigate("/cm"); 
+        } else {
+          navigate("/"); 
+        }
       }
     } catch (error) {
       if (error.response) {
@@ -74,7 +86,8 @@ function Login() {
   };
 
   return (
-    <div className="container">
+    <div className="content">
+<div className="container">
       <div className="login-container">
         <h2>Iniciar Sesión</h2>
         <Form onSubmit={loginData}>
@@ -110,6 +123,8 @@ function Login() {
         </Form>
       </div>
     </div>
+    </div>
+    
   );
 }
 export default Login;

@@ -9,6 +9,10 @@ import Normativas from "./pages/Normativas";
 import SearchFilter from "./searchFilter/SearchFilter";
 import Login from "./login/Login";
 import Access from "./pages/Access";
+import AdminPage from "./pages/AdminPage"
+import CMPage from "./pages/CMPage"
+import ConcejalPage from "./pages/ConcejalPage"
+import UserPage from "./pages/UserPage"
 
 import Logout from "./logout/Logout";
 
@@ -26,5 +30,9 @@ export{
     SearchFilter,
     Login,
     Footer,
-    Logout
+    Logout,
+    AdminPage,
+    CMPage,
+    ConcejalPage,
+    UserPage
 }
