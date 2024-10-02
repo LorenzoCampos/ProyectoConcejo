@@ -5,7 +5,7 @@ function AdminPage() {
     return(
 
         <>
-        <Register/>
+            <Register/>
         </>
     );
 }

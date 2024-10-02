@@ -71,7 +71,7 @@ function Register() {
       <div className="register-container">
         <h2>Registrar Usuario</h2>
         <Form onSubmit={registerData}>
-        <FloatingLabel
+          <FloatingLabel
             controlId="floatingInput"
             label="Nombre y Apellido"
             className="mb-3"
@@ -79,10 +79,11 @@ function Register() {
             <Form.Control
               type="text"
               value={name}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => setName(event.target.value)}
               required
             />
           </FloatingLabel>
+
           <FloatingLabel
             controlId="floatingInput"
             label="Email"
@@ -109,6 +110,7 @@ function Register() {
               required
             />
           </FloatingLabel>
+
           <FloatingLabel
             controlId="floatingPassword"
             label="Confirmar Contraseña"
@@ -118,25 +120,35 @@ function Register() {
               type="password"
               placeholder="passwordConfirmation"
               value={passwordConfirmation}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => setPasswordConfirmation(event.target.value)}
               required
             />
           </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Rol"
+
+          <FloatingLabel 
+            controlId="floatingInput" 
+            label="Rol:" 
             className="mb-3"
           >
-            <Form.Control
-              type="Select"
-              value={name}
-              onChange={(event) => setEmail(event.target.value)}
+            <Form.Select aria-label="Default select example"
+              onChange={(event) => setRole(event.target.value)}
               required
-            />
+            >
+              <option>---seleccione el rol---</option>
+              <option value="admin">Administrador</option>
+              <option value="secretario">Secretario</option>
+              <option value="concejal">Concejal</option>
+              <option value="cm">CM</option>
+              <option value="user">Usuario</option>
+            </Form.Select>
+            
+            
           </FloatingLabel>
+
           <Button variant="primary" type="submit">
             Registrar Usuario
           </Button>
+
         </Form>
       </div>
     </div>

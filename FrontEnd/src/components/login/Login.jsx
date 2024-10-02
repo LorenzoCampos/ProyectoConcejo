@@ -48,7 +48,8 @@ function Login() {
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
 
-      // console.log(token);
+      /* console.log(token);
+      console.log(deviceId); */
 
       if (response.status === 200) {
         if (role === "admin") {
