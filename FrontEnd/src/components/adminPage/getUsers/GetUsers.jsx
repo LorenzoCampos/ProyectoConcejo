@@ -1,16 +1,17 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-
 import axios from "axios";
 
-function GetUsers() {
+function Getdata() {
+  const [data, setdata] = useState([]);
 
-  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    getAlldata();
+  }, []);
 
-  const getAllUsers = async () => {
+  const getAlldata = async () => {
     try {
-
       let headersList = {
         "Authorization": "Bearer " + localStorage.getItem("authToken"),
         "Content-Type": "application/json",
@@ -23,45 +24,51 @@ function GetUsers() {
       };
 
       const response = await axios.request(reqOptions);
-      setUsers(response.data);
-
+      setdata(response.data);
     } catch (error) {
       console.error("Error al obtener los usuarios:", error);
     }
 
-  return (
-    <div className="container">
-      <div className="userss-container">
-        <h1>Lista de usuarios</h1>
-        <table>
-          <th>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Acciones</th>
-            </tr>
-          </th>
-
-          <th>
-            {users.map((users) => (
-              <tr key={users.id}>
-                <td>{users.id}</td>
-                <td>{users.name}</td>
-                <td>{users.email}</td>
-                <td>{users.role}</td>
-                <td>
-                  <Button variant="primary">Editar </Button>
-                </td>
+    return (
+      <div className="container">
+        <div className="datas-container">
+          <h1>Lista de usuarios</h1>
+          <table>
+            <th>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </th>
-        </table>
-      </div>
-    </div>
-  );
+            </th>
 
+            <th>
+              {data.map((data) => (
+                <tr key={data.id}>
+                  <td>{data.name}</td>
+                  <td>{data.email}</td>
+                  <td>{data.role}</td>
+                  <td>
+                    <Form>
+                      <div>
+                        <option value="---Cambiar Rol---"></option>
+                        <option value="Admin">Admin</option>
+                        <option value="User">User</option>...
+                      </div>
+                      
+                      <Button onClick={/* () => edit(data.id) */} variant="primary">Editar Rol</Button>
+                    </Form>
+                  </td>
+                </tr>
+              ))}
+            </th>
+          </table>
+        </div>
+      </div>
+    );
+  };
 }
 
-export default GetUsers;
+export default Getdata;
