@@ -1,8 +1,10 @@
-# React + Vite
+# TO-DO LIST
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- BUGS:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  - Estado: Por ver.
+  - Nombre: Cambio de rol no forzado.
+  - Descripción:
+    Al forzar un cambio de roles al tener una sesion iniciada, uno puede acceder a las rutas que tenía acceso originalmente. (Ej de concejal a user).
+  - Solución:
+    Función que se dedique a verificar el rol cada un intervalo de tiempo.
