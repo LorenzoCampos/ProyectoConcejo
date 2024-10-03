@@ -6,12 +6,25 @@ import axios from "axios";
 
 function Users() {
 
-  const [users, setUserss] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  const getAlluserss = async () => {
+  const getAllUsers = async () => {
     try {
-      const response = await axios.get("https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/userss");
-      setuserss(response.data);
+
+      let headersList = {
+        "Authorization": "Bearer " + localStorage.getItem("authToken"),
+        "Content-Type": "application/json",
+      };
+
+      let reqOptions = {
+        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/user/all",
+        method: "GET",
+        headers: headersList,
+      };
+
+      const response = await axios.request(reqOptions);
+      setUsers(response.data);
+
     } catch (error) {
       console.error("Error al obtener los usuarios:", error);
     }
