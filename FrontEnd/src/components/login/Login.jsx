@@ -42,14 +42,16 @@ function Login() {
 
       // Obtiene el token de la respuesta
       const token = response.data.token;
-
       const role = response.data.role;
 
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
-
+      localStorage.setItem("role", role);
+      
       /* console.log(token);
-      console.log(deviceId); */
+      console.log(deviceId); 
+      console.log(role+"<---")*/
+      
 
       if (response.status === 200) {
         if (role === "admin") {
@@ -58,7 +60,7 @@ function Login() {
           navigate("/user"); 
         } else if (role === "concejal") {
           navigate("/concejal"); 
-        } else if (role === "CM") {
+        } else if (role === "cm") {
           navigate("/cm"); 
         } else {
           navigate("/"); 
