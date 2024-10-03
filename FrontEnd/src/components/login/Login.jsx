@@ -52,20 +52,26 @@ function Login() {
       console.log(deviceId); 
       console.log(role+"<---")*/
       
-
       if (response.status === 200) {
         if (role === "admin") {
-          navigate("/admin"); 
-        } else if (role === "user") {
-          navigate("/user"); 
+          console.log(role);
+          navigate ("/admin");
         } else if (role === "concejal") {
-          navigate("/concejal"); 
+          console.log(role);
+          navigate("/concejal");
         } else if (role === "cm") {
-          navigate("/cm"); 
+          console.log(role);
+          navigate("/cm");
+        } else if (role === "secretario") {
+          console.log(role);
+          navigate("/secretario");
         } else {
-          navigate("/"); 
+          console.log(role);
+          navigate("/");
         }
       }
+
+
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un estado diferente a 2xx
