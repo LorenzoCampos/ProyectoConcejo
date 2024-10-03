@@ -47,6 +47,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'crear orden de comisión',
             'ver normativa',
             'ver modificaciones',
+            'ver usuarios',
+            'modificar roles de usuarios',
             'registrar usuarios'
         ]);
 
