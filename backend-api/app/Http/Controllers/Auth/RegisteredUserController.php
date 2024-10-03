@@ -35,6 +35,11 @@ class RegisteredUserController extends Controller
                 ], 401);
             }
 
+            // Validar el rol, no se puede registrar un usuario administrador
+            if ($request->role == 'admin') {
+                return response()->json(['message' => 'No se puede registrar un usuario administrador.'], 400);
+            }
+
             try {
                 // Crear el usuario
                 $user = User::create([
@@ -51,18 +56,24 @@ class RegisteredUserController extends Controller
             // Registrar el usuario
             event(new Registered($user));
 
-            // Asignar rol
+            // Asignar el rol
             if ($request->role) {
                 $user->assignRole($request->role);
             } else {
                 $user->assignRole('user');
             }
 
+            $role = $user->roles->pluck('name');
+
             // Devolver el usuario
             return response()->json([
-                'user' => $user
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email
+                ],
+                'role' => $role
             ], 201);
-
         } catch (\Exception $e) {
             // Manejar el error
             return response()->json([

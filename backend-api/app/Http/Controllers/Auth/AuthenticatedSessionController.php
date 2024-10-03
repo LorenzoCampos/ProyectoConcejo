@@ -40,10 +40,17 @@ class AuthenticatedSessionController extends Controller
             // Crear el nuevo token
             $token = $user->createToken($deviceId);
 
+            $role = $user->roles->pluck('name');
+
             // Devolver el token
             return response()->json([
-                'user' => $user,
-                'token' => $token->plainTextToken,
+                "user" => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email
+                ],
+                "token" => $token->plainTextToken,
+                "role" => $role
             ], 200);
         } catch (\Exception $e) {
             // Manejar el error
