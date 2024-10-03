@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 
 import axios from "axios";
 
-function Users() {
+function GetUsers() {
 
   const [users, setUsers] = useState([]);
 
@@ -64,4 +64,4 @@ function Users() {
 
 }
 
-export default Users;
+export default GetUsers;
