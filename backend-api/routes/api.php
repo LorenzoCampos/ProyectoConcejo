@@ -15,3 +15,5 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/user/role/{user}', [UserController::class, 'updateRole']);
 
 });
+
+Route::middleware('auth:sactum')->get('/user/role', [UserController::class, 'getRole']);

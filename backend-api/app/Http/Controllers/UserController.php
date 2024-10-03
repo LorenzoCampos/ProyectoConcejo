@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -19,9 +20,9 @@ class UserController extends Controller
         // Iterar sobre cada usuario y obtener solo el nombre del rol
         $usersWithRoles = $users->map(function ($user) {
             return [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'roles' => $user->roles->pluck('name') // Solo obtener los nombres de los roles
+                'id' => $user->id,
+                'name' => $user->name,
+                'roles' => $user->roles->pluck('name')->first() // Solo obtener los nombres de los roles
             ];
         });
 
@@ -68,7 +69,7 @@ class UserController extends Controller
         if ($user->hasRole('admin')) {
             return response()->json(['message' => 'No se puede cambiar el rol de un usuario administrador.']);
         }
-        if ($request->role === 'admin') {
+        if ($request->role == 'admin') {
             return response()->json(['message' => 'No se puede cambiar el rol a administrador.']);
         }
 
@@ -79,5 +80,15 @@ class UserController extends Controller
         $user->assignRole($request->input('role'));
 
         return response()->json(['message' => 'Rol actualizado exitosamente.']);
+    }
+
+    public function getRole(): JsonResponse
+    {
+        // Obtener role del usuario
+        $user = Auth::user();
+        return response()->json([
+            'user' => $user,
+            'role' => $user->roles->pluck('name')->first()
+        ]);
     }
 }
