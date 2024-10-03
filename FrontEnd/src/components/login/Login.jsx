@@ -92,7 +92,8 @@ function Login() {
     <div className="content">
 <div className="container">
       <div className="login-container">
-        <h2>Iniciar Sesión</h2>
+        <h1>Bienvenido!</h1>
+        <p>Iniciar sesión</p>
         <Form onSubmit={loginData}>
           <FloatingLabel
             controlId="floatingInput"
@@ -104,7 +105,7 @@ function Login() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              placeholder="name@example.com"
+              placeholder=""
             />
           </FloatingLabel>
           <FloatingLabel
@@ -114,15 +115,18 @@ function Login() {
           >
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder=""
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
             />
           </FloatingLabel>
-          <Button variant="primary" type="submit">
-            Iniciar Sesión
+          <div className="form-btn">
+          <Button  variant="primary" type="submit">
+            Ingresar
           </Button>
+          </div>
+          
         </Form>
       </div>
     </div>
