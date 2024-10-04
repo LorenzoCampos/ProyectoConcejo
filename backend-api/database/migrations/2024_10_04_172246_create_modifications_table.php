@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('modifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_regulation')->constrained('regulations');
+            $table->foreignId('fk_regulation')->constrained('regulations'); // Relación con regulations
             $table->date('date');
             $table->string('name_cell');
             $table->string('old_cell');

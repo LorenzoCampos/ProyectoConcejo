@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('regulations', function (Blueprint $table) {
+        Schema::create('key_words', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('number');
-            $table->date('date');
-            $table->string('state');
-            $table->string('subject');
-            $table->string('pdf_path');
-            $table->foreignId('fk_user_creator')->constrained('users');
+            $table->foreignId('fk_regulation')->constrained('regulations'); // Relación con regulations
+            $table->string('word');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('regulations');
+        Schema::dropIfExists('key_words');
     }
 };

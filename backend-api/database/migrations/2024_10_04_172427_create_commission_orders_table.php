@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mod_regulations', function (Blueprint $table) {
+        Schema::create('commission_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_regulation')->constrained('regulations');
-            $table->string('rule');
-            $table->foreignId('fk_mod_regulation')->constrained('regulations');
+            $table->string('pdf_path');
+            $table->date('creation_date');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mod_regulations');
+        Schema::dropIfExists('commission_orders');
     }
 };
