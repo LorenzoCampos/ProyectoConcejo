@@ -1,14 +1,16 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import{useState, useEffect} from  "react";
 
 import axios from "axios";
+
 
 function Getdata() {
   const [data, setdata] = useState([]);
 
   useEffect(() => {
     getAlldata();
-  }, []);
+  }, );
 
   const getAlldata = async () => {
     try {
@@ -58,7 +60,7 @@ function Getdata() {
                         <option value="User">User</option>...
                       </div>
                       
-                      <Button onClick={/* () => edit(data.id) */} variant="primary">Editar Rol</Button>
+                      <Button  variant="primary">Editar Rol</Button>
                     </Form>
                   </td>
                 </tr>

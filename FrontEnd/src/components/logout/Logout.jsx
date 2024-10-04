@@ -15,7 +15,7 @@ function Logout() {
       };
 
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/logout",
+        url: "https://62pggsfv-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/logout",
         method: "POST",
         headers: headersList,
       };

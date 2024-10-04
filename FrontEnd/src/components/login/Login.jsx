@@ -10,6 +10,7 @@ import "./login.css";
 
 import { getDeviceId } from "./getDeviceId";
 
+ const api = "https://62pggsfv-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login"
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +18,7 @@ function Login() {
 
   const loginData = async (e) => {
     e.preventDefault();
+
 
     try {
       const deviceId = getDeviceId();
@@ -32,7 +34,7 @@ function Login() {
       });
 
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login",
+        url: `${api}`,
         method: "POST",
         headers: headersList,
         data: bodyContent,
@@ -48,9 +50,9 @@ function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       
-      /* console.log(token);
+     console.log(token);
       console.log(deviceId); 
-      console.log(role+"<---")*/
+      console.log(role+"<---")
       
       if (response.status === 200) {
         if (role === "admin") {

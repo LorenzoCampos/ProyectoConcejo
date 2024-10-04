@@ -1,6 +1,7 @@
 
 import NavAdmin from "../adminPage/navAdmin";
 import Register from "../register/Register"
+import GetUsers from "../adminPage/getUsers/GetUsers"
 
 function AdminPage() {
     return(
@@ -8,6 +9,7 @@ function AdminPage() {
         <>
         <NavAdmin/>
             <Register/>
+            <GetUsers/>
         </>
     );
 }

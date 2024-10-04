@@ -22,6 +22,7 @@ function Register() {
     try {
       let headersList = {
         "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("authToken"),
       };
 
       let bodyContent = JSON.stringify({
@@ -33,7 +34,7 @@ function Register() {
       });
 
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register",
+        url: "https://62pggsfv-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register",
         method: "POST",
         headers: headersList,
         data: bodyContent,
