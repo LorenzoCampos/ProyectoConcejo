@@ -1,14 +1,13 @@
 
-import NavAdmin from "../adminPage/navAdmin";
-import Register from "../register/Register"
+import NavAdmin from "../adminPage/navAdmin/NavAdmin";
 import GetUsers from "../adminPage/getUsers/GetUsers"
 
 function AdminPage() {
     return(
 
         <>
-        <NavAdmin/>
-            <Register/>
+            <NavAdmin/>
+        
             <GetUsers/>
         </>
     );

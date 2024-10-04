@@ -1,4 +1,4 @@
-import NavBar from "./navbar/navbar";
+import NavBar from "./navbar/Navbar";
 import Banner from "./banner/Banner"
 import News from "./news/News";
 import Social from "./social/Social";
@@ -13,7 +13,7 @@ import AdminPage from "./pages/AdminPage"
 import CMPage from "./pages/CMPage"
 import ConcejalPage from "./pages/ConcejalPage"
 import UserPage from "./pages/UserPage"
-import NavAdmin from "./adminPage/navAdmin";
+import NavAdmin from "./adminPage/navAdmin/NavAdmin";
 
 import Logout from "./logout/Logout";
 

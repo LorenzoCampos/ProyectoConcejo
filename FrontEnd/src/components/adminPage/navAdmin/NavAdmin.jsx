@@ -7,15 +7,26 @@ import { Link } from 'react-router-dom';
 
 
 import "./navAdmin.css";
+import Register from '../register/Register';
+import Logout from '../../logout/Logout';
 
 function NavAdmin() {
-    const [role, setRole] = useState('');
+  const [role, setRole] = useState('');
+ const [showRegister, setShowRegister] = useState(false);
+
+
+  
     useEffect(() => {
         const storedRole = localStorage.getItem("role");
         if (storedRole) {
           setRole(storedRole);
         }
       }, []);
+
+
+      const handleRegisterClick = () => {
+        setShowRegister(true);  
+    };
   return (
     <>
     <div className="nav-admin">
@@ -25,24 +36,26 @@ function NavAdmin() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <NavDropdown title={role || "Usuario"} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleRegisterClick}>Registrar un nuevo usuario</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">
-                Separated link
+              <Logout />
               </NavDropdown.Item>
             </NavDropdown>
          
         </Navbar.Collapse>
       </Container>
+      
     </Navbar>
 
     </div>
         
-       
+    {showRegister && <Register />}
+
     </>
   );
 }

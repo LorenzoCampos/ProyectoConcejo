@@ -10,7 +10,7 @@ import "./login.css";
 
 import { getDeviceId } from "./getDeviceId";
 
- const api = "https://62pggsfv-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login"
+ const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login"
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,6 +41,7 @@ function Login() {
       };
 
       const response = await axios.request(reqOptions);
+      console.log(response.data);
 
       // Obtiene el token de la respuesta
       const token = response.data.token;
@@ -50,9 +51,8 @@ function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       
-     console.log(token);
-      console.log(deviceId); 
-      console.log(role+"<---")
+
+    
       
       if (response.status === 200) {
         if (role === "admin") {

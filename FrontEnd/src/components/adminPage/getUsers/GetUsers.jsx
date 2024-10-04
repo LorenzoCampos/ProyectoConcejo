@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import{useState, useEffect} from  "react";
 
 import axios from "axios";
-
+const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login";
 
 function Getdata() {
   const [data, setdata] = useState([]);
@@ -20,7 +20,7 @@ function Getdata() {
       };
 
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/user/all",
+        url: `${api}`,
         method: "GET",
         headers: headersList,
       };

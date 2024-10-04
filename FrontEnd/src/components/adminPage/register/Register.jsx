@@ -8,6 +8,8 @@ import { useState } from "react";
 
 import "./register.css";
 
+const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register";
+
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +36,7 @@ function Register() {
       });
 
       let reqOptions = {
-        url: "https://62pggsfv-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register",
+        url: `${api}`,
         method: "POST",
         headers: headersList,
         data: bodyContent,
@@ -70,18 +72,15 @@ function Register() {
   return (
     <div className="container">
       <div className="register-container">
-        <h2>Registrar Usuario</h2>
+        <h1>Registrar Usuario</h1>
         <Form onSubmit={registerData}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Nombre y Apellido"
-            className="mb-3"
-          >
+          <FloatingLabel controlId="floatingInput" label="Nombre y Apellido" className="mb-3">
             <Form.Control
               type="text"
               value={name}
               onChange={(event) => setName(event.target.value)}
               required
+              autoFocus
             />
           </FloatingLabel>
 
@@ -95,7 +94,7 @@ function Register() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              placeholder="name@example.com"
+              
             />
           </FloatingLabel>
           <FloatingLabel
@@ -105,7 +104,7 @@ function Register() {
           >
             <Form.Control
               type="password"
-              placeholder="Password"
+             
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
@@ -119,7 +118,7 @@ function Register() {
           >
             <Form.Control
               type="password"
-              placeholder="passwordConfirmation"
+             
               value={passwordConfirmation}
               onChange={(event) => setPasswordConfirmation(event.target.value)}
               required
@@ -146,10 +145,11 @@ function Register() {
             
           </FloatingLabel>
 
+          <div className="form-btn">
           <Button variant="primary" type="submit">
-            Registrar Usuario
+            Registrar 
           </Button>
-
+            </div>
         </Form>
       </div>
     </div>
