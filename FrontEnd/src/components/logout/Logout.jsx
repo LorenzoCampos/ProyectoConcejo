@@ -1,4 +1,5 @@
 import Button from 'react-bootstrap/Button';
+import "./logout.css"
 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -36,7 +37,7 @@ function Logout() {
 
   return (
     <>
-      <Button variant="danger"
+      <Button className='form-btn' variant="primary" 
       onClick={closeSession}>Cerrar Sesión</Button>{' '}
     </>
   );
