@@ -7,8 +7,10 @@ function AdminPage() {
 
         <>
             <NavAdmin/>
-        
+            <div>
             <GetUsers/>
+            </div>
+           
         </>
     );
 }

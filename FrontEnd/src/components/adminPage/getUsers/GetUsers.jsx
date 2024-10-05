@@ -3,14 +3,15 @@ import Form from "react-bootstrap/Form";
 import{useState, useEffect} from  "react";
 
 import axios from "axios";
-const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login";
+const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/user/all";
 
-function Getdata() {
+function GetUsers() {
   const [data, setdata] = useState([]);
+
 
   useEffect(() => {
     getAlldata();
-  }, );
+  },[]);
 
   const getAlldata = async () => {
     try {
@@ -27,9 +28,13 @@ function Getdata() {
 
       const response = await axios.request(reqOptions);
       setdata(response.data);
+    
     } catch (error) {
       console.error("Error al obtener los usuarios:", error);
     }
+   
+    };
+   
 
     return (
       <div className="container">
@@ -47,11 +52,11 @@ function Getdata() {
             </th>
 
             <th>
-              {data.map((data) => (
-                <tr key={data.id}>
-                  <td>{data.name}</td>
-                  <td>{data.email}</td>
-                  <td>{data.role}</td>
+              {data.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
                   <td>
                     <Form>
                       <div>
@@ -70,7 +75,6 @@ function Getdata() {
         </div>
       </div>
     );
-  };
 }
 
-export default Getdata;
+export default GetUsers;
