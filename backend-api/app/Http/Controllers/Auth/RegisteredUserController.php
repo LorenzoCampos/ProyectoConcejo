@@ -7,10 +7,9 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
@@ -19,66 +18,63 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function store(Request $request): JsonResponse
     {
         try {
-            try {
-                // Validar los datos
-                $request->validate([
-                    'name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                ]);
-            } catch (\Exception $e) {
+            // Validar los datos de la petición
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'role' => ['required', 'string', 'min:1', 'regex:/^[a-z]+$/', 'exists:roles,name'] // Verifica si el rol existe en la tabla 'roles'
+            ]);
+
+            // Validar que el rol no sea 'admin'
+            if ($validatedData['role'] === 'admin') {
                 return response()->json([
-                    'message' => $e->getMessage()
-                ], 401);
+                    'message' => 'No se puede registrar un usuario administrador.',
+                    'errors' => ['role' => ['El rol admin está restringido para este registro.']]
+                ], 403);
             }
 
-            // Validar el rol, no se puede registrar un usuario administrador
-            if ($request->role == 'admin') {
-                return response()->json(['message' => 'No se puede registrar un usuario administrador.'], 400);
-            }
+            // Crear el usuario
+            $user = User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
 
-            try {
-                // Crear el usuario
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ]);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'message' => $e->getMessage()
-                ], 422);
-            }
-
-            // Registrar el usuario
+            // Registrar el evento de registro
             event(new Registered($user));
 
-            // Asignar el rol
-            if ($request->role) {
-                $user->assignRole($request->role);
-            } else {
-                $user->assignRole('user');
-            }
+            // Asignar el rol (por defecto "user" si no se proporciona)
+            $user->assignRole($validatedData['role'] ?? 'user');
 
-            $role = $user->roles->pluck('name');
+            // Obtener el rol como un string
+            $role = $user->roles->first()->name;  // Esto obtiene el nombre del rol como string
 
-            // Devolver el usuario
+            // Devolver el usuario con el rol asignado
             return response()->json([
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'email' => $user->email
+                    'email' => $user->email,
                 ],
                 'role' => $role
             ], 201);
-        } catch (\Exception $e) {
-            // Manejar el error
+        } catch (ValidationException $e) {
+            // Manejar los errores de validación
             return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
+                'message' => 'Errores de validación.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            // Manejar errores generales
+            return response()->json([
+                'message' => 'Ocurrió un error al crear el usuario.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
