@@ -13,7 +13,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::get('/user/all', [UserController::class, 'getUsers']);
     Route::post('/user/role/{user}', [UserController::class, 'updateRole']);
+    Route::middleware('auth:sanctum')->get('/role/all', [UserController::class, 'getAllRoles']);
 
 });
 
-Route::middleware('auth:sactum')->get('/user/role', [UserController::class, 'getRole']);
+Route::middleware('auth:sanctum')->get('/user/role', [UserController::class, 'getRole']);
