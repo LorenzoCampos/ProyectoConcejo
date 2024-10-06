@@ -1,5 +1,8 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import ToastContainer from "react-bootstrap/ToastContainer";
+import Toast from "react-bootstrap/Toast";
+
 import { useState, useEffect } from "react";
 
 import axios from "axios";
@@ -11,6 +14,11 @@ const API =
 function GetUsers() {
   const [data, setData] = useState([]);
   const [selectedRole, setSelectedRole] = useState({});
+
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showWarningToast, setShowWarningToast] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     getAlldata();
@@ -32,9 +40,10 @@ function GetUsers() {
       const response = await axios.request(reqOptions);
       setData(response.data);
     } catch (error) {
-      console.error("Error al obtener los usuarios:", error);
+      let message = "Error al obtener los usuarios.";
+      setToastMessage(message);
+      setShowErrorToast(true);
     }
-
   };
 
   const handleRoleChange = (e, userId) => {
@@ -47,13 +56,15 @@ function GetUsers() {
   const updateRole = async (userId) => {
     const newRole = selectedRole[userId];
     if (!newRole) {
-      alert("Por favor selecciona un rol.");
+      let message = "Por favor selecciona un rol.";
+      setToastMessage(message);
+      setShowWarningToast(true);
       return;
     }
 
     try {
       let headersList = {
-        "Authorization": "Bearer " + localStorage.getItem("authToken"),
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
         "Content-Type": "application/json",
       };
 
@@ -67,9 +78,11 @@ function GetUsers() {
         { headers: headersList }
       );
 
-      console.log(response.data);
+      let message = `Rol actualizado a ${newRole} correctamente.`;
+      setToastMessage(message);
+      setShowSuccessToast(true);
 
-      alert(`Rol actualizado a ${newRole} para el usuario con ID ${userId}`);
+      // Actualizar el rol en la tabla
       getAlldata();
     } catch (error) {
       console.error("Error al actualizar el rol:", error);
@@ -77,7 +90,7 @@ function GetUsers() {
   };
 
   return (
-    <div className="container">
+    <div className="user-container">
       <h1>Lista de usuarios</h1>
       <table className="table">
         <thead>
@@ -95,6 +108,7 @@ function GetUsers() {
               <td>
                 <Form.Group>
                   <Form.Control
+                    className="form-select"
                     as="select"
                     value={selectedRole[user.id] || ""}
                     onChange={(e) => handleRoleChange(e, user.id)}
@@ -106,6 +120,8 @@ function GetUsers() {
                     <option value="user">Usuario</option>
                   </Form.Control>
                 </Form.Group>
+              </td>
+              <td className="td-button">
                 <Button variant="primary" onClick={() => updateRole(user.id)}>
                   Editar Rol
                 </Button>
@@ -114,6 +130,47 @@ function GetUsers() {
           ))}
         </tbody>
       </table>
+
+      <div>
+        {/* Toast exito */}
+        <ToastContainer position="top-end" className="p-3">
+          <Toast
+            bg="success"
+            onClose={() => setShowSuccessToast(false)}
+            show={showSuccessToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+
+        {/* Toast advertencia */}
+        <ToastContainer position="top-end" className="p-3">
+          <Toast
+            bg="warning"
+            onClose={() => setShowWarningToast(false)}
+            show={showWarningToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+
+        {/* Toast error */}
+        <ToastContainer position="top-end" className="p-3">
+          <Toast
+            bg="danger"
+            onClose={() => setShowErrorToast(false)}
+            show={showErrorToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+      </div>
     </div>
   );
 }

@@ -85,21 +85,21 @@ function Login() {
       if (error.response) {
         if (error.response.status === 401) {
           // Credenciales incorrectas
-          message = "Email o contraseña incorrectos.";
+          let message = "Email o contraseña incorrectos.";
           setToastMessage(message);
           setShowWarningToast(true); // Mostrar toast de advertencia
         } else {
           // Otro tipo de error
-          message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
+          let message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
           setToastMessage(message);
           setShowErrorToast(true); // Mostrar toast de error general
         }
       } else if (error.request) {
-        message = "No se recibió respuesta del servidor.";
+        let message = "No se recibió respuesta del servidor.";
         setToastMessage(message);
         setShowErrorToast(true);
       } else {
-        message = "Error al realizar la solicitud.";
+        let message = "Error al realizar la solicitud.";
         setToastMessage(message);
         setShowErrorToast(true);
       }
