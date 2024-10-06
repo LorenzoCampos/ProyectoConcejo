@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,20 +15,25 @@ class UserController extends Controller
 
         // Obtener usuarios que no tienen el rol de 'admin'
         $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'admin'); // Cambia 'admin' al nombre de tu rol si es necesario
-        })->select('id', 'name')->get();
+            $query->where('name', 'admin');
+        })->get();
 
+
+
+        $usersResponse = [];
         // Iterar sobre cada usuario y obtener solo el nombre del rol
-        $usersWithRoles = $users->map(function ($user) {
-            return [
+        foreach ($users as $user) {
+            $role = $user->roles->pluck('name')->first();
+            $usersResponse[] = [
                 'id' => $user->id,
                 'name' => $user->name,
-                'roles' => $user->roles->pluck('name')->first() // Solo obtener los nombres de los roles
+                'email' => $user->email,
+                'role' => $role
             ];
-        });
+        }
 
         // Devolver los usuarios y sus roles en formato JSON
-        return response()->json($usersWithRoles);
+        return response()->json($usersResponse);
 
 
         // // Obtener todos los usuarios
@@ -90,5 +96,11 @@ class UserController extends Controller
             'user' => $user,
             'role' => $user->roles->pluck('name')->first()
         ]);
+    }
+
+    public function getAllRoles(): JsonResponse
+    {
+        $roles = Role::all();
+        return response()->json($roles);
     }
 }
