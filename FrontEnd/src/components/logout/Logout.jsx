@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/logout";
+const API = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/logout";
 
 function Logout() {
 
@@ -16,7 +16,7 @@ function Logout() {
       };
 
       let reqOptions = {
-        url: `${api}`,
+        url: `${API}`,
         method: "POST",
         headers: headersList,
       };

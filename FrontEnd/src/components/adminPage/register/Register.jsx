@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import "./register.css";
 
-const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register";
+const API = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register";
 
 function Register() {
   const [name, setName] = useState("");
@@ -36,7 +36,7 @@ function Register() {
       });
 
       let reqOptions = {
-        url: `${api}`,
+        url: `${API}`,
         method: "POST",
         headers: headersList,
         data: bodyContent,
@@ -134,7 +134,7 @@ function Register() {
               onChange={(event) => setRole(event.target.value)}
               required
             >
-              <option>---seleccione el rol---</option>
+              <option> ---Seleccione el rol--- </option>
               <option value="admin">Administrador</option>
               <option value="secretario">Secretario</option>
               <option value="concejal">Concejal</option>
