@@ -17,9 +17,9 @@ function NavAdmin() {
 
   
     useEffect(() => {
-        const storedRole = localStorage.getItem("role");
-        if (storedRole) {
-          setRole(storedRole);
+        const storedName = localStorage.getItem("userName");
+        if (storedName) {
+          setRole(storedName);
         }
       }, []);
 

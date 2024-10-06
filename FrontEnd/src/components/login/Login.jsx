@@ -2,6 +2,8 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import ToastContainer from "react-bootstrap/ToastContainer";
+import Toast from "react-bootstrap/Toast";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -14,6 +16,9 @@ import { getDeviceId } from "./getDeviceId";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [showWarningToast, setShowWarningToast] = useState(false);
   const navigate = useNavigate();
 
   const loginData = async (e) => {
@@ -40,17 +45,18 @@ function Login() {
         data: bodyContent,
       };
 
-      const response = await axios.request(reqOptions);
-      console.log(response.data);
+      const response = await axios.request(reqOptions);     
+      
 
       // Obtiene el token de la respuesta
       const token = response.data.token;
       const role = response.data.role;
+      const name = response.data.user.name;
 
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-      
+      localStorage.setItem("userName", name);
 
     
       
@@ -75,23 +81,27 @@ function Login() {
 
 
     } catch (error) {
+      let message = "Error desconocido.";
       if (error.response) {
-        // El servidor respondió con un estado diferente a 2xx
-        console.error("Datos de la respuesta de error:", error.response.data);
-        console.error(
-          "Estado de la respuesta de error:",
-          error.response.status
-        );
-        console.error(
-          "Encabezados de la respuesta de error:",
-          error.response.headers
-        );
+        if (error.response.status === 401) {
+          // Credenciales incorrectas
+          message = "Email o contraseña incorrectos.";
+          setToastMessage(message);
+          setShowWarningToast(true); // Mostrar toast de advertencia
+        } else {
+          // Otro tipo de error
+          message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
+          setToastMessage(message);
+          setShowErrorToast(true); // Mostrar toast de error general
+        }
       } else if (error.request) {
-        // La solicitud fue hecha pero no se recibió respuesta
-        console.error("Solicitud de error:", error.request);
+        message = "No se recibió respuesta del servidor.";
+        setToastMessage(message);
+        setShowErrorToast(true);
       } else {
-        // Algo sucedió al configurar la solicitud
-        console.error("Mensaje de error:", error.message);
+        message = "Error al realizar la solicitud.";
+        setToastMessage(message);
+        setShowErrorToast(true);
       }
     }
   };
@@ -138,6 +148,31 @@ function Login() {
         </Form>
       </div>
     </div>
+     {/* Toast de error de servidor */}
+     <ToastContainer position="top-end" className="p-3">
+        <Toast
+          bg="danger"
+          onClose={() => setShowErrorToast(false)}
+          show={showErrorToast}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
+      {/* Toast de advertencia para credenciales incorrectas */}
+      <ToastContainer position="top-end" className="p-3">
+        <Toast
+          bg="danger" 
+          onClose={() => setShowWarningToast(false)}
+          show={showWarningToast}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
     
   );

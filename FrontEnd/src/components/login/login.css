@@ -66,3 +66,7 @@ input#floatingInput {
   background-color: var(--background-color);
   color: var(--primary-color);
 }
+a.dropdown-item:hover {
+  background:var(--form-color);
+  color: var(--background-color);
+}

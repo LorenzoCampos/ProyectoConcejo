@@ -14,6 +14,7 @@ import CMPage from "./pages/CMPage"
 import ConcejalPage from "./pages/ConcejalPage"
 import UserPage from "./pages/UserPage"
 import NavAdmin from "./adminPage/navAdmin/NavAdmin";
+import GetUsers from "./adminPage/getUsers/GetUsers"
 
 import Logout from "./logout/Logout";
 
@@ -36,5 +37,6 @@ export{
     CMPage,
     ConcejalPage,
     UserPage,
-    NavAdmin
+    NavAdmin,
+    GetUsers
 }
