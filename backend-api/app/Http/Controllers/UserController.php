@@ -10,59 +10,41 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function getUsers(): JsonResponse
+    public function getNonAdminUsers(): JsonResponse
     {
+        try {
+            // Obtener usuarios que no tienen el rol de 'admin'
+            $users = User::whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'admin');
+            })->get();
 
-        // Obtener usuarios que no tienen el rol de 'admin'
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'admin');
-        })->get();
+            $usersResponse = [];
+            // Iterar sobre cada usuario y obtener solo el nombre del rol
+            foreach ($users as $user) {
+                $role = $user->roles->pluck('name')->first();
+                $usersResponse[] = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $role
+                ];
+            }
 
+            // Devolver los usuarios y sus roles en formato JSON
+            return response()->json($usersResponse, 200);
 
-
-        $usersResponse = [];
-        // Iterar sobre cada usuario y obtener solo el nombre del rol
-        foreach ($users as $user) {
-            $role = $user->roles->pluck('name')->first();
-            $usersResponse[] = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $role
-            ];
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        // Devolver los usuarios y sus roles en formato JSON
-        return response()->json($usersResponse);
-
-
-        // // Obtener todos los usuarios
-        // $users = User::with('roles:name')->select('id', 'name')->get();
-
-        // // Iterar sobre cada usuario y obtener sus roles
-        // $usersWithRoles = $users->filter(function ($user) {
-
-        //     $role = $user->roles->pluck('name');
-
-        //     return !$role->contains('admin');
-
-        // })->map(function($user){
-        //     return [
-        //         'id'=>$user->id,
-        //         'name' => $user->name,
-        //         'roles' => $user->roles->pluck('name') // Obtener los roles del usuario
-        //     ];
-        // });
-
-        // // Devolver los usuarios y sus roles en formato JSON
-        // return response()->json($usersWithRoles);
     }
 
-    public function updateRole(Request $request, User $user)
+    public function changeUserRole(Request $request, User $user)
     {
         try {
             // Validar la solicitud
-            $request->validate([
+            $validated = $request->validate([
                 'role' => 'required|string|exists:roles,name',
             ]);
         } catch (\Exception $e) {
@@ -75,17 +57,20 @@ class UserController extends Controller
         if ($user->hasRole('admin')) {
             return response()->json(['message' => 'No se puede cambiar el rol de un usuario administrador.']);
         }
-        if ($request->role == 'admin') {
+        if ($validated['role'] == 'admin') {
             return response()->json(['message' => 'No se puede cambiar el rol a administrador.']);
         }
 
         // Borrar todos los roles existentes
         $user->syncRoles([]); // Elimina todos los roles del usuario
 
-        // Asignar el nuevo rol al usuario
-        $user->assignRole($request->input('role'));
+        // eliminar todos los tokens relacionados al usuario
+        $user->tokens()->delete();
 
-        return response()->json(['message' => 'Rol actualizado exitosamente.']);
+        // Asignar el nuevo rol al usuario
+        $user->assignRole($validated['role']);
+
+        return response()->json(['message' => 'Rol actualizado exitosamente.'], 200);
     }
 
     public function getRole(): JsonResponse
@@ -95,12 +80,17 @@ class UserController extends Controller
         return response()->json([
             'user' => $user,
             'role' => $user->roles->pluck('name')->first()
-        ]);
+        ], 200);
     }
 
     public function getAllRoles(): JsonResponse
     {
         $roles = Role::all();
-        return response()->json($roles);
+
+        if (!$roles) {
+            return response()->json(['message' => 'No hay registros'], 404);  // Responder con status 404 si no hay registros
+        }
+
+        return response()->json($roles, 200);
     }
 }
