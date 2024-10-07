@@ -1,117 +1,33 @@
-/* import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button"; */
-
+import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
-
-import ToastContainer from "react-bootstrap/ToastContainer";
-import Toast from "react-bootstrap/Toast";
-
-import { useState } from "react";
-
 import axios from "axios";
 
-import "./bannerForm.css";
-
-const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/new/create";
-
 function BannerForm() {
-  /*   const [image, setImage] = useState("");
-  const [status, setStatus] = useState(false);
-  const [publication_date, setPublicationDate] = useState("");
-  const [unpublication_date, setUnpublicationDate] = useState("");
-
-  const [toastMessage, setToastMessage] = useState("");
-  const [showErrorToast, setShowErrorToast] = useState(false); */
-
-  /* const [showSuccessToast, setShowSuccessToast] = useState(false); */
-
-  /*   const bannerData = async (e) => {
-    e.preventDefault();
-
-    if (!image) {
-      let message = "Debe seleccionar una imagen.";
-      setToastMessage(message);
-      setShowErrorToast(true);
-      return;
-    }
-
-    try {
-      let headersList = {
-        Authorization: "Bearer " + localStorage.getItem("authToken"),
-        "Content-Type": "multipart/form-data",
-      };
-
-      let bodyContent = JSON.stringify({
-        type: "banner",
-        image: image,
-        status: status,
-        publication_date: publication_date,
-        unpublication_date: unpublication_date,
-      });
-
-      const response = await axios.post(API, bodyContent, {
-        headers: headersList,
-      });
-
-      if (response.status === 200) {
-        let message = "Banner creado correctamente.";
-        setToastMessage(message);
-        setShowSuccessToast(true);
-      }
-    } catch (error) {
-
-      if (error.response.status === 400) {
-        console.log(error.response.data.message);
-        let message = error.response.data.message;
-        setToastMessage(message);
-        setShowErrorToast(true);
-      }
-
-      if (error.response.status === 422) {
-        console.log(error.response.data.message);
-        let message = error.response.data.message;
-        setToastMessage(message);
-        setShowErrorToast(true);
-
-        if (error.response.data.errors.image) {
-          console.log(error.response.data.errors.image);
-          let message = error.response.data.errors.image;
-          setToastMessage(message);
-          setShowErrorToast(true);
-        }
-
-        if (error.response.data.errors.status) {
-          console.log(error.response.data.errors.status);
-          let message = error.response.data.errors.status;
-          setToastMessage(message);
-          setShowErrorToast(true);
-        }
-
-        if (error.response.data.errors.publication_date) {
-          console.log(error.response.data.errors.publication_date);
-          let message = error.response.data.errors.publication_date;
-          setToastMessage(message);
-          setShowErrorToast(true);
-        }
-
-        if (error.response.data.errors.unpublication_date) {
-          console.log(error.response.data.errors.unpublication_date);
-          let message = error.response.data.errors.unpublication_date;
-          setToastMessage(message);
-          setShowErrorToast(true);
-        }
-      }
-    }
-  }; */
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
   const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
   const [errors, setErrors] = useState({}); // Para manejar errores
+
+  // Mapea los mensajes de error genéricos a mensajes personalizados
+  const errorMessages = {
+    image: {
+      required: "Por favor, selecciona una imagen para el banner.",
+      file_type: "El archivo debe ser una imagen válida (jpeg, png, etc.).",
+    },
+    publication_date: {
+      required: "La fecha de publicación es obligatoria.",
+      invalid: "La fecha de publicación no es válida.",
+    },
+    unpublication_date: {
+      required: "La fecha de despublicación es obligatoria.",
+      invalid: "La fecha de despublicación no es válida.",
+    },
+    status: {
+      invalid: "El estado seleccionado no es válido.",
+    },
+  };
 
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
@@ -146,10 +62,11 @@ function BannerForm() {
     formData.append("status", status); // Enviar el estado como 0 o 1
     formData.append("publication_date", publicationDate); // Formato de fecha
     formData.append("unpublication_date", unpublicationDate);
+    formData.append("type", "banner"); // 
 
     try {
       const response = await axios.post(
-        API, // Cambia esto por tu endpoint
+        "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/new/create", // Cambia esto por tu endpoint
         formData,
         {
           headers: {
@@ -163,87 +80,45 @@ function BannerForm() {
       // Limpiar los errores si la petición es exitosa
       setErrors({});
     } catch (error) {
-      // Si hay errores desde el backend, actualizamos el estado de errores
-      if (error.response && error.response.data.errors) {
-        setErrors(error.response.data.errors);
+      if (error.response) {
+        console.error("Error status:", error.response.status); // Esto te dirá si es un 422
+        console.error("Error data:", error.response.data); // Aquí deberías ver el JSON con los errores
+
+        if (error.response.status === 422) {
+          const backendErrors = error.response.data.errors;
+          let customErrors = {};
+
+          // Recorre los errores y asigna mensajes personalizados
+          Object.keys(backendErrors).forEach((field) => {
+            const fieldErrors = backendErrors[field];
+            customErrors[field] = fieldErrors.map((errorMsg) => {
+              if (errorMsg.includes("required")) {
+                return (
+                  errorMessages[field]?.required || "Este campo es obligatorio."
+                );
+              } else if (errorMsg.includes("invalid")) {
+                return (
+                  errorMessages[field]?.invalid || "Este valor es inválido."
+                );
+              } else {
+                return errorMsg; // Retornar el mensaje genérico si no hay un mapeo
+              }
+            });
+          });
+
+          setErrors(customErrors); // Actualizar los errores personalizados
+        } else {
+          alert("Hubo un error inesperado.");
+          console.error("Error inesperado:", error);
+        }
       } else {
-        alert("Hubo un error inesperado al subir el banner");
-        console.error("Error inesperado:", error);
+        alert("Hubo un problema al conectar con el servidor.");
+        console.error("Error en la conexión:", error);
       }
     }
   };
 
   return (
-    /* <div className="form-container">
-      <div className="banner-form">
-        <h2>Crear nuevo banner</h2>
-
-        <Form onSubmit={bannerData}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label className="form-label">Imagen:</Form.Label>
-            <Form.Control
-              type="file"
-              value={image}
-              onChange={(event) => setImage(event.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label className="form-label">Estado:</Form.Label>
-
-            <InputGroup className="mb-3">
-              <InputGroup.Checkbox
-                type="checkbox"
-                value={status}
-                onChange={() => setStatus(true)}
-              />
-              <Form.Check.Label className="form-label">Activo</Form.Check.Label>
-            </InputGroup>
-
-            <Form.Label className="form-label">
-              {" "}
-              Fecha de publicación:
-            </Form.Label>
-            <div>
-              <input
-                type="datetime-local"
-                value={publication_date}
-                onChange={(event) => setPublicationDate(event.target.value)}
-              />
-            </div>
-
-            <Form.Label className="form-label">Fecha de expiración:</Form.Label>
-            <div>
-              <input
-                type="datetime-local"
-                value={unpublication_date}
-                onChange={(event) => setUnpublicationDate(event.target.value)}
-              />
-            </div>
-          </Form.Group>
-
-          <div className="btn-container">
-            <Button variant="primary" type="submit">
-              Crear Banner
-            </Button>
-          </div>
-        </Form>
-      </div>
-
-      
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="danger"
-          onClose={() => setShowErrorToast(false)}
-          show={showErrorToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
-    </div> */
-
     <Container className="mt-5">
       <Row className="justify-content-md-center">
         <Col md={6}>
@@ -259,7 +134,7 @@ function BannerForm() {
               />
               {errors.image && (
                 <Form.Control.Feedback type="invalid">
-                  {errors.image[0]}
+                  {errors.image[0]} {/* Mostrar el primer mensaje de error */}
                 </Form.Control.Feedback>
               )}
             </Form.Group>
