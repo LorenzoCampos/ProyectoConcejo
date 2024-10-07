@@ -26,6 +26,7 @@ class RegisteredUserController extends Controller
             $validatedData = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'email_confirmation' => ['required', 'string', 'email', 'max:255', 'same:email'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'role' => ['required', 'string', 'min:1', 'regex:/^[a-z]+$/', 'exists:roles,name'] // Verifica si el rol existe en la tabla 'roles'
             ]);
