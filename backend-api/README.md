@@ -1,9 +1,5 @@
 # BACKEND DOCUMENTATION
 
-## TODO LIST
-
-- Add expiration time for session tokens
-
 ## Resouces
 
 For basic API resources:
@@ -18,40 +14,46 @@ For roles and permissions:
 # USUARIOS DE PRUEBA
 
 {
-  "name": "user",
-  "email": "user@user.com",
-  "password": "user1234",
-  "password_confirmation": "user1234"
+    "name": "nameUser",
+    "email": "user@email.com",
+    "email_confirmation": "user@email.com",
+    "password": "user1234",
+    "password_confirmation": "user1234",
+    "role": "user"
 }
 
 {
-  "name": "redes",
-  "email": "redes@redes.com",
-  "password": "redes1234",
-  "password_confirmation": "redes1234",
-  "role": "cm"
+    "name": "nameRedes",
+    "email": "redes@email.com",
+    "email_confirmation": "redes@email.com",
+    "password": "redes1234",
+    "password_confirmation": "redes1234",
+    "role": "cm"
 }
 
 {
-  "name": "concejal",
-  "email": "concejal@concejal.com",
-  "password": "concejal1234",
-  "password_confirmation": "concejal1234",
-  "role": "concejal"
+    "name": "nameConcejal",
+    "email": "concejal@email.com",
+    "email_confirmation": "concejal@email.com",
+    "password": "concejal1234",
+    "password_confirmation": "concejal1234",
+    "role": "concejal"
 }
 
 {
-  "name": "secretario",
-  "email": "secretario@secretario.com",
-  "password": "secretario1234",
-  "password_confirmation": "secretario1234",
-  "role": "secretario"
+    "name": "nameSecretario",
+    "email": "secretario@email.com",
+    "email_confirmation": "secretario@email.com",
+    "password": "secretario1234",
+    "password_confirmation": "secretario1234",
+    "role": "secretario"
 }
 
 {
-  "name": "admin",
-  "email": "admin@admin.com",
-  "password": "admin1234",
-  "password_confirmation": "admin1234",
-  "role": "admin"
+    "name": "nameAdmin",
+    "email": "admin@email.com",
+    "email_confirmation": "admin@email.com",
+    "password": "admin1234",
+    "password_confirmation": "admin1234",
+    "role": "admin"
 }
