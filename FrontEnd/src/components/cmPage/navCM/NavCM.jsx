@@ -14,9 +14,9 @@ function NavAdmin() {
   const [showBannerForm, setShowBannerForm] = useState(false);
 
   useEffect(() => {
-    const storedName = localStorage.getItem("userName");
-    if (storedName) {
-      setRole(storedName);
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
     }
   }, []);
 

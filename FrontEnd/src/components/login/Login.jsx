@@ -90,16 +90,16 @@ function Login() {
           setShowWarningToast(true); // Mostrar toast de advertencia
         } else {
           // Otro tipo de error
-          let message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
+          message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
           setToastMessage(message);
           setShowErrorToast(true); // Mostrar toast de error general
         }
       } else if (error.request) {
-        let message = "No se recibió respuesta del servidor.";
+        message = "No se recibió respuesta del servidor.";
         setToastMessage(message);
         setShowErrorToast(true);
       } else {
-        let message = "Error al realizar la solicitud.";
+        message = "Error al realizar la solicitud.";
         setToastMessage(message);
         setShowErrorToast(true);
       }

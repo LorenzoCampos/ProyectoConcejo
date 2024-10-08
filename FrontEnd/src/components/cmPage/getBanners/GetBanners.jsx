@@ -1,6 +1,3 @@
-
-import Button from "react-bootstrap/Button";
-
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 
@@ -35,9 +32,12 @@ function GetBanners() {
       const response = await axios.request(reqOptions);
       setBanners(response.data);
     } catch (error) {
-      let message = "Error al obtener los banners";
-      setShowErrorToast(true);
-      setToastMessage(message);
+      if(error.response){
+        let message = "Error al obtener los banners";
+        setShowErrorToast(true);
+        setToastMessage(message);
+      }
+     
     }
   };
 

@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 
 
 
-import "./navAdmin.css";
-import Register from '../register/Register';
+import "./navConcejal.css";
+
 import Logout from '../../logout/Logout';
 
-function NavAdmin() {
+function NavConcejal() {
   const [role, setRole] = useState('');
- const [showRegister, setShowRegister] = useState(false);
+ 
 
 
   
@@ -24,9 +24,7 @@ function NavAdmin() {
       }, []);
 
 
-      const handleRegisterClick = () => {
-        setShowRegister(true);  
-    };
+     
   return (
     <>
     <div className="nav-admin">
@@ -36,7 +34,7 @@ function NavAdmin() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <NavDropdown title={role || "Usuario"} id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleRegisterClick}>Registrar un nuevo usuario</NavDropdown.Item>
+              <NavDropdown.Item >something</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
               </NavDropdown.Item>
@@ -54,10 +52,10 @@ function NavAdmin() {
 
     </div>
         
-    {showRegister && <Register />}
+  
 
     </>
   );
 }
 
-export default NavAdmin;
+export default NavConcejal;

@@ -1,3 +1,4 @@
+import NavConcejal from "../concejalPage/navConcejal/NavConcejal";
 
 
 function ConcejalPage() {
@@ -5,7 +6,7 @@ function ConcejalPage() {
 
         <>
         
-        <h1>concejal page</h1>
+        <NavConcejal/>
         </>
     );
 }
