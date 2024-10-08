@@ -3,7 +3,7 @@ import "./logout.css"
 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-const API = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/logout";
+const API = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/logout";
 
 function Logout() {
 

@@ -12,7 +12,7 @@ import "./login.css";
 
 import { getDeviceId } from "./getDeviceId";
 
- const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/login"
+ const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/login"
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,6 +52,9 @@ function Login() {
       const token = response.data.token;
       const role = response.data.role;
       const name = response.data.user.name;
+
+      console.log(name);
+      
 
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);

@@ -9,14 +9,14 @@ import "./navCM.css";
 import BannerForm from "../bannerForm/BannerForm";
 import Logout from "../../logout/Logout";
 
-function NavAdmin() {
-  const [role, setRole] = useState("");
+function NavCM() {
+  const [name, setName] = useState("");
   const [showBannerForm, setShowBannerForm] = useState(false);
 
   useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    if (storedRole) {
-      setRole(storedRole);
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setName(storedName);
     }
   }, []);
 
@@ -34,7 +34,7 @@ function NavAdmin() {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <NavDropdown title={role || "Usuario"} id="basic-nav-dropdown">
+              <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={handleBannerClick}>
                   Cargar nuevo Banner
                 </NavDropdown.Item>
@@ -59,4 +59,4 @@ function NavAdmin() {
   );
 }
 
-export default NavAdmin;
+export default NavCM;
