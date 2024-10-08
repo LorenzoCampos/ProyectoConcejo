@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 import "./getBanners.css";
-import Banner from "../../banner/Banner";
+import BannerCM from "../bannerCM/BannerCM";
 
-function GetBanners() {
-  const [banners, setBanners] = useState([]);
+function GetBannersCM() {
+  const [bannerscm, setBannerscm] = useState([]);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showErrorToast, setShowErrorToast] = useState(false);
@@ -32,7 +32,7 @@ function GetBanners() {
       const response = await axios.request(reqOptions);
       /* console.log(response); */
       
-      setBanners(response.data);
+      setBannerscm(response.data);
     } catch (error) {
       if(error.response){
         setToastMessage("Error al obtener los banners");
@@ -48,7 +48,7 @@ function GetBanners() {
       <div className="banners-container">
         <h1>Banners</h1>
         {/* Pasa los banners obtenidos como props al componente Banner */}
-        <Banner banners={banners} />
+        <BannerCM bannerscm={bannerscm} />
       </div>
 
 
@@ -68,4 +68,4 @@ function GetBanners() {
   );
 }
 
-export default GetBanners;
+export default GetBannersCM;

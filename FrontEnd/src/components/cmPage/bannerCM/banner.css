@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito Sans", sans-serif;
+
+}
+
+:root {
+  --background-color: #ffffff;
+    --primary-color: #102550;
+    --secondary-color: #e4e1e163;
+    --third-color: #BE9A60;
+}
+
+.banner{
+  display: flex;
+  margin-top: 100px;
+}
+
+.carousel{
+  display: flex;
+  margin-top: 100px;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+  overflow: hidden;
+}
+
+.carousel.slide {
+  margin: 0;
+  width: 100vw;
+}
+
+.carousel-indicators> button.active{
+  background-color: #102550;
+}
+.carousel-item.active.carousel-item > img{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+span.carousel-control-next-icon  {
+  filter: invert(1) sepia(1) saturate(10) hue-rotate(180deg);
+}
+span.carousel-control-prev-icon  {
+  filter: invert(1) sepia(1) saturate(10) hue-rotate(180deg);
+}
+
+
+

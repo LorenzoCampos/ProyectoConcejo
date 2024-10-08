@@ -2,12 +2,12 @@ import Carousel from "react-bootstrap/Carousel";
 
 import "./banner.css";
 
-function Banner({ banners }) {
+function BannerCM({ bannerscm }) {
   return (
     <>
       <div className="banner">
         <Carousel>
-          {Array.isArray(banners) && banners.map((banner) => (
+          {bannerscm.map((banner) => (
             <Carousel.Item key={banner.id}>
               <img src={banner.image}  />
             </Carousel.Item>
@@ -18,4 +18,4 @@ function Banner({ banners }) {
   );
 }
 
-export default Banner;
+export default BannerCM;

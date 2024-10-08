@@ -1,12 +1,12 @@
 import NavCM from "../cmPage/navCM/NavCM";
-import GetBanners from "../cmPage/getBanners/GetBanners";
+import GetBannersCM from "../cmPage/getBanners/GetBannersCM";
 
 function CMPage() {
   return (
     <>
       <NavCM />
       <div>
-        <GetBanners />
+        <GetBannersCM />
       </div>
     </>
   );
