@@ -9,7 +9,7 @@ import axios from "axios";
 import "./getUsers.css";
 
 const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/user/all";
+  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/users/non-admin";
 
 function GetUsers() {
   const [data, setData] = useState([]);
@@ -38,11 +38,19 @@ function GetUsers() {
       };
 
       const response = await axios.request(reqOptions);
+     
+      
       setData(response.data);
+
+
+      console.log(response.data);
     } catch (error) {
-      let message = "Error al obtener los usuarios.";
-      setToastMessage(message);
-      setShowErrorToast(true);
+      if(error.response){
+        let message = "Error al obtener los usuarios.";
+        setToastMessage(message);
+        setShowErrorToast(true);
+      }
+      
     }
   };
 

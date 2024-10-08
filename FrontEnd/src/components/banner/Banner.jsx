@@ -2,18 +2,19 @@ import Carousel from 'react-bootstrap/Carousel';
 
 import "./banner.css";
 
-function Banner() {
+function Banner({banners}) {
   return (
   <>
    <div className="banner">
           <Carousel>
-            <Carousel.Item >
-              <img src="public/foto1.png" alt="Logo" />
+            {banners.map((banner, index) => (
+            <Carousel.Item key={index}>
+              <img src={banner.image} alt={`Banner ${index + 1}`}/>
             </Carousel.Item>
 
-            <Carousel.Item  className="carousel-item">
-              <img src="public/foto2.jpg" alt="Logo" />
-            </Carousel.Item>
+    
+                 ))} 
+         
           </Carousel>
         </div>
 
@@ -23,3 +24,5 @@ function Banner() {
 }
 
 export default Banner;
+
+       

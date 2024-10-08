@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 import "./getBanners.css";
+import Banner from "../../banner/Banner";
 
 function GetBanners() {
   const [banners, setBanners] = useState([]);
@@ -24,12 +25,14 @@ function GetBanners() {
         "Content-Type": "application/json",
       };
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/banner/all",
+        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/banners",
         method: "GET",
         headers: headersList,
       };
 
       const response = await axios.request(reqOptions);
+      console.log(response);
+      
       setBanners(response.data);
     } catch (error) {
       if(error.response){
@@ -43,8 +46,11 @@ function GetBanners() {
 
   return (
     <div>
+      
       <div className="banners-container">
         <h1>Banners</h1>
+        {/* Pasa los banners obtenidos como props al componente Banner */}
+        <Banner banners={banners} />
       </div>
 
 

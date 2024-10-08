@@ -66,7 +66,7 @@ function BannerForm() {
 
     try {
       const response = await axios.post(
-        "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/new/create", // Cambia esto por tu endpoint
+        "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners",
         formData,
         {
           headers: {

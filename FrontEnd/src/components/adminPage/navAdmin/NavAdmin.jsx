@@ -11,15 +11,15 @@ import Register from '../register/Register';
 import Logout from '../../logout/Logout';
 
 function NavAdmin() {
-  const [role, setRole] = useState('');
+  const [name, setName] = useState('');
  const [showRegister, setShowRegister] = useState(false);
 
 
   
     useEffect(() => {
-        const storedRole = localStorage.getItem("role");
-        if (storedRole) {
-          setRole(storedRole);
+        const storedName = localStorage.getItem("userName");
+        if (storedName) {
+          setName(storedName);
         }
       }, []);
 
@@ -35,7 +35,7 @@ function NavAdmin() {
       <Navbar.Brand as={Link} to="/"><img className="logo" src="public/logo1.png" alt="Logo" /></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-            <NavDropdown title={role || "Usuario"} id="basic-nav-dropdown">
+            <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
               <NavDropdown.Item onClick={handleRegisterClick}>Registrar un nuevo usuario</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
