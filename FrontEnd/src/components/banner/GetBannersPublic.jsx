@@ -20,7 +20,6 @@ function GetBannersPublic() {
   const getAllBanners = async () => {
     try {
       let headersList = {
-        Authorization: "Bearer " + localStorage.getItem("authToken"),
         "Content-Type": "application/json",
       };
       let reqOptions = {
