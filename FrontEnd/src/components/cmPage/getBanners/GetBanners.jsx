@@ -9,10 +9,9 @@ import Banner from "../../banner/Banner";
 
 function GetBanners() {
   const [banners, setBanners] = useState([]);
-  const [showErrorToast, setShowErrorToast] = useState(false);
-  /* const [showWarningToast, setShowWarningToast] = useState(false);
-  const [showSuccessToast, setShowSuccessToast] = useState(false); */
+
   const [toastMessage, setToastMessage] = useState("");
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   useEffect(() => {
     getAllBanners();
@@ -31,14 +30,13 @@ function GetBanners() {
       };
 
       const response = await axios.request(reqOptions);
-      console.log(response);
+      /* console.log(response); */
       
       setBanners(response.data);
     } catch (error) {
       if(error.response){
-        let message = "Error al obtener los banners";
+        setToastMessage("Error al obtener los banners");
         setShowErrorToast(true);
-        setToastMessage(message);
       }
      
     }
