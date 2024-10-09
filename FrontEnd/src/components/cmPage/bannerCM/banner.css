@@ -19,7 +19,10 @@
   display: flex;
   margin-top: 100px;
 }
-
+.bannerCM{
+  display: flex;
+  width: 50vw;
+}
 .carousel{
   display: flex;
   margin-top: 100px;
@@ -52,5 +55,10 @@ span.carousel-control-prev-icon  {
   filter: invert(1) sepia(1) saturate(10) hue-rotate(180deg);
 }
 
-
+@media screen and (max-width: 991px) {
+  .bannerCM{
+      display: flex;
+      width: 70vw;
+  }
+}
 

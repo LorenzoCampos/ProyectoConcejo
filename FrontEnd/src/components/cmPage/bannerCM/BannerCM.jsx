@@ -5,7 +5,7 @@ import "./banner.css";
 function BannerCM({ bannerscm }) {
   return (
     <>
-      <div className="banner">
+      <div className="bannerCM">
         <Carousel>
           {bannerscm.map((banner) => (
             <Carousel.Item key={banner.id}>

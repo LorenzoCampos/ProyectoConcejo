@@ -7,16 +7,17 @@ import axios from "axios";
 import "./getBanners.css";
 import BannerCM from "../bannerCM/BannerCM";
 
-function GetBannersCM() {
+function GetBannersCM({ renderBanners }) {
   const [bannerscm, setBannerscm] = useState([]);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showErrorToast, setShowErrorToast] = useState(false);
 
   useEffect(() => {
-    getAllBanners();
-  }, []);
-
+    if (renderBanners) {
+      getAllBanners();
+    }
+  }, [renderBanners]);
   const getAllBanners = async () => {
     try {
       let headersList = {
@@ -45,11 +46,12 @@ function GetBannersCM() {
   return (
     <div>
       
-      <div className="banners-container">
-        <h1>Banners</h1>
-        {/* Pasa los banners obtenidos como props al componente Banner */}
-        <BannerCM bannerscm={bannerscm} />
-      </div>
+      {renderBanners && (
+        <div className="banners-container">
+          {/* Pasa los banners obtenidos como props al componente Banner */}
+          <BannerCM bannerscm={bannerscm} />
+        </div>
+      )}
 
 
       {/* Toast error */}

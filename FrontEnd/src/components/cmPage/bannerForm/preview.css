@@ -1,0 +1,48 @@
+
+
+.modal-background{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bannerModal{
+background: rgb(131,58,180);
+background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(255,137,169,1) 50%, rgba(252,176,69,1) 100%);
+display: flex;
+flex-direction: column;
+padding: 20px;
+color: var(--background-color);
+border-radius: 10px;
+box-shadow:2px 2px 4px var(--background-color);
+}
+.title-close{
+    display: flex;
+  gap: 50px;
+  padding:0 0 30px 30px;
+  text-shadow: 2px 2px 4px var(--color-primary);
+  justify-content: space-between;
+}
+.btnClose{
+  border: none;
+  font-size: 25px;
+  background-color: transparent;
+  display: flex;
+}
+
+.btnClose svg:hover{
+  transform: scale3d(2, 2, 2);
+}
+
+
+.title {
+    flex-grow: 1; 
+    text-align: center; 
+}

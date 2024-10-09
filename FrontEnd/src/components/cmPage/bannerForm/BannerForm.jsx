@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Preview from "./Preview";
 
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -18,7 +19,15 @@ function BannerForm() {
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = ()=>{
+    setIsOpen(true)
+  }
+  const closeModal = ()=>{
+    setIsOpen(false)
+  }
 
   /*   // Mapea los mensajes de error genéricos a mensajes personalizados
   const errorMessages = {
@@ -171,15 +180,22 @@ function BannerForm() {
                     onChange={(e) => setUnpublicationDate(e.target.value)}
                   />
                 </Form.Group>
-
+                <div className="btn-container">
+                <Button variant="primary" onClick={openModal}>
+                 Vista Previa
+                </Button>
                 <Button variant="primary" type="submit">
                   Subir Banner
                 </Button>
+                
+                </div>
+                
               </Form>
             </Col>
           </Row>
         </Container>
       </div>
+      <Preview isOpen={isOpen} closeModal={closeModal}/>
 
       {/* Toast error */}
       <ToastContainer position="top-end" className="p-3">
