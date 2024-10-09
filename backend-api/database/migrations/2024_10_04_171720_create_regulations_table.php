@@ -18,7 +18,8 @@ return new class extends Migration
             $table->date('date');
             $table->string('state');
             $table->string('subject');
-            $table->string('pdf_path');
+            $table->string('pdf_process');
+            $table->string('pdf_approved');
             $table->foreignId('fk_user_creator')->constrained('users'); // Relación con usuarios
             $table->timestamps();
         });

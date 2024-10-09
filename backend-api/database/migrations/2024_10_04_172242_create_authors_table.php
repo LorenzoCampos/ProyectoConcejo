@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('fk_regulation')->constrained('regulations'); // Relación con regulations
             $table->string('type');
             $table->string('name')->nullable();
-            $table->foreignId('fk_user')->constrained('users'); // Relación con usuarios
             $table->timestamps();
         });
     }
