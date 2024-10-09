@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class NewsBannerController extends Controller
 {
     // Obtener todas las noticias y banners
-    public function index()
+    public function getAllNewsAndBanners()
     {
         $newsBanners = NewsBanner::all();
 
@@ -22,7 +22,7 @@ class NewsBannerController extends Controller
     }
 
 
-    public function indexBanners()
+    public function getAllBanners()
     {
         $newsBanners = NewsBanner::where('type', 'banner')->get();
 
@@ -33,7 +33,7 @@ class NewsBannerController extends Controller
         return response()->json($newsBanners, 200);  // Responder con status 200
     }
 
-    public function indexBannersPublished()
+    public function getAllPublishedBanners()
     {
         $newsBanners = NewsBanner::where('type', 'banner')->where('status', 1)->get();
 
@@ -44,7 +44,7 @@ class NewsBannerController extends Controller
         return response()->json($newsBanners, 200);  // Responder con status 200
     }
 
-    public function indexNews()
+    public function getAllNews()
     {
         $newsBanners = NewsBanner::where('type', 'new')->get();
 
@@ -55,7 +55,7 @@ class NewsBannerController extends Controller
         return response()->json($newsBanners, 200);  // Responder con status 200
     }
 
-    public function indexNewsPublished()
+    public function getAllPublishedNews()
     {
         $newsBanners = NewsBanner::where('type', 'new')->where('status', 1)->get();
 
