@@ -18,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/normativas" element={<Normativas />} />
             <Route path="/login" element={<Access />} />
+            
    
 
             <Route path="/admin" element={ <PrivateRoute role="admin"><AdminPage /></PrivateRoute>} />

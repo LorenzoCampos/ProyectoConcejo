@@ -1,4 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Nunito Sans", sans-serif;
+
+}
+
+:root {
+  --background-color: #ffffff;
+    --primary-color: #102550;
+    --secondary-color: #e4e1e163;
+    --third-color: #BE9A60;
+     --form-color:#3058a6b3;
+}
 
 .modal-background{
   width: 100vw;
@@ -14,8 +30,8 @@
 }
 
 .bannerModal{
-background: rgb(131,58,180);
-background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(255,137,169,1) 50%, rgba(252,176,69,1) 100%);
+background: rgb(202, 202, 202);
+background: linear-gradient(90deg, rgb(64, 58, 180) 0%, rgb(233, 233, 233) 50%, rgb(192, 152, 95) 100%);
 display: flex;
 flex-direction: column;
 padding: 20px;
@@ -45,4 +61,13 @@ box-shadow:2px 2px 4px var(--background-color);
 .title {
     flex-grow: 1; 
     text-align: center; 
+    color: var(--primary-color);
 }
+
+.title h1{
+  font-weight: 700;
+  font-size: 3rem;
+  color: var(--primary-color); 
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+}
+
