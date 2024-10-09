@@ -4,8 +4,8 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-import "./getBanners.css";
-import Banner from "../../banner/Banner";
+import "./banner.css";
+import Banner from "./Banner";
 
 function GetBannersPublic() {
   const [banners, setBanners] = useState([]);
@@ -29,9 +29,11 @@ function GetBannersPublic() {
       };
 
       const response = await axios.request(reqOptions);
-      console.log(response);
+      
       
       setBanners(response.data);
+
+      console.log(response.data);
     } catch (error) {
       if(error.response){
         setToastMessage("Error al obtener los banners");

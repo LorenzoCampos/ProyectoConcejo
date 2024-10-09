@@ -7,7 +7,7 @@ function Banner({ banners }) {
     <>
       <div className="banner">
         <Carousel>
-          {Array.isArray(banners) && banners.map((banner) => (
+          {banners.map((banner) => (
             <Carousel.Item key={banner.id}>
               <img src={banner.image}  />
             </Carousel.Item>
@@ -19,3 +19,4 @@ function Banner({ banners }) {
 }
 
 export default Banner;
+
