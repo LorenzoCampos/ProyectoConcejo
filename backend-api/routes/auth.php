@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('v1')->group(function () {
+
 Route::middleware('auth:sanctum', 'role:admin')->group(function () {
     Route::post('/register', [RegisteredUserController::class, 'store'])
                     ->name('register');
@@ -36,3 +38,5 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->middleware('auth:sanctum')
                 ->name('logout');
+
+});

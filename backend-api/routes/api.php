@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
         Route::get('banners', [NewsBannerController::class, 'getAllBanners']);
         Route::get('news', [NewsBannerController::class, 'getAllNews']);
         Route::get('news-banners/{id}', [NewsBannerController::class, 'show']);
-        Route::post('news-banners/{id}', [NewsBannerController::class, 'store']);
+        Route::post('news-banners', [NewsBannerController::class, 'store']);
         Route::patch('news-banners/{id}', [NewsBannerController::class, 'update']);
     });
 
