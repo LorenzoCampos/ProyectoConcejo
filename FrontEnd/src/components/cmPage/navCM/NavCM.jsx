@@ -6,12 +6,10 @@ import { Link } from "react-router-dom";
 
 import "./navCM.css";
 
-import BannerForm from "../bannerForm/BannerForm";
 import Logout from "../../logout/Logout";
 
-function NavCM() {
+function NavCM({onBannerFormClick}) {
   const [name, setName] = useState("");
-  const [showBannerForm, setShowBannerForm] = useState(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
@@ -20,9 +18,7 @@ function NavCM() {
     }
   }, []);
 
-  const handleBannerClick = () => {
-    setShowBannerForm(true);
-  };
+ 
 
   return (
     <>
@@ -35,7 +31,7 @@ function NavCM() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={handleBannerClick}>
+                <NavDropdown.Item onClick={onBannerFormClick}>
                   Cargar nuevo Banner
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -54,7 +50,7 @@ function NavCM() {
         </Navbar>
       </div>
 
-      {showBannerForm && <BannerForm />}
+    
     </>
   );
 }

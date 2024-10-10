@@ -1,17 +1,13 @@
 import Container from "react-bootstrap/Container";
-import { useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
-
 import "./navAdmin.css";
-
-import Register from "../register/Register";
 import Logout from "../../logout/Logout";
+import { useState, useEffect } from "react";
 
-function NavAdmin() {
+function NavAdmin({ onRegisterClick }) {  
   const [name, setName] = useState("");
-  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
@@ -20,9 +16,6 @@ function NavAdmin() {
     }
   }, []);
 
-  const handleRegisterClick = () => {
-    setShowRegister(true);
-  };
   return (
     <>
       <div className="nav-admin">
@@ -34,7 +27,7 @@ function NavAdmin() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={handleRegisterClick}>
+                <NavDropdown.Item onClick={onRegisterClick}>
                   Registrar un nuevo usuario
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -52,8 +45,6 @@ function NavAdmin() {
           </Container>
         </Navbar>
       </div>
-
-      {showRegister && <Register />}
     </>
   );
 }

@@ -32,7 +32,6 @@
   display: flex;
   justify-content: center;
   
-  
 }
 
 .register-container {
@@ -40,7 +39,7 @@
   flex-direction: column;
   align-items: center;
   background-color: var(--form-color);
-  margin-top: 60px;
+  margin-top: 20px;
   padding: 20px; 
   overflow: hidden;
   width: 450px;
