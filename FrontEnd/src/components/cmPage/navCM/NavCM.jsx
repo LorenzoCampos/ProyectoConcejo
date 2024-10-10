@@ -8,7 +8,8 @@ import "./navCM.css";
 
 import Logout from "../../logout/Logout";
 
-function NavCM({onBannerFormClick}) {
+
+function NavCM({onBannerFormClick, onBannersListClick, onNewsListClick, onNewsFormClick}) {
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -31,17 +32,20 @@ function NavCM({onBannerFormClick}) {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={onBannersListClick}>
+                  Ver Banners
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={onBannerFormClick}>
-                  Cargar nuevo Banner
+                  Cargar Banner
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
+                <NavDropdown.Item onClick={onNewsListClick}>
+                  Ver Noticias
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
+                <NavDropdown.Item onClick={onNewsFormClick}>
+                  Cargar Noticia
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
+                <NavDropdown.Item>
                   <Logout />
                 </NavDropdown.Item>
               </NavDropdown>
