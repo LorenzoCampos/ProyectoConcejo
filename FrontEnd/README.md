@@ -1,10 +1,21 @@
-# TO-DO LIST
+# TO-DO LIST FRONTEND
+------------------------------------------------------
+> [!IMPORTANT]
+> Cambiar las vistas de los usuarios por una bienvenida al principio.
 
-- BUGS:
+------------------------------------------------------
 
-  - Estado: Por ver.
-  - Nombre: Cambio de rol no forzado.
-  - Descripción:
-    Al forzar un cambio de roles al tener una sesion iniciada, uno puede acceder a las rutas que tenía acceso originalmente. (Ej de concejal a user).
-  - Solución:
-    Función que se dedique a verificar el rol cada un intervalo de tiempo.
+- Habilitar cada opción en el menú desplegable y separarla por distintas vistas.
+
+------------------------------------------------------
+
+- Crear vista de noticias (CM)
+  - Listar noticias.
+  - Editar
+  - Borrar
+
+------------------------------------------------------
+
+- Crear vista de Formulario para cargar noticias
+
+------------------------------------------------------

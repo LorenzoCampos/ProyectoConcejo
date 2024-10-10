@@ -1,7 +1,7 @@
-function USerPage() {
+function UserPage() {
     return(
 
         <></>
     );
 }
-export default USerPage;
+export default UserPage;

@@ -146,7 +146,7 @@ function BannerForm() {
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      style={{ width: "100%", height: "auto" }}
+                      style={{ width: "50%", height: "auto", marginLeft: "25%" }}
                     />
                   </div>
                 )}
