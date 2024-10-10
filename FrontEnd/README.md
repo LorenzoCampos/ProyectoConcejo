@@ -1,7 +1,7 @@
 # TO-DO LIST FRONTEND
 ------------------------------------------------------
 > [!IMPORTANT]
-- Cambiar las vistas de los usuarios por una bienvenida al principio.
+> Cambiar las vistas de los usuarios por una bienvenida al principio.
 
 ------------------------------------------------------
 
