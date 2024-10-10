@@ -16,3 +16,10 @@
   align-items: center;
 }
 
+.mb-3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+

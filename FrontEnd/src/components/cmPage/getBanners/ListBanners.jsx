@@ -4,7 +4,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./getBanners.css"
+import "./getBanners.css";
 
 const API =
   "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/banners";
@@ -41,8 +41,7 @@ function ListBanners() {
       setFilteredData(response.data); // Mostrar todos los datos inicialmente
     } catch (error) {
       if (error.response) {
-        let message = "Error al obtener los banners.";
-        setToastMessage(message);
+        setToastMessage("Error al obtener los banners.");
         setShowErrorToast(true);
       }
     }
@@ -73,8 +72,8 @@ function ListBanners() {
         status: newState === "Activo" ? 1 : 0,
       });
 
-      const response = await axios.post(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/news-banners/${bannerId}`,
+      const response = await axios.patch(
+        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
         bodyContent,
         { headers: headersList }
       );
@@ -109,10 +108,9 @@ function ListBanners() {
       <table className="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Imagen</th>
             <th className="status-filter">
-              <p>Estado</p>
+              Estado:
               <Form.Select
                 aria-label="Filtrar por estado"
                 value={filterStatus}
@@ -123,13 +121,14 @@ function ListBanners() {
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
             </th>
+            <th>Fecha de publicación:</th>
+            <th>Fecha de retiro:</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((banner) => (
             <tr key={banner.id}>
-              <td>{banner.id}</td>
               <td>
                 <img
                   src={banner.image}
@@ -139,8 +138,14 @@ function ListBanners() {
               </td>
               <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
               <td>
+                {banner.publication_date}
+              </td>
+              <td>
+                {banner.unpublication_date}
+              </td>
+              <td>
                 <Form.Group>
-                  <Form.Control
+                  <Form.Select
                     as="select"
                     value={selectedState[banner.id] || ""}
                     onChange={(e) => handleStateChange(e, banner.id)}
@@ -148,10 +153,10 @@ function ListBanners() {
                     <option value="">--- Cambiar Estado ---</option>
                     <option value="Activo">Activo</option>
                     <option value="Inactivo">Inactivo</option>
-                  </Form.Control>
+                  </Form.Select>
                 </Form.Group>
               </td>
-              <td>
+              <td className="td-button">
                 <Button
                   variant="primary"
                   onClick={() => updateState(banner.id)}
