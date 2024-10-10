@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('regulations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('type');
             $table->integer('number');
             $table->date('date');
             $table->string('state');

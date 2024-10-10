@@ -10,7 +10,7 @@ class Regulation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'type',
         'number',
         'date',
         'state',
