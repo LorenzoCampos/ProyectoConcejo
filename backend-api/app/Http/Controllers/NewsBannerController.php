@@ -87,7 +87,7 @@ class NewsBannerController extends Controller
                 'title' => 'nullable|string',  // Solo para noticias
                 'description' => 'nullable|string',  // Solo para noticias
                 'image' => 'required|image|mimes:jpeg,png,jpg',  // Validar que sea imagen y su tipo
-                'status' => 'required|boolean',
+                'status' => 'required|boolean|default:0',
                 'publication_date' => 'nullable|date',
                 'unpublication_date' => 'nullable|date',
             ]);
