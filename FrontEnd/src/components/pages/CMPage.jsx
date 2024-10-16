@@ -31,7 +31,7 @@ function CMPage() {
         onBannerFormClick={handleShowBannerForm}
         onNewsListClick={handleShowListNews}
         onNewsFormClick={handleShowNewsForm}
-        onBannersListClick={handleShowListBanners} // Este callback reemplaza el reload
+        onBannersListClick={handleShowListBanners} 
       />
       
       {currentView === 'bannerForm' && <BannerForm />}
