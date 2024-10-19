@@ -7,6 +7,8 @@ import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import Preview from "./Preview";
 
+import "./bannerForm.css"
+
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0); // Estado inicial en 0
@@ -96,7 +98,7 @@ function BannerForm() {
         }
       );
 
-      /* console.log(response.data); */
+       console.log(response.data); 
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
