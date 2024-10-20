@@ -1,90 +1,61 @@
 import { useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
-//import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Preview from "./Preview";
 
-import "./bannerForm.css"
+import "./bannerForm.css";
 
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [status, setStatus] = useState(0); // Estado inicial en 0
+  const [status, setStatus] = useState(0);
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
-  const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
 
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  //const navigate = useNavigate();
-
   const [isOpen, setIsOpen] = useState(false);
-  const openModal = ()=>{
-    setIsOpen(true)
-  }
-  const closeModal = ()=>{
-    setIsOpen(false)
-  }
-
-  /*   // Mapea los mensajes de error genéricos a mensajes personalizados
-  const errorMessages = {
-    image: {
-      required: "Por favor, selecciona una imagen para el banner.",
-      file_type: "El archivo debe ser una imagen válida (jpeg, png, etc.).",
-    },
-    publication_date: {
-      required: "La fecha de publicación es obligatoria.",
-      invalid: "La fecha de publicación no es válida.",
-    },
-    unpublication_date: {
-      required: "La fecha de despublicación es obligatoria.",
-      invalid: "La fecha de despublicación no es válida.",
-    },
-    status: {
-      invalid: "El estado seleccionado no es válido.",
-    },
-  }; */
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-
-    // Generar vista previa de la imagen
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
   };
 
   // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación simple para asegurarnos que se ingresan todos los datos
     if (!selectedFile || !publicationDate || !unpublicationDate) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;
     }
 
-    // Crear el FormData para enviar al backend
     const formData = new FormData();
     formData.append("image", selectedFile);
-    formData.append("status", status); // Enviar el estado como 0 o 1
-    formData.append("publication_date", publicationDate); // Formato de fecha
+    formData.append("status", status);
+    formData.append("publication_date", publicationDate);
     formData.append("unpublication_date", unpublicationDate);
-    formData.append("type", "banner"); //
+    formData.append("type", "banner");
+    
+    
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    console.log("Status:", status);
+  console.log("Publication Date:", publicationDate);
+  console.log("Unpublication Date:", unpublicationDate);
 
     try {
       const response = await axios.post(
@@ -97,28 +68,13 @@ function BannerForm() {
           },
         }
       );
-
-       console.log(response.data); 
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
       }
     } catch (error) {
+      console.error("Error Response:", error.response.data);
       if (error.response) {
-        console.error(
-          "Estado de la respuesta de error:",
-          error.response.status
-        );
-
-        console.error(
-          "Encabezados de la respuesta de error:",
-          error.response.headers
-        );
-
-        /*  if(error.response.status === 422) {
-          Especificar errores
-        } */
-
         setToastMessage("Error al subir el Banner");
         setShowWarningToast(true);
       }
@@ -131,7 +87,7 @@ function BannerForm() {
         <Container>
           <Row>
             <Col>
-              <h1 className="text-center">Subir Banner</h1>
+              <h1 className="text-center">Cargar Banner</h1>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formFile">
                   <Form.Label>Seleccionar imagen</Form.Label>
@@ -142,21 +98,9 @@ function BannerForm() {
                   />
                 </Form.Group>
 
-                {imagePreview && (
-                  <div className="mb-3">
-                    <p>Vista previa de la imagen:</p>
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      style={{ width: "50%", height: "auto", marginLeft: "25%" }}
-                    />
-                  </div>
-                )}
-
                 <Form.Group controlId="status" className="mb-3">
                   <Form.Label>Estado</Form.Label>
                   <Form.Select
-                    as="select"
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                   >
@@ -183,23 +127,21 @@ function BannerForm() {
                   />
                 </Form.Group>
                 <div className="btn-container">
-                <Button variant="primary" onClick={openModal}>
-                 Vista Previa
-                </Button>
-                <Button variant="primary" type="submit">
-                  Subir Banner
-                </Button>
-                
+                  <Button variant="primary" onClick={openModal}>
+                    Vista Previa
+                  </Button>
+                  <Button variant="primary" type="submit">
+                    Subir Banner
+                  </Button>
                 </div>
-                
               </Form>
             </Col>
           </Row>
         </Container>
       </div>
-      <Preview isOpen={isOpen} closeModal={closeModal}/>
+      <Preview isOpen={isOpen} closeModal={closeModal} file={selectedFile} />
 
-      {/* Toast error */}
+      {/* Toasts para feedback */}
       <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="danger"
@@ -211,8 +153,6 @@ function BannerForm() {
           <Toast.Body className="text-white">{toastMessage}</Toast.Body>
         </Toast>
       </ToastContainer>
-
-      {/* Toast exito */}
       <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="warning"
@@ -224,8 +164,6 @@ function BannerForm() {
           <Toast.Body className="text-white">{toastMessage}</Toast.Body>
         </Toast>
       </ToastContainer>
-
-      {/* Toast exito */}
       <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="success"

@@ -12,7 +12,7 @@ function NewsForm() {
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
-  const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
+  //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
 
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -54,7 +54,7 @@ function NewsForm() {
     setSelectedFile(file);
 
     // Generar vista previa de la imagen
-    const reader = new FileReader();
+   {/* const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
     };
@@ -62,7 +62,7 @@ function NewsForm() {
       reader.readAsDataURL(file);
     } else {
       setImagePreview(null);
-    }
+    }*/}
   };
 
   // Maneja el envío del formulario
@@ -129,7 +129,7 @@ function NewsForm() {
         <Container>
           <Row>
             <Col>
-              <h1 className="text-center">Subir Noticia</h1>
+              <h1 className="text-center">Cargar Noticia</h1>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formFile">
                   <Form.Label>Seleccionar imagen</Form.Label>
@@ -140,7 +140,7 @@ function NewsForm() {
                   />
                 </Form.Group>
 
-                {imagePreview && (
+               {/* {imagePreview && (
                   <div className="mb-3">
                     <p>Vista previa de la imagen:</p>
                     <img
@@ -149,7 +149,7 @@ function NewsForm() {
                       style={{ width: "50%", height: "auto", marginLeft: "25%" }}
                     />
                   </div>
-                )}
+                )}*/}
 
                 <Form.Group controlId="status" className="mb-3">
                   <Form.Label>Estado</Form.Label>

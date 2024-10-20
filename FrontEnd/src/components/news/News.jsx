@@ -1,31 +1,16 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { /*useEffect,*/ useState } from "react";
+import { useState } from "react";
 
 import "./news.css";
 
-//import axios from "axios";
-//const endpoint = 'http://localhost:8080/api'
-function News() {
-  //const [news, setNews] = useState([]);
+function News({news}) {
+  
   const [visibleCards, setVisibleCards] = useState(6);
 
- /*
-    useEffect(()=>{
-      getAllNews()
-    })
+ 
 
-  const getAllNews = async ()=>{
-    try {
-      const response = await axios.get(${endpoint}/news)
-      setNews(response.data)
 
-    }catch (error) {
-      console.error('Error al obtener las noticias:', error);
-    }
-};
-
-*/
   const handleShowMoreCards = () => {
     setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
   };
@@ -35,68 +20,7 @@ function News() {
   }
 
   // Datos simulados
-  const news = [
-    {
-      id: 1,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 1",
-      description: "Descripción de la noticia 1.",
-    },
-    {
-      id: 2,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 2",
-      description: "Descripción de la noticia 2.",
-    },
-    {
-      id: 3,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 3",
-      description: "Descripción de la noticia 3.",
-    },
-    {
-      id: 4,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 4",
-      description: "Descripción de la noticia 4.",
-    },
-    {
-      id: 5,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 5",
-      description: "Descripción de la noticia 5.",
-    },
-    {
-      id: 6,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 6",
-      description: "Descripción de la noticia 6.",
-    },
-    {
-      id: 7,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 7",
-      description: "Descripción de la noticia 7.",
-    },
-    {
-      id: 8,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 8",
-      description: "Descripción de la noticia 8.",
-    },
-    {
-      id: 9,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 9",
-      description: "Descripción de la noticia 9.",
-    },
-    {
-      id: 10,
-      image: "https://via.placeholder.com/150",
-      title: "Noticia 10",
-      description: "Descripción de la noticia 10.",
-    },
-  ];
+  
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { Carousel } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import "./preview.css";
 
 
@@ -32,16 +32,17 @@ function Preview({ isOpen, closeModal, file }) {
                 <button onClick={closeModal} className='btnClose'><IoMdClose /></button>
               </div>
             </div>
-            <div className="banner">
+            <div className="new">
               {imagePreview && (
-                <Carousel>
-                  <Carousel.Item>
-                    <img
-                      src={imagePreview[0]} // Cambia según el array
-                      alt="Preview"
-                    />
-                  </Carousel.Item>
-                </Carousel>
+               <Card style={{ width: '18rem', margin: '0 auto' }}>
+               <Card.Img variant="top" src={imagePreview} alt="Preview" />
+               <Card.Body>
+                 <Card.Title>Vista Previa de Noticia</Card.Title>
+                 <Card.Text>
+                   Aquí puedes agregar más detalles sobre la noticia, como el estado o las fechas.
+                 </Card.Text>
+               </Card.Body>
+             </Card>
               )}
             </div>
           </div>
