@@ -6,6 +6,7 @@ import Toast from "react-bootstrap/Toast";
 //import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Preview from "../bannerForm/Preview";
+import "./newsForm.css"
 
 function NewsForm() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -161,6 +162,20 @@ function NewsForm() {
                     <option value={0}>Inactivo</option>
                     <option value={1}>Activo</option>
                   </Form.Select>
+                </Form.Group>
+               
+                <Form.Group className="mb-3">
+                  <Form.Label>Título</Form.Label>
+                  <Form.Control
+                    type="text"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Descripción</Form.Label>
+                  <Form.Control
+                    type="text"
+                  />
                 </Form.Group>
 
                 <Form.Group controlId="publicationDate" className="mb-3">
