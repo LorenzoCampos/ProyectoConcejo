@@ -12,7 +12,7 @@
 - Crear vista de noticias (CM)
   - Listar noticias.
   - Editar
-  - Borrar
+  - Borrar (Crear funcion deleteNews)
 
 ------------------------------------------------------
 
