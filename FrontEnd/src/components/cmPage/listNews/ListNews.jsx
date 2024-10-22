@@ -90,6 +90,31 @@ function ListNews() {
     }
   };
 
+  const deleteBanner = async (newsId) => {
+    let alertConfirm = confirm("¿Deseas eliminar esta noticia?");
+
+    if (alertConfirm) {
+      try {
+        let headersList = {
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+          "Content-Type": "application/json",
+        };
+
+        const response = await axios.delete(
+          `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${newsId}`,
+          { headers: headersList }
+        );
+        setToastMessage("Noticia eliminada correctamente.");
+        setShowSuccessToast(true);
+        getAlldata(); // Refrescar la lista
+      } catch (error) {
+        setToastMessage("Error al eliminar la noticia.");
+        setShowErrorToast(true);
+      }
+      return;
+    }
+  };
+
   const handleFilterChange = (e) => {
     const selectedFilter = e.target.value;
     setFilterStatus(selectedFilter);
@@ -131,11 +156,7 @@ function ListNews() {
           {filteredData.map((news) => (
             <tr key={news.id}>
               <td>
-                <img
-                  src={news.image}
-                  alt="banner"
-                  style={{ width: "100px" }}
-                />
+                <img src={news.image} alt="banner" style={{ width: "100px" }} />
               </td>
               <td>{news.title}</td>
               <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
@@ -154,10 +175,14 @@ function ListNews() {
               </td>
               <td className="td-button">
                 <Button
+                  className="me-2"
                   variant="primary"
                   onClick={() => updateState(news.id)}
                 >
                   Editar Estado
+                </Button>
+                <Button variant="danger" onClick={() => deleteBanner(news.id)}>
+                  Eliminar
                 </Button>
               </td>
             </tr>

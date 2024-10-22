@@ -88,6 +88,32 @@ function ListBanners() {
     }
   };
 
+  const deleteBanner = async (bannerId) => {
+    let alertConfirm = confirm("¿Deseas eliminar este banner?");
+
+    if (alertConfirm) {
+      try {
+        let headersList = {
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+          "Content-Type": "application/json",
+        };
+
+        const response = await axios.delete(
+          `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
+          { headers: headersList }
+        );
+        setToastMessage("Banner eliminado correctamente.");
+        setShowSuccessToast(true);
+        getAlldata(); // Refrescar la lista
+      } catch (error) {
+        setToastMessage("Error al eliminar el banner.");
+        setShowErrorToast(true);
+      }
+
+      return;
+    }
+  };
+
   const handleFilterChange = (e) => {
     const selectedFilter = e.target.value;
     setFilterStatus(selectedFilter);
@@ -121,8 +147,6 @@ function ListBanners() {
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
             </th>
-            <th>Fecha de publicación:</th>
-            <th>Fecha de retiro:</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -138,14 +162,9 @@ function ListBanners() {
               </td>
               <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
               <td>
-                {banner.publication_date}
-              </td>
-              <td>
-                {banner.unpublication_date}
-              </td>
-              <td>
                 <Form.Group>
                   <Form.Select
+                    className="me-2"
                     as="select"
                     value={selectedState[banner.id] || ""}
                     onChange={(e) => handleStateChange(e, banner.id)}
@@ -158,10 +177,17 @@ function ListBanners() {
               </td>
               <td className="td-button">
                 <Button
+                  className="me-2"
                   variant="primary"
                   onClick={() => updateState(banner.id)}
                 >
-                  Editar Estado
+                  Editar estado
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => deleteBanner(banner.id)}
+                >
+                  Eliminar
                 </Button>
               </td>
             </tr>
