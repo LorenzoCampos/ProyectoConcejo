@@ -6,11 +6,13 @@ import Toast from "react-bootstrap/Toast";
 //import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Preview from "../bannerForm/Preview";
-import "./newsForm.css"
+import "./newsForm.css";
 
 function NewsForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0); // Estado inicial en 0
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
@@ -23,12 +25,12 @@ function NewsForm() {
   //const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const openModal = ()=>{
-    setIsOpen(true)
-  }
-  const closeModal = ()=>{
-    setIsOpen(false)
-  }
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   /*   // Mapea los mensajes de error genéricos a mensajes personalizados
   const errorMessages = {
@@ -55,7 +57,8 @@ function NewsForm() {
     setSelectedFile(file);
 
     // Generar vista previa de la imagen
-   {/* const reader = new FileReader();
+    {
+      /* const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
     };
@@ -63,7 +66,8 @@ function NewsForm() {
       reader.readAsDataURL(file);
     } else {
       setImagePreview(null);
-    }*/}
+    }*/
+    }
   };
 
   // Maneja el envío del formulario
@@ -81,6 +85,8 @@ function NewsForm() {
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("status", status); // Enviar el estado como 0 o 1
+    formData.append("title", title);
+    formData.append("description", description);
     formData.append("publication_date", publicationDate); // Formato de fecha
     formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "new"); //
@@ -97,7 +103,7 @@ function NewsForm() {
         }
       );
 
-       console.log(response.data); 
+      console.log(response.data);
       if (response.status === 201) {
         setToastMessage("Noticia subida exitosamente");
         setShowSuccessToast(true);
@@ -141,7 +147,7 @@ function NewsForm() {
                   />
                 </Form.Group>
 
-               {/* {imagePreview && (
+                {/* {imagePreview && (
                   <div className="mb-3">
                     <p>Vista previa de la imagen:</p>
                     <img
@@ -163,11 +169,13 @@ function NewsForm() {
                     <option value={1}>Activo</option>
                   </Form.Select>
                 </Form.Group>
-               
+
                 <Form.Group className="mb-3">
                   <Form.Label>Título</Form.Label>
                   <Form.Control
                     type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </Form.Group>
 
@@ -175,6 +183,8 @@ function NewsForm() {
                   <Form.Label>Descripción</Form.Label>
                   <Form.Control
                     type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </Form.Group>
 
@@ -196,21 +206,19 @@ function NewsForm() {
                   />
                 </Form.Group>
                 <div className="btn-container">
-                <Button variant="primary" onClick={openModal}>
-                 Vista Previa
-                </Button>
-                <Button variant="primary" type="submit">
-                  Subir Noticia
-                </Button>
-                
+                  <Button variant="primary" onClick={openModal}>
+                    Vista Previa
+                  </Button>
+                  <Button variant="primary" type="submit">
+                    Subir Noticia
+                  </Button>
                 </div>
-                
               </Form>
             </Col>
           </Row>
         </Container>
       </div>
-      <Preview isOpen={isOpen} closeModal={closeModal}/>
+      <Preview isOpen={isOpen} closeModal={closeModal} />
 
       {/* Toast error */}
       <ToastContainer position="top-end" className="p-3">

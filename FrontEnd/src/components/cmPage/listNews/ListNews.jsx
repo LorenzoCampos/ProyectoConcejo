@@ -5,7 +5,7 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import "./listBanners.css";
+import "./listNews.css";
 
 const API =
   "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news";
@@ -105,12 +105,13 @@ function ListNews() {
   };
 
   return (
-    <div className="banner-container">
+    <div className="news-container">
       <h1>Lista de Noticias</h1>
       <table className="table">
         <thead>
           <tr>
             <th>Imagen</th>
+            <th>Título</th>
             <th className="status-filter">
               Estado:
               <Form.Select
@@ -123,8 +124,6 @@ function ListNews() {
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
             </th>
-            <th>Fecha de publicación:</th>
-            <th>Fecha de retiro:</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -138,13 +137,8 @@ function ListNews() {
                   style={{ width: "100px" }}
                 />
               </td>
+              <td>{news.title}</td>
               <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
-              <td>
-                {news.publication_date}
-              </td>
-              <td>
-                {news.unpublication_date}
-              </td>
               <td>
                 <Form.Group>
                   <Form.Select

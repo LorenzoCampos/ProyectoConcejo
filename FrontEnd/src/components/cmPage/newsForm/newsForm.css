@@ -5,16 +5,27 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Nunito Sans", sans-serif;
-
 }
 
 :root {
   --background-color: #ffffff;
-    --primary-color: #102550;
-    --secondary-color: #e4e1e163;
-    --third-color: #BE9A60;
+  --primary-color: #102550;
+  --secondary-color: #e4e1e163;
+  --third-color: #be9a60;
 }
 
-div label{
-    color: var(--primary-color);
+div label {
+  color: var(--primary-color);
+}
+
+.container {
+  display: flex;
+}
+
+.news-form {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
