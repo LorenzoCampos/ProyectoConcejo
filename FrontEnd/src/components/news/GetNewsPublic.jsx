@@ -47,8 +47,10 @@ function GetNewsPublic() {
     <div>
       
       <div className="news-container">
-        <h1>News</h1>
-        {/* Pasa los banners obtenidos como props al componente Banner */}
+        <div className="title-news">
+        <p >Noticias</p>
+        </div>
+       
         <News news={news} />
       </div>
 

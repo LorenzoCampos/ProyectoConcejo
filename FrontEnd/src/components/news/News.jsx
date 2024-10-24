@@ -7,9 +7,7 @@ import "./news.css";
 function News({news}) {
   
   const [visibleCards, setVisibleCards] = useState(6);
-
  
-
 
   const handleShowMoreCards = () => {
     setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
@@ -18,8 +16,6 @@ function News({news}) {
   const handleShowLessCards = () => {
     setVisibleCards((prevVisibleCards) => prevVisibleCards - 6);
   }
-
-  // Datos simulados
   
 
   return (
@@ -27,13 +23,16 @@ function News({news}) {
     <div className="cards-container">
       <div className="cards">
         {news.slice(0, visibleCards).map((item) => (
-          <Card key={item.id}>
+          <Card key={item.id}  className="shadow rounded">
             <Card.Img variant="top" src={item.image} />
 
             <Card.Body>
               <Card.Title>{item.title}</Card.Title>
-              <Card.Text>{item.description}</Card.Text>
-              <Button variant="primary">Ver más</Button>
+              <Card.Text className="limited-text">{item.description}</Card.Text>
+              <div className="button-container">
+              <Button className="btn-banner">Ver más</Button>
+              </div>
+              
             </Card.Body>
           </Card>
         ))}

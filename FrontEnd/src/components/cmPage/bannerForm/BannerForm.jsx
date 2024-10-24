@@ -83,11 +83,12 @@ function BannerForm() {
 
   return (
     <div className="container">
-      <div className="banner-form">
+      
         <Container>
           <Row>
             <Col>
-              <h1 className="text-center">Cargar Banner</h1>
+              <h1 className="text-center title-text">Cargar Banner</h1>
+              <div className="form-banner">
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formFile">
                   <Form.Label>Seleccionar imagen</Form.Label>
@@ -127,18 +128,19 @@ function BannerForm() {
                   />
                 </Form.Group>
                 <div className="btn-container">
-                  <Button variant="primary" onClick={openModal}>
+                  <Button onClick={openModal} className="btn-banner">
                     Vista Previa
                   </Button>
-                  <Button variant="primary" type="submit">
+                  <Button className="btn-banner" type="submit">
                     Subir Banner
                   </Button>
                 </div>
               </Form>
+              </div>
             </Col>
           </Row>
         </Container>
-      </div>
+     
       <Preview isOpen={isOpen} closeModal={closeModal} file={selectedFile} />
 
       {/* Toasts para feedback */}

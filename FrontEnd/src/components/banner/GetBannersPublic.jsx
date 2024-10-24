@@ -47,8 +47,6 @@ function GetBannersPublic() {
     <div>
       
       <div className="banners-container">
-        <h1>Banners</h1>
-        {/* Pasa los banners obtenidos como props al componente Banner */}
         <Banner banners={banners} />
       </div>
 

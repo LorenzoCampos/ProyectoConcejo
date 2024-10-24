@@ -11,7 +11,7 @@ function Preview({ isOpen, closeModal, file }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview([reader.result]); // Convertir a array para el carrusel
+        setImagePreview([reader.result]); 
       };
       reader.readAsDataURL(file);
     } else {
@@ -32,7 +32,7 @@ function Preview({ isOpen, closeModal, file }) {
                 <button onClick={closeModal} className='btnClose'><IoMdClose /></button>
               </div>
             </div>
-            <div className="banner">
+            <div className="banner-prev">
               {imagePreview && (
                 <Carousel>
                   <Carousel.Item>

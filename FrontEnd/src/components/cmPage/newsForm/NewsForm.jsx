@@ -5,7 +5,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 //import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Preview from "../bannerForm/Preview";
+import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
 
 function NewsForm() {
@@ -25,6 +25,8 @@ function NewsForm() {
   //const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+
+
   const openModal = () => {
     setIsOpen(true);
   };
@@ -55,7 +57,8 @@ function NewsForm() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-
+    setIsOpen(true);
+    
     // Generar vista previa de la imagen
     {
       /* const reader = new FileReader();
@@ -136,18 +139,19 @@ function NewsForm() {
         <Container>
           <Row>
             <Col>
-              <h1 className="text-center">Cargar Noticia</h1>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formFile">
-                  <Form.Label>Seleccionar imagen</Form.Label>
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </Form.Group>
+              <h1 className="text-center title-text">Cargar Noticia</h1>
+              <div className="form-news">
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group controlId="formFile">
+                    <Form.Label>Seleccionar imagen</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </Form.Group>
 
-                {/* {imagePreview && (
+                  {/* {imagePreview && (
                   <div className="mb-3">
                     <p>Vista previa de la imagen:</p>
                     <img
@@ -158,67 +162,70 @@ function NewsForm() {
                   </div>
                 )}*/}
 
-                <Form.Group controlId="status" className="mb-3">
-                  <Form.Label>Estado</Form.Label>
-                  <Form.Select
-                    as="select"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                  >
-                    <option value={0}>Inactivo</option>
-                    <option value={1}>Activo</option>
-                  </Form.Select>
-                </Form.Group>
+                  <Form.Group controlId="status" className="mb-3">
+                    <Form.Label>Estado</Form.Label>
+                    <Form.Select
+                      as="select"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                    >
+                      <option value={0}>Inactivo</option>
+                      <option value={1}>Activo</option>
+                    </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Título</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Título</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Descripción</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Descripción</Form.Label>
+                    <Form.Control
+                     as="textarea"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      rows={4}
+                    />
+                  </Form.Group>
 
-                <Form.Group controlId="publicationDate" className="mb-3">
-                  <Form.Label>Fecha de Publicación</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    value={publicationDate}
-                    onChange={(e) => setPublicationDate(e.target.value)}
-                  />
-                </Form.Group>
+                  <Form.Group controlId="publicationDate" className="mb-3">
+                    <Form.Label>Fecha de Publicación</Form.Label>
+                    <Form.Control
+                      type="datetime-local"
+                      value={publicationDate}
+                      onChange={(e) => setPublicationDate(e.target.value)}
+                    />
+                  </Form.Group>
 
-                <Form.Group controlId="unpublicationDate" className="mb-3">
-                  <Form.Label>Fecha de Despublicación</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    value={unpublicationDate}
-                    onChange={(e) => setUnpublicationDate(e.target.value)}
-                  />
-                </Form.Group>
-                <div className="btn-container">
-                  <Button variant="primary" onClick={openModal}>
-                    Vista Previa
-                  </Button>
-                  <Button variant="primary" type="submit">
-                    Subir Noticia
-                  </Button>
-                </div>
-              </Form>
+                  <Form.Group controlId="unpublicationDate" className="mb-3">
+                    <Form.Label>Fecha de Despublicación</Form.Label>
+                    <Form.Control
+                      type="datetime-local"
+                      value={unpublicationDate}
+                      onChange={(e) => setUnpublicationDate(e.target.value)}
+                    />
+                  </Form.Group>
+                  <div className="btn-container">
+                    <Button className="btn-news" onClick={openModal}>
+                      Vista Previa
+                    </Button>
+                    <Button className="btn-news" type="submit">
+                      Subir Noticia
+                    </Button>
+                  </div>
+                </Form>
+              </div>
             </Col>
           </Row>
         </Container>
       </div>
-      <Preview isOpen={isOpen} closeModal={closeModal} />
+      <PreviewNews isOpen={isOpen} closeModal={closeModal}  file={selectedFile} title={title}
+        description={description} />
 
       {/* Toast error */}
       <ToastContainer position="top-end" className="p-3">

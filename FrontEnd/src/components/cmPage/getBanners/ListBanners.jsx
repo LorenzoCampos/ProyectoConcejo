@@ -4,6 +4,8 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+
 import "./getBanners.css";
 
 const API =
@@ -12,12 +14,18 @@ const API =
 function ListBanners() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedState, setSelectedState] = useState({});
-  const [filterStatus, setFilterStatus] = useState(""); // Estado del filtro
+  const [filterStatus, setFilterStatus] = useState("");
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [currentBannerId, setCurrentBannerId] = useState(null);
+  const [currentBannerStatus, setCurrentBannerStatus] = useState("");
+  const [currentBannerPublicationDate, setCurrentBannerPublicationDate] =
+    useState("");
+  const [currentBannerUnpublicationDate, setCurrentBannerUnpublicationDate] =
+    useState("");
 
   useEffect(() => {
     getAlldata();
@@ -38,7 +46,7 @@ function ListBanners() {
 
       const response = await axios.request(reqOptions);
       setData(response.data);
-      setFilteredData(response.data); // Mostrar todos los datos inicialmente
+      setFilteredData(response.data);
     } catch (error) {
       if (error.response) {
         setToastMessage("Error al obtener los banners.");
@@ -47,20 +55,30 @@ function ListBanners() {
     }
   };
 
-  const handleStateChange = (e, bannerId) => {
-    setSelectedState({
-      ...selectedState,
-      [bannerId]: e.target.value,
-    });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    // Retornar en el formato YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  const updateState = async (bannerId) => {
-    const newState = selectedState[bannerId];
-    if (!newState) {
-      setToastMessage("Por favor selecciona un estado.");
-      setShowWarningToast(true);
-      return;
-    }
+  const openModal = (banner) => {
+    setCurrentBannerId(banner.id);
+    setCurrentBannerStatus(banner.status === 1 ? "Activo" : "Inactivo");
+    setCurrentBannerPublicationDate(formatDate(banner.publication_date));
+    setCurrentBannerUnpublicationDate(formatDate(banner.unpublication_date));
+    setShowModal(true);
+  };
+
+  const updateState = async (e) => {
+    e.preventDefault();
+
+    const newState = currentBannerStatus === "Activo" ? 1 : 0;
 
     try {
       let headersList = {
@@ -69,21 +87,23 @@ function ListBanners() {
       };
 
       let bodyContent = JSON.stringify({
-        status: newState === "Activo" ? 1 : 0,
+        status: newState,
+        publication_date: currentBannerPublicationDate,
+        unpublication_date: currentBannerUnpublicationDate,
       });
 
-      const response = await axios.patch(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
+      await axios.patch(
+        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${currentBannerId}`,
         bodyContent,
         { headers: headersList }
       );
 
-      setToastMessage(`Estado actualizado a ${newState} correctamente.`);
+      setToastMessage(`Actualizado correctamente.`);
       setShowSuccessToast(true);
-
-      getAlldata(); // Refrescar la lista después de actualizar el estado
+      getAlldata();
+      setShowModal(false); // Cerrar el modal
     } catch (error) {
-      setToastMessage("Error al actualizar el estado.");
+      setToastMessage("Error al actualizar");
       setShowErrorToast(true);
     }
   };
@@ -98,7 +118,7 @@ function ListBanners() {
           "Content-Type": "application/json",
         };
 
-        const response = await axios.delete(
+        await axios.delete(
           `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
           { headers: headersList }
         );
@@ -109,8 +129,6 @@ function ListBanners() {
         setToastMessage("Error al eliminar el banner.");
         setShowErrorToast(true);
       }
-
-      return;
     }
   };
 
@@ -118,7 +136,6 @@ function ListBanners() {
     const selectedFilter = e.target.value;
     setFilterStatus(selectedFilter);
 
-    // Filtrar los datos en función del valor seleccionado
     if (selectedFilter === "Activo") {
       setFilteredData(data.filter((banner) => banner.status === 1));
     } else if (selectedFilter === "Inactivo") {
@@ -130,29 +147,33 @@ function ListBanners() {
 
   return (
     <div className="banner-container">
-      <h1>Lista de Banners</h1>
+      <h1 className="title-text">Lista de Banners</h1>
+      <div className="table-responsive">
       <table className="table">
         <thead>
           <tr>
             <th>Imagen</th>
-            <th className="status-filter">
-              Estado:
+            <th >Fecha de publicación</th>
+            <th >Fecha de despublicación</th>
+            <th >
               <Form.Select
                 aria-label="Filtrar por estado"
                 value={filterStatus}
                 onChange={handleFilterChange}
               >
-                <option value="">Todos</option>
+                <option value="">
+                  Filtrar por estado
+                </option>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
             </th>
-            <th>Acciones</th>
+            <th >Acciones</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((banner) => (
-            <tr key={banner.id}>
+            <tr key={banner.id} className="tb-table">
               <td>
                 <img
                   src={banner.image}
@@ -160,28 +181,16 @@ function ListBanners() {
                   style={{ width: "100px" }}
                 />
               </td>
+              <td>{banner.publication_date}</td>
+              <td>{banner.unpublication_date}</td>
               <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
               <td>
-                <Form.Group>
-                  <Form.Select
-                    className="me-2"
-                    as="select"
-                    value={selectedState[banner.id] || ""}
-                    onChange={(e) => handleStateChange(e, banner.id)}
-                  >
-                    <option value="">--- Cambiar Estado ---</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                  </Form.Select>
-                </Form.Group>
-              </td>
-              <td className="td-button">
                 <Button
                   className="me-2"
                   variant="primary"
-                  onClick={() => updateState(banner.id)}
+                  onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
                 >
-                  Editar estado
+                  Editar
                 </Button>
                 <Button
                   variant="danger"
@@ -194,6 +203,56 @@ function ListBanners() {
           ))}
         </tbody>
       </table>
+      </div>
+      
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        dialogClassName="modal-dialog-centered"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Editar banner</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={updateState}>
+            <Form.Group>
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                value={currentBannerStatus} // Muestra el estado actual del banner
+                onChange={(e) => setCurrentBannerStatus(e.target.value)} // Actualiza el estado seleccionado
+              >
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Fecha de publicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentBannerPublicationDate}
+                onChange={(e) =>
+                  setCurrentBannerPublicationDate(e.target.value)
+                }
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Fecha de despublicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentBannerUnpublicationDate}
+                onChange={(e) =>
+                  setCurrentBannerUnpublicationDate(e.target.value)
+                }
+              />
+            </Form.Group>
+            <div className="btn-savechange">
+              <Button type="submit" className="btn-banner">Guardar cambios</Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
 
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">

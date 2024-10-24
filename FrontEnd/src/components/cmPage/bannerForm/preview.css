@@ -32,7 +32,7 @@
 .bannerModal{
 max-width: 70%;
 background: rgb(202, 202, 202);
-background: linear-gradient(90deg, rgb(64, 58, 180) 0%, rgb(233, 233, 233) 50%, rgb(192, 152, 95) 100%);
+background: linear-gradient(90deg, rgba(146, 142, 230, 0.674) 0%, rgb(233, 233, 233) 50%, rgb(230, 199, 155) 100%);
 display: flex;
 flex-direction: column;
 padding: 20px;
@@ -71,9 +71,9 @@ box-shadow:2px 2px 4px var(--background-color);
   color: var(--primary-color); 
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
 }
-.banner{
+.banner-prev{
   display: flex;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .carousel{

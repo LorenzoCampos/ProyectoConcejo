@@ -1,17 +1,16 @@
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-import "./preview.css";
+import "../bannerForm/preview.css";
 
-
-function Preview({ isOpen, closeModal, file }) {
+function PreviewNews({ isOpen, closeModal, file, title, description }) {
   const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview([reader.result]); // Convertir a array para el carrusel
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
@@ -22,27 +21,29 @@ function Preview({ isOpen, closeModal, file }) {
   return (
     <div>
       {isOpen && (
-        <div className='modal-background'>
-          <div className='bannerModal'>
-            <div className='title-close'>
+        <div className="modal-background">
+          <div className="bannerModal">
+            <div className="title-close">
               <div className="title">
                 <h1>Vista Previa</h1>
               </div>
               <div className="btn-close-modal">
-                <button onClick={closeModal} className='btnClose'><IoMdClose /></button>
+                <button onClick={closeModal} className="btnClose">
+                  <IoMdClose />
+                </button>
               </div>
             </div>
-            <div className="new">
+            <div className="banner-prev">
               {imagePreview && (
-               <Card style={{ width: '18rem', margin: '0 auto' }}>
-               <Card.Img variant="top" src={imagePreview} alt="Preview" />
-               <Card.Body>
-                 <Card.Title>Vista Previa de Noticia</Card.Title>
-                 <Card.Text>
-                   Aquí puedes agregar más detalles sobre la noticia, como el estado o las fechas.
-                 </Card.Text>
-               </Card.Body>
-             </Card>
+                <Card style={{ width: "18rem", margin: "0 auto" }}>
+                  <Card.Img variant="top" src={imagePreview} alt="Preview" />
+                  <Card.Body>
+                    <Card.Title>{title}</Card.Title>
+                    <Card.Text>
+                      {description}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
               )}
             </div>
           </div>
@@ -52,4 +53,4 @@ function Preview({ isOpen, closeModal, file }) {
   );
 }
 
-export default Preview;
+export default PreviewNews;

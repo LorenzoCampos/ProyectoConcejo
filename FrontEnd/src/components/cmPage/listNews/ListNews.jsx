@@ -4,6 +4,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
 
 import "./listNews.css";
 
@@ -13,13 +14,22 @@ const API =
 function ListNews() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedState, setSelectedState] = useState({});
   const [filterStatus, setFilterStatus] = useState(""); // Estado del filtro
 
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentNewId, setCurrentNewId] = useState(null);
+  const [currentNewStatus, setCurrentNewStatus] = useState("");
+  const [currentNewPublicationDate, setCurrentNewPublicationDate] =
+    useState("");
+  const [currentNewUnpublicationDate, setCurrentNewUnpublicationDate] =
+    useState("");
+  const [currentNewTitle, setCurrentNewTitle] = useState("");
+  const [currentNewDescription, setCurrentNewDescription] = useState("");
 
   useEffect(() => {
     getAlldata();
@@ -41,6 +51,7 @@ function ListNews() {
       const response = await axios.request(reqOptions);
       setData(response.data);
       setFilteredData(response.data); // Mostrar todos los datos inicialmente
+      console.log(response.data);
     } catch (error) {
       if (error.response) {
         setToastMessage("Error al obtener las noticias.");
@@ -49,20 +60,32 @@ function ListNews() {
     }
   };
 
-  const handleStateChange = (e, bannerId) => {
-    setSelectedState({
-      ...selectedState,
-      [bannerId]: e.target.value,
-    });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    // Retornar en el formato YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  const updateState = async (bannerId) => {
-    const newState = selectedState[bannerId];
-    if (!newState) {
-      setToastMessage("Por favor selecciona un estado.");
-      setShowWarningToast(true);
-      return;
-    }
+  const openModalNew = (news) => {
+    setCurrentNewId(news.id);
+    setCurrentNewStatus(news.status === 1 ? "Activo" : "Inactivo");
+    setCurrentNewPublicationDate(formatDate(news.publication_date));
+    setCurrentNewUnpublicationDate(formatDate(news.unpublication_date));
+    setCurrentNewDescription(news.description);
+    setCurrentNewTitle(news.title);
+    setShowModal(true);
+  };
+
+  const updateState = async (e) => {
+    e.preventDefault();
+
+    const newState = currentNewStatus === "Activo" ? 1 : 0;
 
     try {
       let headersList = {
@@ -71,16 +94,20 @@ function ListNews() {
       };
 
       let bodyContent = JSON.stringify({
-        status: newState === "Activo" ? 1 : 0,
+        status: newState,
+        publication_date: currentNewPublicationDate,
+        unpublication_date: currentNewUnpublicationDate,
+        title: currentNewTitle,
+        description: currentNewDescription,
       });
 
-      const response = await axios.patch(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
+      await axios.patch(
+        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${currentNewId}`,
         bodyContent,
         { headers: headersList }
       );
 
-      setToastMessage(`Estado actualizado a ${newState} correctamente.`);
+      setToastMessage(`Actualizado correctamente.`);
       setShowSuccessToast(true);
 
       getAlldata(); // Refrescar la lista después de actualizar el estado
@@ -90,7 +117,7 @@ function ListNews() {
     }
   };
 
-  const deleteBanner = async (newsId) => {
+  const deleteNews = async (newsId) => {
     let alertConfirm = confirm("¿Deseas eliminar esta noticia?");
 
     if (alertConfirm) {
@@ -100,7 +127,7 @@ function ListNews() {
           "Content-Type": "application/json",
         };
 
-        const response = await axios.delete(
+        await axios.delete(
           `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${newsId}`,
           { headers: headersList }
         );
@@ -131,64 +158,121 @@ function ListNews() {
 
   return (
     <div className="news-container">
-      <h1>Lista de Noticias</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th>Título</th>
-            <th className="status-filter">
-              Estado:
+      <h1 className="title-text">Lista de Noticias</h1>
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Título</th>
+              <th className="desc">Descripción</th>
+              <th>Fecha de publicación</th>
+              <th>Fecha de despublicación</th>
+              <th>
+                <Form.Select
+                  aria-label="Filtrar por estado"
+                  value={filterStatus}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">Filtrar por estado</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Select>
+              </th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((news) => (
+              <tr key={news.id}>
+                <td>
+                  <img
+                    src={news.image}
+                    alt="banner"
+                    style={{ width: "100px" }}
+                  />
+                </td>
+                <td>{news.title}</td>
+                <td className="desc">{news.description}</td>
+                <td>{news.publication_date}</td>
+                <td>{news.unpublication_date}</td>
+                <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
+
+                <td>
+                  <Button
+                    className="me-2"
+                    variant="primary"
+                    onClick={() => openModalNew(news)}
+                  >
+                    Editar
+                  </Button>
+                  <Button variant="danger" onClick={() => deleteNews(news.id)}>
+                    Eliminar
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Noticia</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={updateState}>
+            <Form.Group>
+              <Form.Label>Estado</Form.Label>
               <Form.Select
-                aria-label="Filtrar por estado"
-                value={filterStatus}
-                onChange={handleFilterChange}
+                value={currentNewStatus} // Muestra el estado actual del banner
+                onChange={(e) => setCurrentNewStatus(e.target.value)} // Actualiza el estado seleccionado
               >
-                <option value="">Todos</option>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
-            </th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((news) => (
-            <tr key={news.id}>
-              <td>
-                <img src={news.image} alt="banner" style={{ width: "100px" }} />
-              </td>
-              <td>{news.title}</td>
-              <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
-              <td>
-                <Form.Group>
-                  <Form.Select
-                    as="select"
-                    value={selectedState[news.id] || ""}
-                    onChange={(e) => handleStateChange(e, news.id)}
-                  >
-                    <option value="">--- Cambiar Estado ---</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                  </Form.Select>
-                </Form.Group>
-              </td>
-              <td className="td-button">
-                <Button
-                  className="me-2"
-                  variant="primary"
-                  onClick={() => updateState(news.id)}
-                >
-                  Editar Estado
-                </Button>
-                <Button variant="danger" onClick={() => deleteBanner(news.id)}>
-                  Eliminar
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Titulo</Form.Label>
+              <Form.Control
+                type="text"
+                value={currentNewTitle}
+                onChange={(e) => setCurrentNewTitle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={currentNewDescription}
+                onChange={(e) => setCurrentNewDescription(e.target.value)}
+                rows={4}
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Fecha de publicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentNewPublicationDate}
+                onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Fecha de despublicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentNewUnpublicationDate}
+                onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
+              />
+            </Form.Group>
+            <div className="btn-savechange ">
+              <Button type="submit" className="btn-news">Guardar cambios</Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
 
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">
