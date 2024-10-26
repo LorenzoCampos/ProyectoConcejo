@@ -115,6 +115,7 @@ function Login() {
       <div className="login-container">
         <h1>Bienvenido!</h1>
         <p>Iniciar sesión</p>
+        <div className="form-cont">
         <Form onSubmit={loginData}>
           <FloatingLabel
             controlId="floatingInput"
@@ -149,6 +150,9 @@ function Login() {
           </div>
           
         </Form>
+
+        </div>
+        
       </div>
     </div>
      {/* Toast de error de servidor */}

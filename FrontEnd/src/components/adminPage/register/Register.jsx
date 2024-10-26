@@ -1,4 +1,3 @@
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import ToastContainer from "react-bootstrap/ToastContainer";
@@ -108,14 +107,11 @@ function Register() {
   return (
     <div className="container">
       <div className="register-container">
-        <h1>Registrar Usuario</h1>
+        <h1 className="title-text">Registrar Usuario</h1>
         <div className="form-register">
         <Form onSubmit={registerData}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Nombre y Apellido"
-            className="mb-3"
-          >
+          <Form.Group controlId="formName">
+            <Form.Label>Nombre y apellido</Form.Label>
             <Form.Control
               type="text"
               value={name}
@@ -123,65 +119,50 @@ function Register() {
               required
               autoFocus
             />
-          </FloatingLabel>
+          </Form.Group>
 
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email"
-            className="mb-3"
-          >
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
             />
-          </FloatingLabel>
+          </Form.Group>
 
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Confirmar Mail"
-            className="mb-3"
-          >
+          <Form.Group controlId="formConfirmEmail">
+            <Form.Label>Confirmar Email</Form.Label>
             <Form.Control
               type="email"
               value={emailConfirmation}
               onChange={(event) => setEmailConfirmation(event.target.value)}
               required
             />
-          </FloatingLabel>
+          </Form.Group>
 
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Contraseña"
-            className="mb-3"
-          >
+          <Form.Group controlId="formPassword">
+            <Form.Label>Contraseña</Form.Label>
             <Form.Control
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
             />
-          </FloatingLabel>
-
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Confirmar Contraseña"
-            className="mb-3"
-          >
+          </Form.Group>
+          
+          <Form.Group controlId="formConfirmPassword">
+            <Form.Label>Confirmar Contraseña</Form.Label>
             <Form.Control
               type="password"
               value={passwordConfirmation}
               onChange={(event) => setPasswordConfirmation(event.target.value)}
               required
             />
-          </FloatingLabel>
+          </Form.Group>
 
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Rol:"
-            className="mb-3"
-          >
+          <Form.Group controlId="formRol">
+            <Form.Label>Rol</Form.Label>
             <Form.Select
               aria-label="Default select example"
               className="form-select"
@@ -195,7 +176,10 @@ function Register() {
               <option value="cm">CM</option>
               <option value="user">Usuario</option>
             </Form.Select>
-          </FloatingLabel>
+            
+          </Form.Group>
+          
+         
 
           <div className="form-btn">
             <Button variant="primary" type="submit">

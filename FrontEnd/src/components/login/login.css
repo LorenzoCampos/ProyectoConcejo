@@ -26,6 +26,7 @@
     --secondary-color: #e4e1e163;
     --third-color: #BE9A60;
     --form-color:#3058a6b3;
+    --light-color: #859fd320;
 }
 
 .container {
@@ -34,18 +35,32 @@
   
   
 }
+.form-cont{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--form-color);
+  padding: 20px; 
+  overflow: hidden;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(10, 0, 68, 0.975); 
+}
+
+.form-cont label {
+  color: var(--form-color) !important;
+}
 
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--form-color);
+  background-color: var(--light-color);
   margin-top: 150px;
   padding: 20px; 
   overflow: hidden;
   width: 450px;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+  
 }
 
 .form-btn{
@@ -69,4 +84,13 @@ input#floatingInput {
 a.dropdown-item:hover {
   background:var(--form-color);
   color: var(--background-color);
+}
+
+.login-container h1{
+  color: var(--form-color) !important;
+  font-size: 2.5rem !important;
+  font-weight: 900 !important;
+  text-shadow: 2px 2px 4px rgb(255, 255, 255);
+  -webkit-text-stroke: 2px rgba(7, 19, 182, 0.249);
+ 
 }
