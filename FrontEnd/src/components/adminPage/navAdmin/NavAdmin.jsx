@@ -4,7 +4,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import "./navAdmin.css";
 import Logout from "../../logout/Logout";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
+import Nav from "react-bootstrap/Nav";
 
 function NavAdmin({ onRegisterClick }) {  
   const [name, setName] = useState("");
@@ -26,7 +27,12 @@ function NavAdmin({ onRegisterClick }) {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
+            <Nav>
+              <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown" align="end">
+              <NavDropdown.Item as={Link} to="/">
+                  Volver al 
+                  Home
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={onRegisterClick}>
                   Registrar un nuevo usuario
                 </NavDropdown.Item>
@@ -41,6 +47,7 @@ function NavAdmin({ onRegisterClick }) {
                   <Logout />
                 </NavDropdown.Item>
               </NavDropdown>
+              </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>

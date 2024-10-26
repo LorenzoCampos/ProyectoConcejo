@@ -14,6 +14,7 @@
     --secondary-color: #D9D9D9;
     --third-color: #BE9A60;
 }
+
 .nav-cont{
     display: flex;
 }

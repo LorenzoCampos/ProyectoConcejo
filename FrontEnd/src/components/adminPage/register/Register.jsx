@@ -109,6 +109,7 @@ function Register() {
     <div className="container">
       <div className="register-container">
         <h1>Registrar Usuario</h1>
+        <div className="form-register">
         <Form onSubmit={registerData}>
           <FloatingLabel
             controlId="floatingInput"
@@ -202,6 +203,7 @@ function Register() {
             </Button>
           </div>
         </Form>
+        </div>
       </div>
 
       <div>

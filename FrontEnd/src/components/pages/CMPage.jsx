@@ -7,7 +7,7 @@ import NewsForm from "../cmPage/newsForm/NewsForm";
 import { useState } from "react";
 
 function CMPage() {
-  const [currentView, setCurrentView] = useState('listBanners'); // Estado único para manejar la vista actual
+  const [currentView, setCurrentView] = useState('listBanners'); 
 
   const handleShowBannerForm = () => {
     setCurrentView('bannerForm');

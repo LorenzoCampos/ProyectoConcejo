@@ -7,7 +7,7 @@ import axios from "axios";
 import "./news.css";
 import News from "./News";
 
-function GetNewsPublic() {
+function GetNewsPublic({ onSeeNew }) {
   const [news, setNews] = useState([]);
 
   const [toastMessage, setToastMessage] = useState("");
@@ -51,7 +51,7 @@ function GetNewsPublic() {
         <p >Noticias</p>
         </div>
        
-        <News news={news} />
+        <News news={news} onSeeNew={onSeeNew} />
       </div>
 
 

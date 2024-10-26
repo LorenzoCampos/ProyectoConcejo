@@ -24,18 +24,18 @@
   justify-content: center;
   align-items: center;
   gap: 1em;
-  width: 100%; /* Asegura que el contenedor use el 100% del ancho */
-  overflow: auto; /* Agrega scroll si el contenido es más ancho que el contenedor */
+  width: 100%; 
+  overflow: auto; 
 }
 
 .table {
-  width: 100%; /* Asegura que la tabla ocupe el 100% del contenedor */
+  width: 100%;
   --bs-table-bg: var(--light-color) !important;
 }
 
 .table-responsive {
-  width: 100%; /* Asegura que el contenedor de la tabla sea 100% del ancho */
-  overflow-x: auto; /* Agrega scroll horizontal si es necesario */
+  width: 100%; 
+  overflow-x: auto; 
 }
 
 .table td {

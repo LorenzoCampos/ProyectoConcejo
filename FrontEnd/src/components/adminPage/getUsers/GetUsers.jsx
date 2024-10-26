@@ -99,13 +99,13 @@ function GetUsers() {
 
   return (
     <div className="user-container">
-      <h1>Lista de usuarios</h1>
+      <h1 className="title-text">Lista de usuarios</h1>
       <table className="table">
         <thead>
           <tr>
             <th>Nombre</th>
             <th>Roles</th>
-            <th>Acciones</th>
+            <th>Cambiar rol</th>
           </tr>
         </thead>
         <tbody>
@@ -113,7 +113,7 @@ function GetUsers() {
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.role ? user.role : "Sin rol"}</td>
-              <td>
+              <td className="td-actions" >
                 <Form.Group>
                   <Form.Control
                     className="form-select"
@@ -121,19 +121,18 @@ function GetUsers() {
                     value={selectedRole[user.id] || ""}
                     onChange={(e) => handleRoleChange(e, user.id)}
                   >
-                    <option value="">---Cambiar Rol---</option>
+                    <option value="">---Seleccionar un rol---</option>
                     <option value="secretario">Secretario</option>
                     <option value="concejal">Concejal</option>
                     <option value="cm">CM</option>
                     <option value="user">Usuario</option>
                   </Form.Control>
                 </Form.Group>
-              </td>
-              <td className="td-button">
                 <Button variant="primary" onClick={() => updateRole(user.id)}>
-                  Editar Rol
+                  Guardar
                 </Button>
               </td>
+              
             </tr>
           ))}
         </tbody>

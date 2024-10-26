@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
 
 import "./navCM.css";
 
@@ -31,7 +32,12 @@ function NavCM({onBannerFormClick, onBannersListClick, onNewsListClick, onNewsFo
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown">
+              <Nav>
+              <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown" align="end">
+              <NavDropdown.Item as={Link} to="/">
+                  Volver al 
+                  Home
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={onBannersListClick}>
                   Ver Banners
                 </NavDropdown.Item>
@@ -49,6 +55,7 @@ function NavCM({onBannerFormClick, onBannersListClick, onNewsListClick, onNewsFo
                   <Logout />
                 </NavDropdown.Item>
               </NavDropdown>
+              </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>

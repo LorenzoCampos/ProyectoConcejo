@@ -25,6 +25,7 @@ function App() {
             <Route path="/concejal" element={ <PrivateRoute role="concejal"><ConcejalPage /></PrivateRoute>} />
             <Route path="/cm" element={ <PrivateRoute role="cm"><CMPage /></PrivateRoute>} />
             <Route path="/secretario" element={ <PrivateRoute role="secretario"><CMPage /></PrivateRoute>} />
+            
       
             
           </Routes>

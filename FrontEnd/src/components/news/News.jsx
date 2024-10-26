@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import "./news.css";
 
-function News({news}) {
+function News({news, onSeeNew}) {
   
   const [visibleCards, setVisibleCards] = useState(6);
  
@@ -17,6 +17,9 @@ function News({news}) {
     setVisibleCards((prevVisibleCards) => prevVisibleCards - 6);
   }
   
+  const handleSeeNew = (item) => {
+    onSeeNew(item); 
+  };
 
   return (
     <>
@@ -30,7 +33,7 @@ function News({news}) {
               <Card.Title>{item.title}</Card.Title>
               <Card.Text className="limited-text">{item.description}</Card.Text>
               <div className="button-container">
-              <Button className="btn-banner">Ver más</Button>
+              <Button className="btn-banner" onClick={() => handleSeeNew(item)}>Ver más</Button>
               </div>
               
             </Card.Body>
@@ -40,7 +43,7 @@ function News({news}) {
 
       {visibleCards < news.length && (
         <div className="btn-container">
-          <Button onClick={handleShowMoreCards} className="btn-see-more">
+          <Button onClick={onSeeNew} className="btn-see-more">
             Ver más
           </Button>
         </div>

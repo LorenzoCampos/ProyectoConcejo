@@ -4,16 +4,36 @@ import Navbar from "../navbar/Navbar";
 import Footer from "../footer/Footer";
 import GetBannersPublic from "../banner/GetBannersPublic";
 import GetNewsPublic from "../news/GetNewsPublic"
+import { useState } from "react";
+import SeeNew from "../news/SeeNew"
 
 function Home() {
+
+    const [currentView, setCurrentView] = useState('home'); 
+    const [selectedNews, setSelectedNews] = useState(null);
+
+    const handleShowSeeNew = (newsItem) => {
+        setSelectedNews(newsItem)
+        setCurrentView('seeNew');
+  };
     return(
         <>
-        <Navbar/>
-        <GetBannersPublic/>
-        <GetNewsPublic/>
-        <Contact/>
-        <Social />
-        <Footer/>
+        <Navbar />
+        {currentView === 'home' && (
+                <>
+                    
+                    <GetBannersPublic />
+                    <GetNewsPublic onSeeNew={handleShowSeeNew} />
+                    <Contact />
+                    <Social />
+                   
+                </>
+            )}
+            
+
+            
+            {currentView === 'seeNew' && <SeeNew news={selectedNews}/>}
+            <Footer />
         </>
     )
 }

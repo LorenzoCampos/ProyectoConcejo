@@ -71,7 +71,7 @@
   flex-direction: column;
   width: 100%;
 }
-div label {
+.inputs-filter label {
   flex: 1; 
   color: var(--background-color); 
   white-space: nowrap;

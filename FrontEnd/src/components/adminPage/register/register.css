@@ -15,53 +15,37 @@
   min-height: 100vh; 
 }
 
-.content{
-  flex: 1; 
-}
 
-
-:root {
-  --background-color: #ffffff;
-    --primary-color: #102550;
-    --secondary-color: #e4e1e163;
-    --third-color: #BE9A60;
-    --form-color:#3058a6b3;
+div label {
+  color: var(--primary-color);
 }
 
 .container {
   display: flex;
-  justify-content: center;
-  
 }
 
-.register-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--form-color);
-  margin-top: 20px;
-  padding: 20px; 
-  overflow: hidden;
-  width: 450px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+
+form{
+ margin-top: 2rem;
+}
+.container{
+  margin: 1rem;
+}
+.form-register{
+  padding: 0 25px 25px;
+  background-color: var(--light-color);
 }
 
-.form-btn{
-  display: flex;
-  justify-content: center;
-}
-
-.form-btn button{
-  background-color: var(--primary-color);
+button.btn-news {
   color: var(--background-color);
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  text-decoration: none;
   border: none;
 }
-input#floatingInput {
-  width: 350px;
-}
 
-.form-btn button:hover{
+button.btn-news:hover {
   background-color: var(--background-color);
   color: var(--primary-color);
+  border: 2px solid var(--primary-color)
 }
