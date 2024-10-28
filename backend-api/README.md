@@ -63,27 +63,38 @@ For roles and **permission**s:
 ## Normativas Endpoints
 
 **permission** -> ver normativa | **method** -> get | **URL** -> regulations/{id} | **Lo que hace** -> show
+
 **permission** -> crear normativa | **method** -> post | **URL** -> regulations | **Lo que hace** -> store
 
 ## Admin Endpoints
 
 **permission** -> ver usuarios | **method** -> get | **URL** -> users/non-admin | **Lo que hace** -> getNonAdminUsers
+
 **permission** -> modificar roles de usuarios | **method** -> patch | **URL** -> users/{user}/role | **Lo que hace** -> changeUserRole
+
 **permission** -> ver todos los roles | **method** -> get | **URL** -> roles | **Lo que hace** -> getAllRoles
 
 ## CM Endpoints
 
-**role** -> cm -> group {
+**role** -> cm
+
     **method** -> get | **URL** -> news-banners | **Lo que hace** -> getAllNewsAndBanners
+
     **method** -> get | **URL** -> banners | **Lo que hace** -> getAllBanners
+
     **method** -> get | **URL** -> news | **Lo que hace** -> getAllNews
+
     **method** -> get | **URL** -> news-banners/{id} | **Lo que hace** -> show
+
     **method** -> post | **URL** -> news-banners | **Lo que hace** -> store
+
     **method** -> patch | **URL** -> news-banners/{id} | **Lo que hace** -> update
+
     **method** -> delete | **URL** -> news-banners/{id} | **Lo que hace** -> delete
-}
+
 
 ## Sin Logear Endpoints
 
 **method** -> get | **URL** -> banners/published | **Lo que hace** -> getAllPublishedBanners
+
 **method** -> get | **URL** -> news/published | **Lo que hace** -> getAllPublishedNews
