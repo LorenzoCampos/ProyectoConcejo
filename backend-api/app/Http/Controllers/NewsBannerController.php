@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\NewsBanner;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class NewsBannerController extends Controller
@@ -82,22 +81,15 @@ class NewsBannerController extends Controller
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
+            $request->validate([
                 'type' => 'required|string|in:new,banner',
                 'title' => 'nullable|string',  // Solo para noticias
                 'description' => 'nullable|string',  // Solo para noticias
                 'image' => 'required|image|mimes:jpeg,png,jpg',  // Validar que sea imagen y su tipo
-                'status' => 'required|boolean|default:0',
+                'status' => 'required|boolean|in:1,0',
                 'publication_date' => 'nullable|date',
                 'unpublication_date' => 'nullable|date',
             ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Error de validación',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
 
             // Guardar la imagen en la carpeta 'public/images'
             if ($request->hasFile('image')) {
@@ -132,19 +124,14 @@ class NewsBannerController extends Controller
             }
 
             // Validar solo los campos que se envían
-            $validator = Validator::make($request->all(), [
-                'type' => 'sometimes|string|in:new,banner',
+            $request->validate([
                 'title' => 'sometimes|string',
                 'description' => 'sometimes|string',
-                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validación de imágenes
-                'status' => 'sometimes|boolean',
+                'image' => 'sometimes|image',  // Validación de imágenes
+                'status' => 'sometimes|in:1,0',
                 'publication_date' => 'sometimes|date',
                 'unpublication_date' => 'sometimes|date',
             ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 400);
-            }
 
             // Si se ha enviado una nueva imagen, procesarla
             if ($request->hasFile('image')) {
@@ -154,24 +141,36 @@ class NewsBannerController extends Controller
                 }
 
                 // Guardar la nueva imagen y obtener la ruta
-                $imagePath = $request->file('image')->store('public/images');
-                $newsBanner->image = $imagePath;
+                $imagePath = $request->file('image')->store('images', 'public');
+                $newsBanner->image = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
             }
 
             // Actualizar los demás campos solo si están presentes en la solicitud
-            $newsBanner->update($request->only([
-                'type',
-                'title',
-                'description',
-                'status',
-                'publication_date',
-                'unpublication_date'
-            ]));
+            
 
             return response()->json($newsBanner, 200);
         } catch (\Exception $e) {
             // Manejar el error
             return response()->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+    public function delete($id)
+    {
+        $newsBanner = NewsBanner::find($id);
+
+        if (!$newsBanner) {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
+        }
+
+        // Eliminar la imagen si existe
+        if ($newsBanner->image) {
+            Storage::delete($newsBanner->image);
+        }
+
+        // Eliminar el registro de la base de datos
+        $newsBanner->delete();
+
+        return response()->json(['message' => 'Registro eliminado correctamente'], 200);
     }
 }
