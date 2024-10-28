@@ -26,7 +26,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'ver modificaciones',
             'registrar usuarios',
             'ver usuarios',
-            'modificar roles de usuarios'
+            'modificar roles de usuarios',
+            'ver todos los roles'
         ];
 
         // Crear cada permiso
@@ -51,7 +52,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'ver modificaciones',
             'ver usuarios',
             'modificar roles de usuarios',
-            'registrar usuarios'
+            'registrar usuarios',
+            'ver todos los roles'
         ]);
 
         $secretarioRole->givePermissionTo([
