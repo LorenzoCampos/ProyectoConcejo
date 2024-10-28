@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\NewsBannerController;
+use App\Http\Controllers\RegulationController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
+use App\Models\User;
 
 Route::prefix('v1')->group(function () {
 
@@ -12,11 +14,20 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
 
-        Route::get('users/non-admin', [UserController::class, 'getNonAdminUsers']);
-        Route::patch('users/{user}/role', [UserController::class, 'changeUserRole']);
-        Route::get('roles', [UserController::class, 'getAllRoles']);
+        Route::middleware(['permission:ver usuarios'])->get('users/non-admin', [UserController::class,'getNonAdminUsers']);
+        Route::middleware(['permission:modificar roles de usuarios'])->patch('users/{user}/role', [UserController::class, 'changeUserRole']);
+        Route::middleware(['permission:ver todos los roles'])->get('roles', [UserController::class, 'getAllRoles']);
+
+    });
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+
+        Route::middleware(['permission:ver normativa'])->get('regulations', [RegulationController::class,'getAllRegulations']);
+        Route::middleware(['permission:ver normativa'])->get('regulations/{id}', [RegulationController::class,'show']);
+        Route::middleware(['permission:crear normativa'])->post('regulations', [RegulationController::class,'store']);
+        Route::middleware(['permission:modificar normativa'])->patch('regulations/{id}', [RegulationController::class,'updateRegulation']);
 
     });
 
@@ -27,6 +38,7 @@ Route::prefix('v1')->group(function () {
         Route::get('news-banners/{id}', [NewsBannerController::class, 'show']);
         Route::post('news-banners', [NewsBannerController::class, 'store']);
         Route::patch('news-banners/{id}', [NewsBannerController::class, 'update']);
+        Route::delete('news-banners/{id}', [NewsBannerController::class, 'delete']);
     });
 
     Route::get('banners/published', [NewsBannerController::class, 'getAllPublishedBanners']);
