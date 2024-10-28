@@ -21,6 +21,7 @@ function ListBanners() {
   const [toastMessage, setToastMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [currentBannerId, setCurrentBannerId] = useState(null);
+  const [currentBannerImage, setCurrentBannerImage] = useState("");
   const [currentBannerStatus, setCurrentBannerStatus] = useState("");
   const [currentBannerPublicationDate, setCurrentBannerPublicationDate] =
     useState("");
@@ -87,6 +88,7 @@ function ListBanners() {
       };
 
       let bodyContent = JSON.stringify({
+        image: currentBannerImage,
         status: newState,
         publication_date: currentBannerPublicationDate,
         unpublication_date: currentBannerUnpublicationDate,
@@ -149,62 +151,60 @@ function ListBanners() {
     <div className="banner-container">
       <h1 className="title-text">Lista de Banners</h1>
       <div className="table-responsive">
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th >Fecha de publicación</th>
-            <th >Fecha de despublicación</th>
-            <th >
-              <Form.Select
-                aria-label="Filtrar por estado"
-                value={filterStatus}
-                onChange={handleFilterChange}
-              >
-                <option value="">
-                  Filtrar por estado
-                </option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
-              </Form.Select>
-            </th>
-            <th >Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((banner) => (
-            <tr key={banner.id} className="tb-table">
-              <td>
-                <img
-                  src={banner.image}
-                  alt="banner"
-                  style={{ width: "100px" }}
-                />
-              </td>
-              <td>{banner.publication_date}</td>
-              <td>{banner.unpublication_date}</td>
-              <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
-              <td>
-                <Button
-                  className="me-2"
-                  variant="primary"
-                  onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Fecha de publicación</th>
+              <th>Fecha de despublicación</th>
+              <th>
+                <Form.Select
+                  aria-label="Filtrar por estado"
+                  value={filterStatus}
+                  onChange={handleFilterChange}
                 >
-                  Editar
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => deleteBanner(banner.id)}
-                >
-                  Eliminar
-                </Button>
-              </td>
+                  <option value="">Filtrar por estado</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Select>
+              </th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredData.map((banner) => (
+              <tr key={banner.id} className="tb-table">
+                <td>
+                  <img
+                    src={banner.image}
+                    alt="banner"
+                    style={{ width: "100px" }}
+                  />
+                </td>
+                <td>{banner.publication_date}</td>
+                <td>{banner.unpublication_date}</td>
+                <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
+                <td>
+                  <Button
+                    className="me-2"
+                    variant="primary"
+                    onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteBanner(banner.id)}
+                  >
+                    Eliminar
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      
+
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -215,6 +215,15 @@ function ListBanners() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={updateState}>
+            <Form.Group>
+              <Form.Label>Imagen</Form.Label>
+              <Form.Control
+                type="file"
+                value={currentBannerImage}
+                onChange={(e) => setCurrentBannerImage(e.target.value)}
+              />
+            </Form.Group>
+
             <Form.Group>
               <Form.Label>Estado</Form.Label>
               <Form.Select
@@ -248,7 +257,9 @@ function ListBanners() {
               />
             </Form.Group>
             <div className="btn-savechange">
-              <Button type="submit" className="btn-banner">Guardar cambios</Button>
+              <Button type="submit" className="btn-banner">
+                Guardar cambios
+              </Button>
             </div>
           </Form>
         </Modal.Body>
