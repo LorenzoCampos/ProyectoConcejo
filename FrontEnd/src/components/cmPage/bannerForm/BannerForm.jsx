@@ -6,6 +6,7 @@ import axios from "axios";
 import Preview from "./Preview";
 
 import "./bannerForm.css";
+import API from "../../../config/apiConfig";
 
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -48,26 +49,21 @@ function BannerForm() {
     formData.append("publication_date", publicationDate);
     formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "banner");
-    
-    
+
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
     console.log("Status:", status);
-  console.log("Publication Date:", publicationDate);
-  console.log("Unpublication Date:", unpublicationDate);
+    console.log("Publication Date:", publicationDate);
+    console.log("Unpublication Date:", unpublicationDate);
 
     try {
-      const response = await axios.post(
-        "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(API.CREATE_BANNERS, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
@@ -83,12 +79,11 @@ function BannerForm() {
 
   return (
     <div className="container">
-      
-        <Container>
-          <Row>
-            <Col>
-              <h1 className="text-center title-text">Cargar Banner</h1>
-              <div className="form-banner">
+      <Container>
+        <Row>
+          <Col>
+            <h1 className="text-center title-text">Cargar Banner</h1>
+            <div className="form-banner">
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formFile">
                   <Form.Label>Seleccionar imagen</Form.Label>
@@ -136,11 +131,11 @@ function BannerForm() {
                   </Button>
                 </div>
               </Form>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-     
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
       <Preview isOpen={isOpen} closeModal={closeModal} file={selectedFile} />
 
       {/* Toasts para feedback */}

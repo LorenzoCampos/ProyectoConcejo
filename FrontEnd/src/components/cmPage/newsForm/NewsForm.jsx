@@ -57,7 +57,6 @@ function NewsForm() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    setIsOpen(true);
     
     // Generar vista previa de la imagen
     {
@@ -96,7 +95,7 @@ function NewsForm() {
 
     try {
       const response = await axios.post(
-        "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners",
+        API.CREATE_NEWS,
         formData,
         {
           headers: {

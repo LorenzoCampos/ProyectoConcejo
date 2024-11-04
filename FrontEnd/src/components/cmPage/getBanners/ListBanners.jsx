@@ -7,9 +7,7 @@ import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 
 import "./getBanners.css";
-
-const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/banners";
+import API from "../../../config/apiConfig";
 
 function ListBanners() {
   const [data, setData] = useState([]);
@@ -21,7 +19,7 @@ function ListBanners() {
   const [toastMessage, setToastMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [currentBannerId, setCurrentBannerId] = useState(null);
-  const [currentBannerImage, setCurrentBannerImage] = useState("");
+
   const [currentBannerStatus, setCurrentBannerStatus] = useState("");
   const [currentBannerPublicationDate, setCurrentBannerPublicationDate] =
     useState("");
@@ -40,7 +38,7 @@ function ListBanners() {
       };
 
       let reqOptions = {
-        url: `${API}`,
+        url: API.LIST_BANNERS,
         method: "GET",
         headers: headersList,
       };
@@ -88,14 +86,13 @@ function ListBanners() {
       };
 
       let bodyContent = JSON.stringify({
-        image: currentBannerImage,
         status: newState,
         publication_date: currentBannerPublicationDate,
         unpublication_date: currentBannerUnpublicationDate,
       });
 
       await axios.patch(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${currentBannerId}`,
+        API.UPDATE_BANNERS + currentBannerId,
         bodyContent,
         { headers: headersList }
       );
@@ -121,7 +118,7 @@ function ListBanners() {
         };
 
         await axios.delete(
-          `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${bannerId}`,
+          API.DELETE_BANNERS + bannerId,
           { headers: headersList }
         );
         setToastMessage("Banner eliminado correctamente.");
@@ -215,15 +212,6 @@ function ListBanners() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={updateState}>
-            <Form.Group>
-              <Form.Label>Imagen</Form.Label>
-              <Form.Control
-                type="file"
-                value={currentBannerImage}
-                onChange={(e) => setCurrentBannerImage(e.target.value)}
-              />
-            </Form.Group>
-
             <Form.Group>
               <Form.Label>Estado</Form.Label>
               <Form.Select
