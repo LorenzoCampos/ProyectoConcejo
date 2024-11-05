@@ -80,8 +80,8 @@ function GetUsers() {
         role: newRole,
       });
 
-      const response = await axios.post(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/user/role/${userId}`,
+      const response = await axios.patch(
+        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/users/${userId}/role`,
         bodyContent,
         { headers: headersList }
       );

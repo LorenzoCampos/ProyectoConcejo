@@ -8,8 +8,7 @@ import Modal from "react-bootstrap/Modal";
 
 import "./listNews.css";
 
-const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news";
+import API from "../../../config/apiConfig";
 
 function ListNews() {
   const [data, setData] = useState([]);
@@ -43,7 +42,7 @@ function ListNews() {
       };
 
       let reqOptions = {
-        url: `${API}`,
+        url: API.LIST_NEWS,
         method: "GET",
         headers: headersList,
       };
@@ -51,7 +50,7 @@ function ListNews() {
       const response = await axios.request(reqOptions);
       setData(response.data);
       setFilteredData(response.data); // Mostrar todos los datos inicialmente
-      console.log(response.data);
+      /* console.log(response.data); */
     } catch (error) {
       if (error.response) {
         setToastMessage("Error al obtener las noticias.");
@@ -102,7 +101,7 @@ function ListNews() {
       });
 
       await axios.patch(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${currentNewId}`,
+        API.UPDATE_NEWS + currentNewId,
         bodyContent,
         { headers: headersList }
       );
@@ -128,7 +127,7 @@ function ListNews() {
         };
 
         await axios.delete(
-          `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news-banners/${newsId}`,
+          API.DELETE_NEWS + newsId,
           { headers: headersList }
         );
         setToastMessage("Noticia eliminada correctamente.");
