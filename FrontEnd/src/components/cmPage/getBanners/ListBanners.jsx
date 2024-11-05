@@ -68,7 +68,7 @@ function ListBanners() {
 
   const openModal = (banner) => {
     setCurrentBannerId(banner.id);
-    setCurrentBannerStatus(banner.status === 1 ? "Activo" : "Inactivo");
+    setCurrentBannerStatus(banner.status);
     setCurrentBannerPublicationDate(banner.publication_date);
     setCurrentBannerUnpublicationDate(banner.unpublication_date);
     setShowModal(true);
@@ -77,7 +77,7 @@ function ListBanners() {
   const updateState = async (e) => {
     e.preventDefault();
 
-    const newState = currentBannerStatus === "Activo" ? 1 : 0;
+    const newState = currentBannerStatus;
 
     try {
       let headersList = {
@@ -222,7 +222,7 @@ function ListBanners() {
               <Form.Label>Estado</Form.Label>
               <Form.Select
                 value={currentBannerStatus} // Muestra el estado actual del banner
-                onChange={(e) => setCurrentBannerStatus(e.target.value)} // Actualiza el estado seleccionado
+                onChange={(e) => setCurrentBannerStatus(Number(e.target.value))} // Actualiza el estado seleccionado
               >
                 <option value={1}>Activo</option>
                 <option value={0}>Inactivo</option>
@@ -237,8 +237,8 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerPublicationDate(e.target.value)
                 }
-                disabled={currentBannerStatus === "1"} 
-                required={currentBannerStatus === "0"}
+                disabled={currentBannerStatus === 1} 
+                required={currentBannerStatus === 0}
               />
             </Form.Group>
 
@@ -250,7 +250,7 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerUnpublicationDate(e.target.value)
                 }
-                required={currentBannerStatus === "1"}
+                required={currentBannerStatus === 1}
               />
             </Form.Group>
             <div className="btn-savechange">

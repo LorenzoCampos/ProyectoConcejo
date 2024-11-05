@@ -102,15 +102,18 @@ function NewsForm() {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "aplication/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       console.log(response.data);
+      console.log(bodyContent);
       if (response.status === 201) {
         setToastMessage("Noticia subida exitosamente");
         setShowSuccessToast(true);
+        setShowModal(false);
+        getAlldata();
       }
     } catch (error) {
       if (error.response) {
@@ -128,8 +131,9 @@ function NewsForm() {
           Especificar errores
         } */
 
-        setToastMessage("Error al subir la noticia");
-        setShowWarningToast(true);
+        setToastMessage(error.response.data.message);
+        setShowErrorToast(true);
+        console.log("Detalles del error:", error.response.data);
       }
     }
   };

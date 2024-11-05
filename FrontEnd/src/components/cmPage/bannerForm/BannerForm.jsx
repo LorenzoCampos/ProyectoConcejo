@@ -67,6 +67,8 @@ function BannerForm() {
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
+        setShowModal(false);
+        getAlldata();
       }
     } catch (error) {
       console.error("Error Response:", error.response.data);

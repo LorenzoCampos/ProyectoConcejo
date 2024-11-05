@@ -30,6 +30,8 @@ function ListNews() {
   const [currentNewTitle, setCurrentNewTitle] = useState("");
   const [currentNewDescription, setCurrentNewDescription] = useState("");
 
+  const [currentNewImage, setCurrentNewImage] = useState(null);
+
   useEffect(() => {
     getAlldata();
   }, []);
@@ -59,7 +61,7 @@ function ListNews() {
     }
   };
 
-/*   const formatDate = (dateString) => {
+  /*   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -73,42 +75,54 @@ function ListNews() {
 
   const openModalNew = (news) => {
     setCurrentNewId(news.id);
-    setCurrentNewStatus(news.status === 1 ? "Activo" : "Inactivo");
+    setCurrentNewStatus(news.status);
     setCurrentNewPublicationDate(news.publication_date);
     setCurrentNewUnpublicationDate(news.unpublication_date);
     setCurrentNewDescription(news.description);
     setCurrentNewTitle(news.title);
+    setCurrentNewImage(news.image);
     setShowModal(true);
   };
 
   const updateState = async (e) => {
     e.preventDefault();
 
-    const newState = currentNewStatus === "Activo" ? 1 : 0;
+    const newState = currentNewStatus;
 
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
-        "Content-Type": "multipart/form-data",
       };
 
-      let bodyContent = JSON.stringify({
+      /*       let bodyContent = JSON.stringify({
+        image: currentNewImage,
         status: newState,
         publication_date: currentNewPublicationDate,
         unpublication_date: currentNewUnpublicationDate,
         title: currentNewTitle,
         description: currentNewDescription,
+      }); */
+
+      let bodyContent = new FormData();
+      bodyContent.append("status", newState);
+      bodyContent.append("publication_date", currentNewPublicationDate);
+      bodyContent.append("unpublication_date", currentNewUnpublicationDate);
+      bodyContent.append("title", currentNewTitle);
+      bodyContent.append("description", currentNewDescription);
+
+      // Agregar imagen solo si hay una nueva seleccionada
+      if (currentNewImage) {
+        bodyContent.append("image", currentNewImage);
+      }
+
+      await axios.put(API.UPDATE_NEWS + currentNewId, bodyContent, {
+        headers: headersList,
       });
 
-      await axios.patch(
-        API.UPDATE_NEWS + currentNewId,
-        bodyContent,
-        { headers: headersList }
-      );
-
+      console.log(bodyContent);
       setToastMessage(`Actualizado correctamente.`);
       setShowSuccessToast(true);
-
+      setShowModal(false);
       getAlldata(); // Refrescar la lista después de actualizar el estado
     } catch (error) {
       setToastMessage("Error al actualizar el estado.");
@@ -126,10 +140,7 @@ function ListNews() {
           "Content-Type": "application/json",
         };
 
-        await axios.delete(
-          API.DELETE_NEWS + newsId,
-          { headers: headersList }
-        );
+        await axios.delete(API.DELETE_NEWS + newsId, { headers: headersList });
         setToastMessage("Noticia eliminada correctamente.");
         setShowSuccessToast(true);
         getAlldata(); // Refrescar la lista
@@ -222,10 +233,34 @@ function ListNews() {
         <Modal.Body>
           <Form onSubmit={updateState}>
             <Form.Group>
+              <img
+                src={currentNewImage}
+                alt="new"
+                style={{ width: "200px", marginLeft: "25%" }}
+              />
+            </Form.Group>
+
+            {/*             <Form.Group>
+              <Form.Label>Imagen</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={ (e) => setCurrentNewImage(e.target.value)}
+              />
+            </Form.Group> */}
+
+            <Form.Group>
+              <Form.Label>Imagen</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => setCurrentNewImage(e.target.files[0])} // Cambiar para capturar el archivo
+              />
+            </Form.Group>
+
+            <Form.Group>
               <Form.Label>Estado</Form.Label>
               <Form.Select
                 value={currentNewStatus} // Muestra el estado actual de la noticia
-                onChange={(e) => setCurrentNewStatus(e.target.value)} // Actualiza el estado seleccionado
+                onChange={(e) => setCurrentNewStatus(Number(e.target.value))} // Actualiza el estado seleccionado
               >
                 <option value={1}>Activo</option>
                 <option value={0}>Inactivo</option>
@@ -255,8 +290,8 @@ function ListNews() {
                 type="datetime-local"
                 value={currentNewPublicationDate}
                 onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
-                disabled={currentNewStatus === "1"} 
-                required={currentNewStatus === "0"}
+                disabled={currentNewStatus === 1}
+                required={currentNewStatus === 0}
               />
             </Form.Group>
 
@@ -266,11 +301,13 @@ function ListNews() {
                 type="datetime-local"
                 value={currentNewUnpublicationDate}
                 onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
-                required={currentNewStatus === "1"}
+                required={currentNewStatus === 1}
               />
             </Form.Group>
             <div className="btn-savechange ">
-              <Button type="submit" className="btn-news">Guardar cambios</Button>
+              <Button type="submit" className="btn-news">
+                Guardar cambios
+              </Button>
             </div>
           </Form>
         </Modal.Body>
