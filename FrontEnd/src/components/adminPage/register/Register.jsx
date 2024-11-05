@@ -9,7 +9,7 @@ import axios from "axios";
 import "./register.css";
 
 const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/register";
+  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/register";
 
 function Register() {
   const [name, setName] = useState("");

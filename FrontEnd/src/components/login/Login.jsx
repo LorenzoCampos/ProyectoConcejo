@@ -114,7 +114,7 @@ function Login() {
 <div className="container">
       <div className="login-container">
         <h1>Bienvenido!</h1>
-        <p>Iniciar sesión</p>
+        <p>Inicie sesión</p>
         <div className="form-cont">
         <Form onSubmit={loginData}>
           <FloatingLabel

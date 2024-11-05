@@ -192,7 +192,7 @@ function ListNews() {
                     style={{ width: "100px" }}
                   />
                 </td>
-                <td>{news.title}</td>
+                <td className="title-new-td">{news.title}</td>
                 <td className="desc">{news.description}</td>
                 <td>{news.publication_date}</td>
                 <td>{news.unpublication_date}</td>

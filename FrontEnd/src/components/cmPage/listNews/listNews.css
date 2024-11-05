@@ -104,3 +104,10 @@ button.btn-news:hover {
   color: var(--primary-color);
   border: 2px solid var(--primary-color)
 }
+td.title-new-td{
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;    
+  max-width: 150px;           
+
+}

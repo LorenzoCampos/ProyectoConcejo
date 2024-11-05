@@ -35,6 +35,7 @@ form{
 .form-news{
   padding: 0 25px 25px;
   background-color: var(--light-color);
+  width: 80vw;
 }
 
 button.btn-news {
