@@ -3,12 +3,14 @@
 const URL = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
 
 const API = {
-  // Login
+  // Login & logout
   LOGIN: `${URL}/login`,
+  LOGOUT: `${URL}/logout`,
 
   // Admin
-  CREATE_USERS: `${URL}/users`,
-  UPDATE_ROLE: `${URL}/users/`,
+  LIST_USERS: `${URL}/users/non-admin`,
+  CREATE_USERS: `${URL}/register`,
+  UPDATE_ROLE: `${URL}/users/userId/role`,
 
   // Banners
   LIST_BANNERS: `${URL}/banners`,

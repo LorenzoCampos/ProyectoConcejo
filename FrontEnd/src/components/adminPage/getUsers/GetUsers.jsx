@@ -8,8 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./getUsers.css";
 
-const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/users/non-admin";
+import API from "../../../config/apiConfig";
 
 function GetUsers() {
   const [data, setData] = useState([]);
@@ -32,7 +31,7 @@ function GetUsers() {
       };
 
       let reqOptions = {
-        url: `${API}`,
+        url: API.LIST_USERS,
         method: "GET",
         headers: headersList,
       };
@@ -81,7 +80,7 @@ function GetUsers() {
       });
 
       const response = await axios.patch(
-        `https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/users/${userId}/role`,
+        API.UPDATE_ROLE.replace("userId", userId),
         bodyContent,
         { headers: headersList }
       );

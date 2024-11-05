@@ -8,8 +8,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./register.css";
 
-const API =
-  "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/register";
+import API from "../../../config/apiConfig";
 
 function Register() {
   const [name, setName] = useState("");
@@ -42,7 +41,7 @@ function Register() {
       });
 
       let reqOptions = {
-        url: `${API}`,
+        url: API.CREATE_USERS,
         method: "POST",
         headers: headersList,
         data: bodyContent,
@@ -167,9 +166,8 @@ function Register() {
               aria-label="Default select example"
               className="form-select"
               onChange={(event) => setRole(event.target.value)}
-              required
             >
-              <option> ---Seleccione el rol--- </option>
+              <option value="user"> ---Seleccione el rol--- </option>
               <option value="admin">Administrador</option>
               <option value="secretario">Secretario</option>
               <option value="concejal">Concejal</option>

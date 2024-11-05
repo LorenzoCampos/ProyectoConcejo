@@ -29,18 +29,14 @@ function NavAdmin({ onRegisterClick, onSeeUsersClick }) {
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
               <NavDropdown title={name || "Usuario"} id="basic-nav-dropdown" align="end">
-              <NavDropdown.Item as={Link} to="/">
-                  Volver al 
+              <NavDropdown.Item as={Link} to="/"> 
                   Home
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={onRegisterClick}>
-                  Registrar un nuevo usuario
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={onSeeUsersClick}>
                   Ver usuarios
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
+                <NavDropdown.Item onClick={onRegisterClick}>
+                  Registrar un nuevo usuario
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">

@@ -77,7 +77,7 @@ function NewsForm() {
     e.preventDefault();
 
     // Validación simple para asegurarnos que se ingresan todos los datos
-    if (!selectedFile || !publicationDate || !unpublicationDate) {
+    if (!selectedFile || !unpublicationDate) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;
@@ -100,7 +100,7 @@ function NewsForm() {
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "aplication/json",
           },
         }
       );
@@ -198,6 +198,8 @@ function NewsForm() {
                       type="datetime-local"
                       value={publicationDate}
                       onChange={(e) => setPublicationDate(e.target.value)}
+                      disabled={status === "1"} 
+                      required={status === "0"}
                     />
                   </Form.Group>
 
@@ -207,6 +209,7 @@ function NewsForm() {
                       type="datetime-local"
                       value={unpublicationDate}
                       onChange={(e) => setUnpublicationDate(e.target.value)}
+                      required={status === "1"}
                     />
                   </Form.Group>
                   <div className="btn-container">

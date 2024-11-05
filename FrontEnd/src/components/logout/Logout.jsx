@@ -3,8 +3,8 @@ import "./logout.css"
 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-const API = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/logout";
 
+import API from "../../config/apiConfig";
 function Logout() {
 
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Logout() {
       };
 
       let reqOptions = {
-        url: `${API}`,
+        url: API.LOGOUT,
         method: "POST",
         headers: headersList,
       };

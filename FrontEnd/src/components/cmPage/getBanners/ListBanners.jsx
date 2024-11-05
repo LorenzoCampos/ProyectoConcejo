@@ -218,8 +218,8 @@ function ListBanners() {
                 value={currentBannerStatus} // Muestra el estado actual del banner
                 onChange={(e) => setCurrentBannerStatus(e.target.value)} // Actualiza el estado seleccionado
               >
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option value={1}>Activo</option>
+                <option value={0}>Inactivo</option>
               </Form.Select>
             </Form.Group>
 
@@ -231,6 +231,8 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerPublicationDate(e.target.value)
                 }
+                disabled={currentBannerStatus === "1"} 
+                required={currentBannerStatus === "0"}
               />
             </Form.Group>
 
@@ -242,6 +244,7 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerUnpublicationDate(e.target.value)
                 }
+                required={currentBannerStatus === "1"}
               />
             </Form.Group>
             <div className="btn-savechange">

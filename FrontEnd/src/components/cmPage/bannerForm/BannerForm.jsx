@@ -37,7 +37,7 @@ function BannerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedFile || !publicationDate || !unpublicationDate) {
+    if (!selectedFile || !unpublicationDate) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;
@@ -111,6 +111,8 @@ function BannerForm() {
                     type="datetime-local"
                     value={publicationDate}
                     onChange={(e) => setPublicationDate(e.target.value)}
+                    disabled={status === "1"} 
+                    required={status === "0"}
                   />
                 </Form.Group>
 
@@ -120,6 +122,7 @@ function BannerForm() {
                     type="datetime-local"
                     value={unpublicationDate}
                     onChange={(e) => setUnpublicationDate(e.target.value)}
+                    required={status === "1"}
                   />
                 </Form.Group>
                 <div className="btn-container">

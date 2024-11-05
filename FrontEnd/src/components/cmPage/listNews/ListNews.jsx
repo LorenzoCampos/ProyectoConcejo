@@ -224,11 +224,11 @@ function ListNews() {
             <Form.Group>
               <Form.Label>Estado</Form.Label>
               <Form.Select
-                value={currentNewStatus} // Muestra el estado actual del banner
+                value={currentNewStatus} // Muestra el estado actual de la noticia
                 onChange={(e) => setCurrentNewStatus(e.target.value)} // Actualiza el estado seleccionado
               >
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option value={1}>Activo</option>
+                <option value={0}>Inactivo</option>
               </Form.Select>
             </Form.Group>
             <Form.Group>
@@ -255,6 +255,8 @@ function ListNews() {
                 type="datetime-local"
                 value={currentNewPublicationDate}
                 onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
+                disabled={currentNewStatus === "1"} 
+                required={currentNewStatus === "0"}
               />
             </Form.Group>
 
@@ -264,6 +266,7 @@ function ListNews() {
                 type="datetime-local"
                 value={currentNewUnpublicationDate}
                 onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
+                required={currentNewStatus === "1"}
               />
             </Form.Group>
             <div className="btn-savechange ">
