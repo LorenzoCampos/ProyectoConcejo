@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import "./login.css";
+import API from "../../config/apiConfig";
 
 import { getDeviceId } from "./getDeviceId";
 
- const api = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/login"
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +39,7 @@ function Login() {
       });
 
       let reqOptions = {
-        url: `${api}`,
+        url: API.LOGIN,
         method: "POST",
         headers: headersList,
         data: bodyContent,

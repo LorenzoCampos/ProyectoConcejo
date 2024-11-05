@@ -7,7 +7,7 @@ import Logout from "../../logout/Logout";
 import { useState, useEffect } from "react"
 import Nav from "react-bootstrap/Nav";
 
-function NavAdmin({ onRegisterClick }) {  
+function NavAdmin({ onRegisterClick, onSeeUsersClick }) {  
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -36,8 +36,8 @@ function NavAdmin({ onRegisterClick }) {
                 <NavDropdown.Item onClick={onRegisterClick}>
                   Registrar un nuevo usuario
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
+                <NavDropdown.Item onClick={onSeeUsersClick}>
+                  Ver usuarios
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
                   Something
