@@ -92,30 +92,31 @@ function ListNews() {
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
+        "Content-Type": "application/json",
       };
 
-      /*       let bodyContent = JSON.stringify({
+        let bodyContent = JSON.stringify({
         image: currentNewImage,
         status: newState,
         publication_date: currentNewPublicationDate,
         unpublication_date: currentNewUnpublicationDate,
         title: currentNewTitle,
         description: currentNewDescription,
-      }); */
+      });
 
-      let bodyContent = new FormData();
+/*       let bodyContent = new FormData();
       bodyContent.append("status", newState);
       bodyContent.append("publication_date", currentNewPublicationDate);
       bodyContent.append("unpublication_date", currentNewUnpublicationDate);
       bodyContent.append("title", currentNewTitle);
-      bodyContent.append("description", currentNewDescription);
+      bodyContent.append("description", currentNewDescription); */
 
-      // Agregar imagen solo si hay una nueva seleccionada
+/*       // Agregar imagen solo si hay una nueva seleccionada
       if (currentNewImage) {
         bodyContent.append("image", currentNewImage);
-      }
+      } */
 
-      await axios.put(API.UPDATE_NEWS + currentNewId, bodyContent, {
+      await axios.patch(API.UPDATE_NEWS + currentNewId, bodyContent, {
         headers: headersList,
       });
 
@@ -247,14 +248,14 @@ function ListNews() {
                 onChange={ (e) => setCurrentNewImage(e.target.value)}
               />
             </Form.Group> */}
-
+{/* 
             <Form.Group>
               <Form.Label>Imagen</Form.Label>
               <Form.Control
                 type="file"
                 onChange={(e) => setCurrentNewImage(e.target.files[0])} // Cambiar para capturar el archivo
               />
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group>
               <Form.Label>Estado</Form.Label>
