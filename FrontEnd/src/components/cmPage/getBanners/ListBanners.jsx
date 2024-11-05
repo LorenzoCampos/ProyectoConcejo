@@ -54,7 +54,7 @@ function ListBanners() {
     }
   };
 
-  const formatDate = (dateString) => {
+/*   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -64,13 +64,13 @@ function ListBanners() {
 
     // Retornar en el formato YYYY-MM-DDTHH:mm
     return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+  }; */
 
   const openModal = (banner) => {
     setCurrentBannerId(banner.id);
     setCurrentBannerStatus(banner.status === 1 ? "Activo" : "Inactivo");
-    setCurrentBannerPublicationDate(formatDate(banner.publication_date));
-    setCurrentBannerUnpublicationDate(formatDate(banner.unpublication_date));
+    setCurrentBannerPublicationDate(banner.publication_date);
+    setCurrentBannerUnpublicationDate(banner.unpublication_date);
     setShowModal(true);
   };
 
@@ -104,6 +104,12 @@ function ListBanners() {
     } catch (error) {
       setToastMessage("Error al actualizar");
       setShowErrorToast(true);
+
+      if (error.response) {
+        setToastMessage("Error al actualizar el banner.");
+        setShowErrorToast(true);
+        console.log(error.response.data);
+      }
     }
   };
 

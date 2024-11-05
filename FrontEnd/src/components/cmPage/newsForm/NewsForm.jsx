@@ -8,6 +8,8 @@ import axios from "axios";
 import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
 
+import API from "../../../config/apiConfig";
+
 function NewsForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0); // Estado inicial en 0

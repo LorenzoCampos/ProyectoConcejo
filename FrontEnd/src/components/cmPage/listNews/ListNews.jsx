@@ -59,7 +59,7 @@ function ListNews() {
     }
   };
 
-  const formatDate = (dateString) => {
+/*   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -69,13 +69,13 @@ function ListNews() {
 
     // Retornar en el formato YYYY-MM-DDTHH:mm
     return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+  }; */
 
   const openModalNew = (news) => {
     setCurrentNewId(news.id);
     setCurrentNewStatus(news.status === 1 ? "Activo" : "Inactivo");
-    setCurrentNewPublicationDate(formatDate(news.publication_date));
-    setCurrentNewUnpublicationDate(formatDate(news.unpublication_date));
+    setCurrentNewPublicationDate(news.publication_date);
+    setCurrentNewUnpublicationDate(news.unpublication_date);
     setCurrentNewDescription(news.description);
     setCurrentNewTitle(news.title);
     setShowModal(true);
@@ -89,7 +89,7 @@ function ListNews() {
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       };
 
       let bodyContent = JSON.stringify({
