@@ -8,7 +8,7 @@ For basic API resources:
 For email verification and password resetting:
  - Breeze
 
-For roles and **permission**s:
+For roles and permissions:
  - Spatie
 
 # USUARIOS DE PRUEBA
