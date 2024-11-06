@@ -64,14 +64,15 @@ function BannerForm() {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      console.log(response.data);
+      console.log(bodyContent);
+
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
-        setShowModal(false);
-        getAlldata();
       }
     } catch (error) {
-      console.error("Error Response:", error.response.data);
       if (error.response) {
         setToastMessage("Error al subir el Banner");
         setShowWarningToast(true);

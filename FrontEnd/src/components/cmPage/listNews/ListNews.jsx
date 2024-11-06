@@ -96,7 +96,6 @@ function ListNews() {
       };
 
         let bodyContent = JSON.stringify({
-        image: currentNewImage,
         status: newState,
         publication_date: currentNewPublicationDate,
         unpublication_date: currentNewUnpublicationDate,
@@ -121,13 +120,14 @@ function ListNews() {
       });
 
       console.log(bodyContent);
-      setToastMessage(`Actualizado correctamente.`);
+      setToastMessage(`Noticia actualizada correctamente.`);
       setShowSuccessToast(true);
       setShowModal(false);
       getAlldata(); // Refrescar la lista después de actualizar el estado
     } catch (error) {
-      setToastMessage("Error al actualizar el estado.");
+      setToastMessage("Error al actualizar la noticia.");
       setShowErrorToast(true);
+      console.log(error.respose.data);
     }
   };
 

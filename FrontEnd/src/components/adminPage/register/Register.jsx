@@ -168,7 +168,6 @@ function Register() {
               onChange={(event) => setRole(event.target.value)}
             >
               <option value="user"> ---Seleccione el rol--- </option>
-              <option value="admin">Administrador</option>
               <option value="secretario">Secretario</option>
               <option value="concejal">Concejal</option>
               <option value="cm">CM</option>

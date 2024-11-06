@@ -28,7 +28,6 @@ function NewsForm() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-
   const openModal = () => {
     setIsOpen(true);
   };
@@ -59,7 +58,7 @@ function NewsForm() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    
+
     // Generar vista previa de la imagen
     {
       /* const reader = new FileReader();
@@ -96,24 +95,19 @@ function NewsForm() {
     formData.append("type", "new"); //
 
     try {
-      const response = await axios.post(
-        API.CREATE_NEWS,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(API.CREATE_NEWS, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log(response.data);
       console.log(bodyContent);
+
       if (response.status === 201) {
-        setToastMessage("Noticia subida exitosamente");
+        setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
-        setShowModal(false);
-        getAlldata();
       }
     } catch (error) {
       if (error.response) {
@@ -191,7 +185,7 @@ function NewsForm() {
                   <Form.Group className="mb-3">
                     <Form.Label>Descripción</Form.Label>
                     <Form.Control
-                     as="textarea"
+                      as="textarea"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={4}
@@ -204,7 +198,7 @@ function NewsForm() {
                       type="datetime-local"
                       value={publicationDate}
                       onChange={(e) => setPublicationDate(e.target.value)}
-                      disabled={status === "1"} 
+                      disabled={status === "1"}
                       required={status === "0"}
                     />
                   </Form.Group>
@@ -232,8 +226,13 @@ function NewsForm() {
           </Row>
         </Container>
       </div>
-      <PreviewNews isOpen={isOpen} closeModal={closeModal}  file={selectedFile} title={title}
-        description={description} />
+      <PreviewNews
+        isOpen={isOpen}
+        closeModal={closeModal}
+        file={selectedFile}
+        title={title}
+        description={description}
+      />
 
       {/* Toast error */}
       <ToastContainer position="top-end" className="p-3">

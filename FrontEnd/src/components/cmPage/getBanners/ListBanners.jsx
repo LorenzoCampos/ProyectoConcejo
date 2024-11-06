@@ -97,7 +97,7 @@ function ListBanners() {
         { headers: headersList }
       );
 
-      setToastMessage(`Actualizado correctamente.`);
+      setToastMessage(`Banner actualizado correctamente.`);
       setShowSuccessToast(true);
       getAlldata();
       setShowModal(false); // Cerrar el modal
@@ -108,7 +108,7 @@ function ListBanners() {
       if (error.response) {
         setToastMessage("Error al actualizar el banner.");
         setShowErrorToast(true);
-        console.log(error.response.data);
+        console.log(error.response.data.message);
       }
     }
   };
