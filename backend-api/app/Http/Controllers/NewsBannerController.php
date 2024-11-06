@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NewsBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class NewsBannerController extends Controller
 {
@@ -108,6 +109,11 @@ class NewsBannerController extends Controller
             ]);
 
             return response()->json($newsBanner, 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación.',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -117,40 +123,61 @@ class NewsBannerController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $newsBanner = NewsBanner::find($id);
-
-            if (!$newsBanner) {
-                return response()->json(['message' => 'Registro no encontrado'], 404);
-            }
-
-            // Validar solo los campos que se envían
+            // Validar los campos para la actualización
             $request->validate([
-                'title' => 'sometimes|string',
-                'description' => 'sometimes|string',
-                'image' => 'sometimes|image',  // Validación de imágenes
-                'status' => 'sometimes|in:1,0',
-                'publication_date' => 'sometimes|date',
-                'unpublication_date' => 'sometimes|date',
+                'title' => 'nullable|string',  // Solo para noticias
+                'description' => 'nullable|string',  // Solo para noticias
+                'image' => 'nullable|image|mimes:jpeg,png,jpg',  // Validar que sea imagen y su tipo
+                'status' => 'nullable|boolean|in:1,0',
+                'publication_date' => 'nullable|date',
+                'unpublication_date' => 'nullable|date',
             ]);
 
-            // Si se ha enviado una nueva imagen, procesarla
+            // Buscar el registro en la base de datos
+            $newsBanner = NewsBanner::findOrFail($id);
+
+            // Actualizar solo los campos proporcionados
+            if ($request->has('type')) {
+                $newsBanner->type = $request->type;
+            }
+            if ($request->has('title')) {
+                $newsBanner->title = $request->title;
+            }
+            if ($request->has('description')) {
+                $newsBanner->description = $request->description;
+            }
+            if ($request->has('status')) {
+                $newsBanner->status = $request->status;
+            }
+            if ($request->has('publication_date')) {
+                $newsBanner->publication_date = $request->publication_date;
+            }
+            if ($request->has('unpublication_date')) {
+                $newsBanner->unpublication_date = $request->unpublication_date;
+            }
+
             if ($request->hasFile('image')) {
-                // Eliminar la imagen antigua si existe
+                // Eliminar la imagen anterior si existe
                 if ($newsBanner->image) {
-                    Storage::delete($newsBanner->image);
+                    $oldImagePath = str_replace('https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public', '', $newsBanner->image);
+                    Storage::disk('public')->delete($oldImagePath);
                 }
 
-                // Guardar la nueva imagen y obtener la ruta
+                // Guardar la nueva imagen
                 $imagePath = $request->file('image')->store('images', 'public');
                 $newsBanner->image = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
             }
 
-            // Actualizar los demás campos solo si están presentes en la solicitud
-            
+            // Guardar los cambios en la base de datos
+            $newsBanner->save();
 
             return response()->json($newsBanner, 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación.',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            // Manejar el error
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
