@@ -54,3 +54,15 @@ span.carousel-control-prev-icon  {
 
 
 
+@media screen and (max-height: 1100px) {
+  /* Tus estilos aquí */
+  body {
+      font-size: 14px;
+  }
+}
+@media screen and (max-height: 1100px) {
+  .banner{
+    display: flex;
+    margin-top: 160px;
+  }
+}
