@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -32,7 +33,6 @@ class UserController extends Controller
 
             // Devolver los usuarios y sus roles en formato JSON
             return response()->json($usersResponse, 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -47,40 +47,52 @@ class UserController extends Controller
             $validated = $request->validate([
                 'role' => 'required|string|exists:roles,name',
             ]);
+
+
+            // un admin no puede cabiar un rol a admin
+            if ($user->hasRole('admin')) {
+                return response()->json(['message' => 'No se puede cambiar el rol de un usuario administrador.']);
+            }
+            if ($validated['role'] == 'admin') {
+                return response()->json(['message' => 'No se puede cambiar el rol a administrador.']);
+            }
+
+            // Borrar todos los roles existentes
+            $user->syncRoles([]); // Elimina todos los roles del usuario
+
+            // eliminar todos los tokens relacionados al usuario
+            $user->tokens()->delete();
+
+            // Asignar el nuevo rol al usuario
+            $user->assignRole($validated['role']);
+
+            return response()->json(['message' => 'Rol actualizado exitosamente.'], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación.',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 401);
         }
-
-        // un admin no puede cabiar un rol a admin
-        if ($user->hasRole('admin')) {
-            return response()->json(['message' => 'No se puede cambiar el rol de un usuario administrador.']);
-        }
-        if ($validated['role'] == 'admin') {
-            return response()->json(['message' => 'No se puede cambiar el rol a administrador.']);
-        }
-
-        // Borrar todos los roles existentes
-        $user->syncRoles([]); // Elimina todos los roles del usuario
-
-        // eliminar todos los tokens relacionados al usuario
-        $user->tokens()->delete();
-
-        // Asignar el nuevo rol al usuario
-        $user->assignRole($validated['role']);
-
-        return response()->json(['message' => 'Rol actualizado exitosamente.'], 200);
     }
 
     public function getRole(): JsonResponse
     {
-        // Obtener role del usuario
-        $user = Auth::user();
-        return response()->json([
-            'user' => $user,
-            'role' => $user->roles->pluck('name')->first()
-        ], 200);
+        try {
+            // Obtener role del usuario
+            $user = Auth::user();
+            return response()->json([
+                'user' => $user,
+                'role' => $user->roles->pluck('name')->first()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
+        }
     }
 
     public function getAllRoles(): JsonResponse
