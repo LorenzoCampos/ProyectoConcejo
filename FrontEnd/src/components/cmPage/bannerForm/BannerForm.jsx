@@ -4,6 +4,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import Preview from "./Preview";
+import ListBanners from "../getBanners/ListBanners"
 
 import "./bannerForm.css";
 import API from "../../../config/apiConfig";
@@ -13,6 +14,7 @@ function BannerForm() {
   const [status, setStatus] = useState(0);
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
+  const [showBannerList, setShowBannerList] = useState(false);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -66,11 +68,13 @@ function BannerForm() {
       });
 
       console.log(response.data);
-      console.log(bodyContent);
 
       if (response.status === 201) {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
+        setTimeout(() => {
+          setShowBannerList(true);  
+        }, 3000); 
       }
     } catch (error) {
       if (error.response) {
@@ -79,6 +83,9 @@ function BannerForm() {
       }
     }
   };
+  if (showBannerList) {
+    return <ListBanners />;
+  }
 
   return (
     <div className="container">

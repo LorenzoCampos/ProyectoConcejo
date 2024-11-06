@@ -7,6 +7,7 @@ import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
+import ListNews from "../listNews/ListNews"
 
 import API from "../../../config/apiConfig";
 
@@ -18,7 +19,7 @@ function NewsForm() {
   const [publicationDate, setPublicationDate] = useState("");
   const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
-
+  const [showNewsList, setShowNewsList] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
@@ -103,11 +104,13 @@ function NewsForm() {
       });
 
       console.log(response.data);
-      console.log(bodyContent);
 
       if (response.status === 201) {
-        setToastMessage("Banner subido exitosamente");
+        setToastMessage("Noticia subido exitosamente");
         setShowSuccessToast(true);
+        setTimeout(() => {
+          setShowNewsList(true);  
+        }, 3000); // Tiempo de espera de 3 segundos
       }
     } catch (error) {
       if (error.response) {
@@ -131,6 +134,9 @@ function NewsForm() {
       }
     }
   };
+  if (showNewsList) {
+    return <ListNews />;
+  }
 
   return (
     <div className="container">
