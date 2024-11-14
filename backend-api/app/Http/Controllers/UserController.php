@@ -106,10 +106,8 @@ class UserController extends Controller
         return response()->json($roles, 200);
     }
 
-    public function updateName(Request $request)
+    public function updateName(Request $request, User $user)
     {
-        $user = auth()->user();
-
         // Verifica si el usuario tiene permisos para cambiar el nombre
         if(!$user->changeName())
         {
