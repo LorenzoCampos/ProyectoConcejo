@@ -16,9 +16,12 @@ function Home() {
         setSelectedNews(newsItem)
         setCurrentView('seeNew');
   };
+  const handleSHowHome = ()=> {
+    setCurrentView('home')
+};
     return(
         <>
-        <Navbar />
+        <Navbar onHomeClick ={ handleSHowHome}/>
         {currentView === 'home' && (
                 <>
                     

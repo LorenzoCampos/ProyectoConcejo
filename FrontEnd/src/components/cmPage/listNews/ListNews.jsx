@@ -5,10 +5,31 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
+import ReactQuill from "react-quill"; // Importa ReactQuill
+import "react-quill/dist/quill.snow.css";
+import DOMPurify from 'dompurify';
+
 
 import "./listNews.css";
 
 import API from "../../../config/apiConfig";
+
+const modules = {
+  toolbar: [
+    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['bold', 'italic', 'underline'],
+    ['link'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['image'],
+    ['blockquote'],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
+    [{ 'direction': 'rtl' }],
+    ['clean'], // Añade la opción para limpiar el formato
+  ],
+};
 
 function ListNews() {
   const [data, setData] = useState([]);
@@ -167,6 +188,7 @@ function ListNews() {
     }
   };
 
+
   return (
     <div className="news-container">
       <h1 className="title-text">Lista de Noticias</h1>
@@ -194,126 +216,113 @@ function ListNews() {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((news) => (
-              <tr key={news.id}>
-                <td>
-                  <img
-                    src={news.image}
-                    alt="banner"
-                    style={{ width: "100px" }}
-                  />
-                </td>
-                <td className="title-new-td">{news.title}</td>
-                <td className="desc">{news.description}</td>
-                <td>{news.publication_date}</td>
-                <td>{news.unpublication_date}</td>
-                <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
+            {filteredData.map((news) => {
+              // Sanitizar la descripción antes de usar dangerouslySetInnerHTML
+              const sanitizedDescription = DOMPurify.sanitize(news.description);
 
-                <td>
-                  <Button
-                    className="me-2"
-                    variant="primary"
-                    onClick={() => openModalNew(news)}
-                  >
-                    Editar
-                  </Button>
-                  <Button variant="danger" onClick={() => deleteNews(news.id)}>
-                    Eliminar
-                  </Button>
-                </td>
-              </tr>
-            ))}
+              return (
+                <tr key={news.id}>
+                  <td>
+                    <img src={news.image} alt="banner" style={{ width: "100px" }} />
+                  </td>
+                  <td className="title-new-td">{news.title}</td>
+                  <td
+                    className="desc"
+                    dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+                  ></td>
+                  <td>{news.publication_date}</td>
+                  <td>{news.unpublication_date}</td>
+                  <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
+
+                  <td>
+                    <Button className="me-2" variant="primary" onClick={() => openModalNew(news)}>
+                      Editar
+                    </Button>
+                    <Button variant="danger" onClick={() => deleteNews(news.id)}>
+                      Eliminar
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Noticia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={updateState}>
-            <Form.Group>
-              <img
-                src={currentNewImage}
-                alt="new"
-                style={{ width: "200px", marginLeft: "25%" }}
-              />
-            </Form.Group>
+      <Modal.Header closeButton>
+        <Modal.Title>Editar Noticia</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={updateState}>
+          <Form.Group>
+            <img
+              src={currentNewImage}
+              alt="new"
+              style={{ width: "200px", marginLeft: "25%" }}
+            />
+          </Form.Group>
 
-            {/*             <Form.Group>
-              <Form.Label>Imagen</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={ (e) => setCurrentNewImage(e.target.value)}
-              />
-            </Form.Group> */}
-{/* 
-            <Form.Group>
-              <Form.Label>Imagen</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setCurrentNewImage(e.target.files[0])} // Cambiar para capturar el archivo
-              />
-            </Form.Group> */}
+          <Form.Group>
+            <Form.Label>Estado</Form.Label>
+            <Form.Select
+              value={currentNewStatus}
+              onChange={(e) => setCurrentNewStatus(Number(e.target.value))}
+            >
+              <option value={1}>Activo</option>
+              <option value={0}>Inactivo</option>
+            </Form.Select>
+          </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Estado</Form.Label>
-              <Form.Select
-                value={currentNewStatus} // Muestra el estado actual de la noticia
-                onChange={(e) => setCurrentNewStatus(Number(e.target.value))} // Actualiza el estado seleccionado
-              >
-                <option value={1}>Activo</option>
-                <option value={0}>Inactivo</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Titulo</Form.Label>
-              <Form.Control
-                type="text"
-                value={currentNewTitle}
-                onChange={(e) => setCurrentNewTitle(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Descripción</Form.Label>
-              <Form.Control
-                as="textarea"
-                value={currentNewDescription}
-                onChange={(e) => setCurrentNewDescription(e.target.value)}
-                rows={4}
-              />
-            </Form.Group>
+          <Form.Group>
+            <Form.Label>Titulo</Form.Label>
+            <Form.Control
+              type="text"
+              value={currentNewTitle}
+              onChange={(e) => setCurrentNewTitle(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Fecha de publicación</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={currentNewPublicationDate}
-                onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
-                disabled={currentNewStatus === 1}
-                required={currentNewStatus === 0}
-              />
-            </Form.Group>
+          <Form.Group>
+            <Form.Label>Descripción</Form.Label>
+            {/* Usamos ReactQuill aquí */}
+            <ReactQuill
+              value={currentNewDescription}
+              onChange={(value) => setCurrentNewDescription(value)}
+              modules={modules}  // Barra de herramientas personalizada
+              placeholder="Escribe la descripción aquí..."
+            />
+          </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Fecha de despublicación</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={currentNewUnpublicationDate}
-                onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
-                required={currentNewStatus === 1}
-              />
-            </Form.Group>
-            <div className="btn-savechange ">
-              <Button type="submit" className="btn-news">
-                Guardar cambios
-              </Button>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
+          <Form.Group>
+            <Form.Label>Fecha de publicación</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              value={currentNewPublicationDate}
+              onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
+              disabled={currentNewStatus === 1}
+              required={currentNewStatus === 0}
+            />
+          </Form.Group>
 
+          <Form.Group>
+            <Form.Label>Fecha de despublicación</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              value={currentNewUnpublicationDate}
+              onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
+              required={currentNewStatus === 1}
+            />
+          </Form.Group>
+
+          <div className="btn-savechange">
+            <Button type="submit" className="btn-news">
+              Guardar cambios
+            </Button>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">
         <Toast

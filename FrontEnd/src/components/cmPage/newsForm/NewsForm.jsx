@@ -9,7 +9,27 @@ import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
 import ListNews from "../listNews/ListNews"
 
+import ReactQuill from "react-quill";  // Importa React Quill
+import "react-quill/dist/quill.snow.css";  
+
 import API from "../../../config/apiConfig";
+
+const modules = {
+  toolbar: [
+    [{ 'header': '1'}, { 'header': '2'}, { 'font': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['bold', 'italic', 'underline'],
+    ['link'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['image'],
+    ['blockquote'],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'direction': 'rtl' }],
+    ['clean']  // Añade la opción para limpiar el formato
+  ],
+};
 
 function NewsForm() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -35,6 +55,18 @@ function NewsForm() {
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  const [editorValue, setEditorValue] = useState("");
+
+  const handleEditorChange = (value) => {
+    setEditorValue(value);
+    setDescription(value);  // Guarda el valor del editor
+  };
+
+
+
+
+  
 
   /*   // Mapea los mensajes de error genéricos a mensajes personalizados
   const errorMessages = {
@@ -156,17 +188,6 @@ function NewsForm() {
                     />
                   </Form.Group>
 
-                  {/* {imagePreview && (
-                  <div className="mb-3">
-                    <p>Vista previa de la imagen:</p>
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      style={{ width: "50%", height: "auto", marginLeft: "25%" }}
-                    />
-                  </div>
-                )}*/}
-
                   <Form.Group controlId="status" className="mb-3">
                     <Form.Label>Estado</Form.Label>
                     <Form.Select
@@ -190,12 +211,17 @@ function NewsForm() {
 
                   <Form.Group className="mb-3">
                     <Form.Label>Descripción</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                    <ReactQuill
+                    as="textarea"
+                      value={editorValue}
+                      onChange={handleEditorChange}
                       rows={4}
+                      placeholder="Escribe la descripción aquí..."
+                      modules={modules}
+                     
                     />
+                   
+      
                   </Form.Group>
 
                   <Form.Group controlId="publicationDate" className="mb-3">
@@ -238,6 +264,7 @@ function NewsForm() {
         file={selectedFile}
         title={title}
         description={description}
+        
       />
 
       {/* Toast error */}

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react'; 
 import "./navbar.css";
 
-function NavBar() {
+function NavBar(onHomeClick) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
 
@@ -29,7 +29,7 @@ function NavBar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="links">
-              <Nav.Link as={Link} to="/" className='link-nav'>Home</Nav.Link>
+              <Nav.Link as={Link} to="/" className='link-nav' onClick={onHomeClick}>Home</Nav.Link>
               <Nav.Link as={Link} to="/normativas" className='link-nav'>Normativas</Nav.Link>
               {isAuthenticated ? (
                 <>
