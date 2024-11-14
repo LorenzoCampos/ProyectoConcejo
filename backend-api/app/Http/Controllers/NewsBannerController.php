@@ -136,6 +136,18 @@ class NewsBannerController extends Controller
             // Buscar el registro en la base de datos
             $newsBanner = NewsBanner::findOrFail($id);
 
+            if ($request->hasFile('image')) {
+                // Eliminar la imagen anterior si existe
+                if ($newsBanner->image) {
+                    $oldImagePath = str_replace('https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $newsBanner->image);
+                    Storage::disk('public')->delete($oldImagePath);
+                }
+
+                // Guardar la nueva imagen
+                $imagePath = $request->file('image')->store('images', 'public');
+                $newsBanner->image = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
+            }
+
             // Actualizar solo los campos proporcionados
             if ($request->has('type')) {
                 $newsBanner->type = $request->type;
@@ -156,18 +168,6 @@ class NewsBannerController extends Controller
                 $newsBanner->unpublication_date = $request->unpublication_date;
             }
 
-            if ($request->hasFile('image')) {
-                // Eliminar la imagen anterior si existe
-                if ($newsBanner->image) {
-                    $oldImagePath = str_replace('https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public', '', $newsBanner->image);
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-
-                // Guardar la nueva imagen
-                $imagePath = $request->file('image')->store('images', 'public');
-                $newsBanner->image = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
-            }
-
             // Guardar los cambios en la base de datos
             $newsBanner->save();
 
@@ -184,20 +184,25 @@ class NewsBannerController extends Controller
 
     public function delete($id)
     {
-        $newsBanner = NewsBanner::find($id);
+        try {
+            $newsBanner = NewsBanner::find($id);
 
-        if (!$newsBanner) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
+            if (!$newsBanner) {
+                return response()->json(['message' => 'Registro no encontrado'], 404);
+            }
+
+            // Eliminar la imagen si existe
+            if ($newsBanner->image) {
+                $oldImagePath = str_replace('https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $newsBanner->image);
+                Storage::disk('public')->delete($oldImagePath);
+            }
+
+            // Eliminar el registro de la base de datos
+            $newsBanner->delete();
+
+            return response()->json(['message' => 'Registro eliminado correctamente'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
         }
-
-        // Eliminar la imagen si existe
-        if ($newsBanner->image) {
-            Storage::delete($newsBanner->image);
-        }
-
-        // Eliminar el registro de la base de datos
-        $newsBanner->delete();
-
-        return response()->json(['message' => 'Registro eliminado correctamente'], 200);
     }
 }
