@@ -55,4 +55,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomVerifyEmail());
     }
+
+    public function changeName() 
+    {
+        //Roles perimitidos
+        $rolesPermited = ['admin', 'cm', 'community', 'secretario'];
+        
+        //Definir cuales son aquellos usuarios con sus roles que pueden cambiar el nombre
+        return $this->hasAnyRole($rolesPermited);
+    }
 }
