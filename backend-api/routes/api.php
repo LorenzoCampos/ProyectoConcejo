@@ -4,7 +4,6 @@ use App\Http\Controllers\NewsBannerController;
 use App\Http\Controllers\RegulationController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
-use App\Models\User;
 
 Route::prefix('v1')->group(function () {
 
@@ -37,7 +36,7 @@ Route::prefix('v1')->group(function () {
         Route::get('news', [NewsBannerController::class, 'getAllNews']);
         Route::get('news-banners/{id}', [NewsBannerController::class, 'show']);
         Route::post('news-banners', [NewsBannerController::class, 'store']);
-        Route::patch('news-banners/{id}', [NewsBannerController::class, 'update']);
+        Route::post('news-banners/{id}/update', [NewsBannerController::class, 'update']);
         Route::delete('news-banners/{id}', [NewsBannerController::class, 'delete']);
     });
 
