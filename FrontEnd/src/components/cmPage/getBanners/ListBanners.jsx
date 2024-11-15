@@ -92,9 +92,8 @@ function ListBanners() {
 
       let bodyContent = new FormData();
       bodyContent.append("status", newState);
-      bodyContent.append("publication_date", currentBannerPublicationDate);
-      bodyContent.append("unpublication_date", currentBannerUnpublicationDate);
-      bodyContent.append("image", currentBannerImg);
+      bodyContent.append("publication_date", currentBannerPublicationDate || "");
+      bodyContent.append("unpublication_date", currentBannerUnpublicationDate || "");
 
       if (selectedFile) {
         bodyContent.append("image", selectedFile);
@@ -257,7 +256,6 @@ function ListBanners() {
                   setCurrentBannerPublicationDate(e.target.value)
                 }
                 disabled={currentBannerStatus === 1}
-                required={currentBannerStatus === 0}
               />
             </Form.Group>
 
@@ -269,7 +267,6 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerUnpublicationDate(e.target.value)
                 }
-                required={currentBannerStatus === 1}
               />
             </Form.Group>
             <div className="btn-savechange">

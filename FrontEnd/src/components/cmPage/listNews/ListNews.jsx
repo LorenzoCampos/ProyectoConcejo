@@ -120,8 +120,8 @@ function ListNews() {
 
       let bodyContent = new FormData();
       bodyContent.append("status", newState);
-      bodyContent.append("publication_date", currentNewPublicationDate);
-      bodyContent.append("unpublication_date", currentNewUnpublicationDate);
+      bodyContent.append("publication_date", currentNewPublicationDate || "");
+      bodyContent.append("unpublication_date", currentNewUnpublicationDate || "");
       bodyContent.append("title", currentNewTitle);
       bodyContent.append("description", currentNewDescription);
 
@@ -318,7 +318,6 @@ function ListNews() {
                 value={currentNewPublicationDate}
                 onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
                 disabled={currentNewStatus === 1}
-                required={currentNewStatus === 0}
               />
             </Form.Group>
 
@@ -328,7 +327,6 @@ function ListNews() {
                 type="datetime-local"
                 value={currentNewUnpublicationDate}
                 onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
-                required={currentNewStatus === 1}
               />
             </Form.Group>
 
