@@ -5,7 +5,7 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
-import ReactQuill from "react-quill"; // Importa ReactQuill
+import ReactQuill from "react-quill"; 
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from 'dompurify';
 
@@ -51,8 +51,16 @@ function ListNews() {
   const [currentNewTitle, setCurrentNewTitle] = useState("");
   const [currentNewDescription, setCurrentNewDescription] = useState("");
 
-  const [currentNewImage, setCurrentNewImage] = useState(null);
+  const [currentImage, setCurrentImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
+
+  
   useEffect(() => {
     getAlldata();
   }, []);
@@ -101,42 +109,47 @@ function ListNews() {
     setCurrentNewUnpublicationDate(news.unpublication_date);
     setCurrentNewDescription(news.description);
     setCurrentNewTitle(news.title);
-    setCurrentNewImage(news.image);
+    setCurrentImage(news.image);
     setShowModal(true);
   };
 
   const updateState = async (e) => {
     e.preventDefault();
+    
 
     const newState = currentNewStatus;
 
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       };
 
-        let bodyContent = JSON.stringify({
+       /* let bodyContent = JSON.stringify({
         status: newState,
         publication_date: currentNewPublicationDate,
         unpublication_date: currentNewUnpublicationDate,
         title: currentNewTitle,
         description: currentNewDescription,
-      });
+      });*/
 
-/*       let bodyContent = new FormData();
+ let bodyContent = new FormData();
       bodyContent.append("status", newState);
       bodyContent.append("publication_date", currentNewPublicationDate);
       bodyContent.append("unpublication_date", currentNewUnpublicationDate);
       bodyContent.append("title", currentNewTitle);
-      bodyContent.append("description", currentNewDescription); */
+      bodyContent.append("description", currentNewDescription); 
 
-/*       // Agregar imagen solo si hay una nueva seleccionada
-      if (currentNewImage) {
-        bodyContent.append("image", currentNewImage);
-      } */
+      if (selectedFile) {
+        bodyContent.append("image", selectedFile);
+      }
 
-      await axios.patch(API.UPDATE_NEWS + currentNewId, bodyContent, {
+   // Agregar imagen solo si hay una nueva seleccionada
+     /* if (currentImage) {
+        bodyContent.append("image", currentImage);
+      }*/
+
+      await axios.post(API.UPDATE_NEWS + currentNewId, bodyContent, {
         headers: headersList,
       });
 
@@ -148,8 +161,10 @@ function ListNews() {
     } catch (error) {
       setToastMessage("Error al actualizar la noticia.");
       setShowErrorToast(true);
-      console.log(error.respose.data);
-    }
+      console.log(error); // Agrega este para ver el error completo en la consola
+      console.log(error.response ? error.response.data : "No response data"); // Verifica si error.response existe
+  }
+  
   };
 
   const deleteNews = async (newsId) => {
@@ -159,7 +174,7 @@ function ListNews() {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         };
 
         await axios.delete(API.DELETE_NEWS + newsId, { headers: headersList });
@@ -177,6 +192,7 @@ function ListNews() {
   const handleFilterChange = (e) => {
     const selectedFilter = e.target.value;
     setFilterStatus(selectedFilter);
+    
 
     // Filtrar los datos en función del valor seleccionado
     if (selectedFilter === "Activo") {
@@ -257,11 +273,19 @@ function ListNews() {
         <Form onSubmit={updateState}>
           <Form.Group>
             <img
-              src={currentNewImage}
+              src={currentImage}
               alt="new"
               style={{ width: "200px", marginLeft: "25%" }}
             />
           </Form.Group>
+        <Form.Group controlId="formFile">
+                    <Form.Label>Seleccionar imagen</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </Form.Group>
 
           <Form.Group>
             <Form.Label>Estado</Form.Label>
