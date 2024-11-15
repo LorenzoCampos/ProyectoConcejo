@@ -29,7 +29,7 @@ import BannerCM from "./cmPage/bannerCM/BannerCM";
 import ConcejalPage from "./pages/ConcejalPage"
 
 /* UserPage */
-import UserPage from "./pages/UserPage"
+import Profile from "./pages/Profile"
 
 /* Bootstrap */
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -51,7 +51,7 @@ export{
     AdminPage,
     CMPage,
     ConcejalPage,
-    UserPage,
+    Profile,
     NavAdmin,
     GetUsers,
     BannerCM

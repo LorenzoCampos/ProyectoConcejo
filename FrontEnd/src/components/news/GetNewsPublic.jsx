@@ -7,6 +7,8 @@ import axios from "axios";
 import "./news.css";
 import News from "./News";
 
+import API from "../../config/apiConfig";
+
 function GetNewsPublic({ onSeeNew }) {
   const [news, setNews] = useState([]);
 
@@ -23,7 +25,7 @@ function GetNewsPublic({ onSeeNew }) {
         "Content-Type": "application/json",
       };
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/news/published",
+        url: API.LIST_NEWS_USER,
         method: "GET",
         headers: headersList,
       };

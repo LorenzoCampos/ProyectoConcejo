@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ children, role }) => {
+const PrivateRoute = ({ children, role}) => {
   const token = localStorage.getItem("authToken");
   const userRole = localStorage.getItem("role");
 
 
    if (!token) {
-    console.warn("No se encontró token. Redirigiendo a Home.");
+    console.warn("No se encontró token. Redirigiendo al Home.");
     return <Navigate to="/"  />;
   }
 

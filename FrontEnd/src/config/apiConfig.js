@@ -12,6 +12,7 @@ const API = {
   CREATE_USERS: `${URL}/register`,
   UPDATE_ROLE: `${URL}/users/userId/role`,
 
+  //CM
   // Banners
   LIST_BANNERS: `${URL}/banners`,
   CREATE_BANNERS: `${URL}/news-banners`,
@@ -23,7 +24,9 @@ const API = {
   CREATE_NEWS: `${URL}/news-banners`,
   UPDATE_NEWS: `${URL}/news-banners/`,
   DELETE_NEWS: `${URL}/news-banners/`,
-  // Agrega más rutas según tus necesidades
+
+  //User
+  LIST_NEWS_USER: `${URL}/news/published`
 };
 
 export default API;
