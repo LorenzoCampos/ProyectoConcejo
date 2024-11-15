@@ -5,10 +5,9 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
-import ReactQuill from "react-quill"; 
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import DOMPurify from 'dompurify';
-
+import DOMPurify from "dompurify";
 
 import "./listNews.css";
 
@@ -16,18 +15,18 @@ import API from "../../../config/apiConfig";
 
 const modules = {
   toolbar: [
-    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['bold', 'italic', 'underline'],
-    ['link'],
-    [{ 'color': [] }, { 'background': [] }],
-    ['image'],
-    ['blockquote'],
-    [{ 'script': 'sub' }, { 'script': 'super' }],
-    [{ 'indent': '-1' }, { 'indent': '+1' }],
-    [{ 'direction': 'rtl' }],
-    ['clean'], // Añade la opción para limpiar el formato
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["bold", "italic", "underline"],
+    ["link"],
+    [{ color: [] }, { background: [] }],
+    ["image"],
+    ["blockquote"],
+    [{ script: "sub" }, { script: "super" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["clean"], // Añade la opción para limpiar el formato
   ],
 };
 
@@ -42,6 +41,7 @@ function ListNews() {
   const [toastMessage, setToastMessage] = useState("");
 
   const [showModal, setShowModal] = useState(false);
+
   const [currentNewId, setCurrentNewId] = useState(null);
   const [currentNewStatus, setCurrentNewStatus] = useState("");
   const [currentNewPublicationDate, setCurrentNewPublicationDate] =
@@ -53,14 +53,12 @@ function ListNews() {
 
   const [currentImage, setCurrentImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
 
-
-  
   useEffect(() => {
     getAlldata();
   }, []);
@@ -90,18 +88,6 @@ function ListNews() {
     }
   };
 
-  /*   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    // Retornar en el formato YYYY-MM-DDTHH:mm
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }; */
-
   const openModalNew = (news) => {
     setCurrentNewId(news.id);
     setCurrentNewStatus(news.status);
@@ -115,7 +101,6 @@ function ListNews() {
 
   const updateState = async (e) => {
     e.preventDefault();
-    
 
     const newState = currentNewStatus;
 
@@ -125,7 +110,7 @@ function ListNews() {
         "Content-Type": "multipart/form-data",
       };
 
-       /* let bodyContent = JSON.stringify({
+      /* let bodyContent = JSON.stringify({
         status: newState,
         publication_date: currentNewPublicationDate,
         unpublication_date: currentNewUnpublicationDate,
@@ -133,19 +118,19 @@ function ListNews() {
         description: currentNewDescription,
       });*/
 
- let bodyContent = new FormData();
+      let bodyContent = new FormData();
       bodyContent.append("status", newState);
       bodyContent.append("publication_date", currentNewPublicationDate);
       bodyContent.append("unpublication_date", currentNewUnpublicationDate);
       bodyContent.append("title", currentNewTitle);
-      bodyContent.append("description", currentNewDescription); 
+      bodyContent.append("description", currentNewDescription);
 
       if (selectedFile) {
         bodyContent.append("image", selectedFile);
       }
 
-   // Agregar imagen solo si hay una nueva seleccionada
-     /* if (currentImage) {
+      // Agregar imagen solo si hay una nueva seleccionada
+      /* if (currentImage) {
         bodyContent.append("image", currentImage);
       }*/
 
@@ -163,8 +148,7 @@ function ListNews() {
       setShowErrorToast(true);
       console.log(error); // Agrega este para ver el error completo en la consola
       console.log(error.response ? error.response.data : "No response data"); // Verifica si error.response existe
-  }
-  
+    }
   };
 
   const deleteNews = async (newsId) => {
@@ -192,7 +176,6 @@ function ListNews() {
   const handleFilterChange = (e) => {
     const selectedFilter = e.target.value;
     setFilterStatus(selectedFilter);
-    
 
     // Filtrar los datos en función del valor seleccionado
     if (selectedFilter === "Activo") {
@@ -203,7 +186,6 @@ function ListNews() {
       setFilteredData(data); // Mostrar todos los datos si no hay filtro
     }
   };
-
 
   return (
     <div className="news-container">
@@ -239,7 +221,11 @@ function ListNews() {
               return (
                 <tr key={news.id}>
                   <td>
-                    <img src={news.image} alt="banner" style={{ width: "100px" }} />
+                    <img
+                      src={news.image}
+                      alt="banner"
+                      style={{ width: "100px" }}
+                    />
                   </td>
                   <td className="title-new-td">{news.title}</td>
                   <td
@@ -251,10 +237,17 @@ function ListNews() {
                   <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
 
                   <td>
-                    <Button className="me-2" variant="primary" onClick={() => openModalNew(news)}>
+                    <Button
+                      className="me-2"
+                      variant="primary"
+                      onClick={() => openModalNew(news)}
+                    >
                       Editar
                     </Button>
-                    <Button variant="danger" onClick={() => deleteNews(news.id)}>
+                    <Button
+                      variant="danger"
+                      onClick={() => deleteNews(news.id)}
+                    >
                       Eliminar
                     </Button>
                   </td>
@@ -266,87 +259,87 @@ function ListNews() {
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Editar Noticia</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={updateState}>
-          <Form.Group>
-            <img
-              src={currentImage}
-              alt="new"
-              style={{ width: "200px", marginLeft: "25%" }}
-            />
-          </Form.Group>
-        <Form.Group controlId="formFile">
-                    <Form.Label>Seleccionar imagen</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                    />
-                  </Form.Group>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Noticia</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={updateState}>
+            <Form.Group>
+              <img
+                src={currentImage}
+                alt="img"
+                style={{ width: "200px", marginLeft: "25%" }}
+              />
+            </Form.Group>
+            <Form.Group controlId="formFile">
+              <Form.Label>Seleccionar imagen</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Estado</Form.Label>
-            <Form.Select
-              value={currentNewStatus}
-              onChange={(e) => setCurrentNewStatus(Number(e.target.value))}
-            >
-              <option value={1}>Activo</option>
-              <option value={0}>Inactivo</option>
-            </Form.Select>
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                value={currentNewStatus}
+                onChange={(e) => setCurrentNewStatus(Number(e.target.value))}
+              >
+                <option value={1}>Activo</option>
+                <option value={0}>Inactivo</option>
+              </Form.Select>
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Titulo</Form.Label>
-            <Form.Control
-              type="text"
-              value={currentNewTitle}
-              onChange={(e) => setCurrentNewTitle(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Titulo</Form.Label>
+              <Form.Control
+                type="text"
+                value={currentNewTitle}
+                onChange={(e) => setCurrentNewTitle(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Descripción</Form.Label>
-            {/* Usamos ReactQuill aquí */}
-            <ReactQuill
-              value={currentNewDescription}
-              onChange={(value) => setCurrentNewDescription(value)}
-              modules={modules}  // Barra de herramientas personalizada
-              placeholder="Escribe la descripción aquí..."
-            />
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Descripción</Form.Label>
+              {/* Usamos ReactQuill aquí */}
+              <ReactQuill
+                value={currentNewDescription}
+                onChange={(value) => setCurrentNewDescription(value)}
+                modules={modules} // Barra de herramientas personalizada
+                placeholder="Escribe la descripción aquí..."
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Fecha de publicación</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              value={currentNewPublicationDate}
-              onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
-              disabled={currentNewStatus === 1}
-              required={currentNewStatus === 0}
-            />
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Fecha de publicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentNewPublicationDate}
+                onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
+                disabled={currentNewStatus === 1}
+                required={currentNewStatus === 0}
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Fecha de despublicación</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              value={currentNewUnpublicationDate}
-              onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
-              required={currentNewStatus === 1}
-            />
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Fecha de despublicación</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={currentNewUnpublicationDate}
+                onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
+                required={currentNewStatus === 1}
+              />
+            </Form.Group>
 
-          <div className="btn-savechange">
-            <Button type="submit" className="btn-news">
-              Guardar cambios
-            </Button>
-          </div>
-        </Form>
-      </Modal.Body>
-    </Modal>
+            <div className="btn-savechange">
+              <Button type="submit" className="btn-news">
+                Guardar cambios
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">
         <Toast

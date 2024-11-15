@@ -13,18 +13,28 @@ function ListBanners() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterStatus, setFilterStatus] = useState("");
+
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [currentBannerId, setCurrentBannerId] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const [currentBannerId, setCurrentBannerId] = useState(null);
   const [currentBannerStatus, setCurrentBannerStatus] = useState("");
   const [currentBannerPublicationDate, setCurrentBannerPublicationDate] =
     useState("");
   const [currentBannerUnpublicationDate, setCurrentBannerUnpublicationDate] =
     useState("");
+
+  const [currentBannerImg, setCurrentBannerImg] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
   useEffect(() => {
     getAlldata();
@@ -54,23 +64,12 @@ function ListBanners() {
     }
   };
 
-/*   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    // Retornar en el formato YYYY-MM-DDTHH:mm
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }; */
-
   const openModal = (banner) => {
     setCurrentBannerId(banner.id);
     setCurrentBannerStatus(banner.status);
     setCurrentBannerPublicationDate(banner.publication_date);
     setCurrentBannerUnpublicationDate(banner.unpublication_date);
+    setCurrentBannerImg(banner.image);
     setShowModal(true);
   };
 
@@ -82,34 +81,38 @@ function ListBanners() {
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       };
 
-      let bodyContent = JSON.stringify({
+      /*     let bodyContent = JSON.stringify({
         status: newState,
         publication_date: currentBannerPublicationDate,
         unpublication_date: currentBannerUnpublicationDate,
+      }); */
+
+      let bodyContent = new FormData();
+      bodyContent.append("status", newState);
+      bodyContent.append("publication_date", currentBannerPublicationDate);
+      bodyContent.append("unpublication_date", currentBannerUnpublicationDate);
+      bodyContent.append("image", currentBannerImg);
+
+      if (selectedFile) {
+        bodyContent.append("image", selectedFile);
+      }
+
+      await axios.post(API.UPDATE_BANNERS + currentBannerId, bodyContent, {
+        headers: headersList,
       });
 
-      await axios.patch(
-        API.UPDATE_BANNERS + currentBannerId,
-        bodyContent,
-        { headers: headersList }
-      );
-
+      console.log(bodyContent);
       setToastMessage(`Banner actualizado correctamente.`);
       setShowSuccessToast(true);
       getAlldata();
       setShowModal(false); // Cerrar el modal
     } catch (error) {
-      setToastMessage("Error al actualizar");
+      setToastMessage("Error al actualizar el abnner");
       setShowErrorToast(true);
-
-      if (error.response) {
-        setToastMessage("Error al actualizar el banner.");
-        setShowErrorToast(true);
-        console.log(error.response.data.message);
-      }
+      console.log(error.response ? error.response.data : "No response data");
     }
   };
 
@@ -123,10 +126,9 @@ function ListBanners() {
           "Content-Type": "application/json",
         };
 
-        await axios.delete(
-          API.DELETE_BANNERS + bannerId,
-          { headers: headersList }
-        );
+        await axios.delete(API.DELETE_BANNERS + bannerId, {
+          headers: headersList,
+        });
         setToastMessage("Banner eliminado correctamente.");
         setShowSuccessToast(true);
         getAlldata(); // Refrescar la lista
@@ -218,6 +220,23 @@ function ListBanners() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={updateState}>
+
+          <Form.Group>
+              <img
+                src={currentBannerImg}
+                alt="img"
+                style={{ width: "200px", marginLeft: "25%" }}
+              />
+            </Form.Group>
+            <Form.Group controlId="formFile">
+              <Form.Label>Seleccionar imagen</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
+
             <Form.Group>
               <Form.Label>Estado</Form.Label>
               <Form.Select
@@ -237,7 +256,7 @@ function ListBanners() {
                 onChange={(e) =>
                   setCurrentBannerPublicationDate(e.target.value)
                 }
-                disabled={currentBannerStatus === 1} 
+                disabled={currentBannerStatus === 1}
                 required={currentBannerStatus === 0}
               />
             </Form.Group>
