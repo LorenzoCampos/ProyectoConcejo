@@ -51,4 +51,5 @@
 svg:hover {
   transform: scale(1.2);
   cursor: pointer;
+  transition: .3s;
 }
