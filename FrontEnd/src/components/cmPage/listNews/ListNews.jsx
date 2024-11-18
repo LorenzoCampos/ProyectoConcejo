@@ -8,6 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
+import DeleteModal from "../deleteModal/DeleteModal";
 
 import "./listNews.css";
 
@@ -15,18 +16,14 @@ import API from "../../../config/apiConfig";
 
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ align: [] }],
-    ["bold", "italic", "underline"],
-    ["link"],
-    [{ color: [] }, { background: [] }],
-    ["image"],
-    ["blockquote"],
-    [{ script: "sub" }, { script: "super" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-    ["clean"], // Añade la opción para limpiar el formato
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['blockquote'],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'direction': 'rtl' }],
+    ['clean'] 
   ],
 };
 
@@ -53,6 +50,10 @@ function ListNews() {
 
   const [currentImage, setCurrentImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [currentNewsIdToDelete, setCurrentNewsIdToDelete] = useState(null);
+const [itemType, setItemType] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -151,26 +152,30 @@ function ListNews() {
     }
   };
 
-  const deleteNews = async (newsId) => {
-    let alertConfirm = confirm("¿Deseas eliminar esta noticia?");
-
-    if (alertConfirm) {
+  const deleteNews = (newsId) => {
+    setItemType("noticia");
+    setCurrentNewsIdToDelete(newsId);
+    setShowDeleteModal(true); 
+  };
+  const handleDelete = async () => {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
           "Content-Type": "multipart/form-data",
         };
 
-        await axios.delete(API.DELETE_NEWS + newsId, { headers: headersList });
+        await axios.delete(API.DELETE_NEWS + currentNewsIdToDelete, { headers: headersList });
         setToastMessage("Noticia eliminada correctamente.");
         setShowSuccessToast(true);
         getAlldata(); // Refrescar la lista
+        setShowDeleteModal(false)
       } catch (error) {
         setToastMessage("Error al eliminar la noticia.");
         setShowErrorToast(true);
+        setShowDeleteModal(false)
       }
-      return;
-    }
+      
+    
   };
 
   const handleFilterChange = (e) => {
@@ -338,6 +343,15 @@ function ListNews() {
           </Form>
         </Modal.Body>
       </Modal>
+
+      {/* Modal de Confirmación de Eliminación */}
+      <DeleteModal
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        itemType={itemType}
+      />
+
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">
         <Toast

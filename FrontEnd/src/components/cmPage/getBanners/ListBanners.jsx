@@ -5,6 +5,7 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
+import DeleteModal from "../deleteModal/DeleteModal";
 
 import "./getBanners.css";
 import API from "../../../config/apiConfig";
@@ -30,6 +31,10 @@ function ListBanners() {
 
   const [currentBannerImg, setCurrentBannerImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [showDeleteBannerModal, setShowDeleteBannerModal] = useState(false);
+const [bannerIdToDelete, setBannerIdToDelete] = useState(null);
+const [itemType, setItemType] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -115,27 +120,34 @@ function ListBanners() {
     }
   };
 
-  const deleteBanner = async (bannerId) => {
-    let alertConfirm = confirm("¿Deseas eliminar este banner?");
+  const deleteBanner = (bannerId) => {
+    setItemType("banner")
+    setBannerIdToDelete(bannerId);
+  setShowDeleteBannerModal(true);
+  };
 
-    if (alertConfirm) {
+    const handleDelete = async ()=> {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
           "Content-Type": "application/json",
         };
 
-        await axios.delete(API.DELETE_BANNERS + bannerId, {
+        await axios.delete(API.DELETE_BANNERS + bannerIdToDelete, {
           headers: headersList,
         });
-        setToastMessage("Banner eliminado correctamente.");
+        setToastMessage(itemType === "banner" ? "Banner eliminado correctamente." : "Noticia eliminada correctamente.");
         setShowSuccessToast(true);
-        getAlldata(); // Refrescar la lista
+        getAlldata(); 
+        setShowDeleteBannerModal(false);
+        setItemType("banner")
       } catch (error) {
-        setToastMessage("Error al eliminar el banner.");
+        setToastMessage(itemType === "banner" ? "Error al eliminar el banner." : "Error al eliminar la noticia.");
         setShowErrorToast(true);
+        setShowDeleteBannerModal(false);
+
       }
-    }
+    
   };
 
   const handleFilterChange = (e) => {
@@ -277,6 +289,14 @@ function ListBanners() {
           </Form>
         </Modal.Body>
       </Modal>
+
+      {/* Modal de Confirmación de Eliminación */}
+      <DeleteModal
+        show={showDeleteBannerModal}
+        onClose={() => setShowDeleteBannerModal(false)}
+        onConfirm={handleDelete}
+        itemType={itemType}
+      />
 
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">

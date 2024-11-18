@@ -4,42 +4,23 @@ import ListBanners from "../cmPage/getBanners/ListBanners";
 import BannerForm from "../cmPage/bannerForm/BannerForm";
 import ListNews from "../cmPage/listNews/ListNews";
 import NewsForm from "../cmPage/newsForm/NewsForm";
-import { useState } from "react";
+//import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
 function CMPage() {
-  const [currentView, setCurrentView] = useState('listBanners'); 
-
-  const handleShowBannerForm = () => {
-    setCurrentView('bannerForm');
-  };
-
-  const handleShowListNews = () => {
-    setCurrentView('listNews');
-  };
-
-  const handleShowNewsForm = () => {
-    setCurrentView('newsForm');
-  };
-
-  const handleShowListBanners = () => {
-    setCurrentView('listBanners');
-  };
-
   return (
     <>
-      <NavCM 
-        onBannerFormClick={handleShowBannerForm}
-        onNewsListClick={handleShowListNews}
-        onNewsFormClick={handleShowNewsForm}
-        onBannersListClick={handleShowListBanners} 
-      />
-      
-      {currentView === 'bannerForm' && <BannerForm />}
-      {currentView === 'listNews' && <ListNews />}
-      {currentView === 'newsForm' && <NewsForm />}
-      {currentView === 'listBanners' && <ListBanners />}
+ 
+      <NavCM />
+      <Routes>
+        <Route path="" element={<ListBanners />} />
+        <Route path="cargar-banner" element={<BannerForm />} />
+        <Route path="ver-noticias" element={<ListNews />} />
+        <Route path="cargar-noticia" element={<NewsForm />} />
+      </Routes>
     </>
   );
+ 
 }
 
 export default CMPage;

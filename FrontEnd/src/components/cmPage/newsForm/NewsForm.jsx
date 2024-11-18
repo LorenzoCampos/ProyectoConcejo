@@ -14,20 +14,17 @@ import "react-quill/dist/quill.snow.css";
 
 import API from "../../../config/apiConfig";
 
+
 const modules = {
   toolbar: [
-    [{ 'header': '1'}, { 'header': '2'}, { 'font': [] }],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
     [{ 'align': [] }],
     ['bold', 'italic', 'underline'],
-    ['link'],
     [{ 'color': [] }, { 'background': [] }],
-    ['image'],
     ['blockquote'],
-    [{ 'script': 'sub'}, { 'script': 'super' }],
     [{ 'indent': '-1'}, { 'indent': '+1' }],
     [{ 'direction': 'rtl' }],
-    ['clean']  // Añade la opción para limpiar el formato
+    ['clean'] 
   ],
 };
 
