@@ -1,6 +1,6 @@
 # Proyecto de Digitalización de Normativas y Gestión de Banners y Noticias
 
-Este proyecto es un sistema integral para la **gestión de regulaciones municipales**, **noticias** y **banners**. Está compuesto por un **backend en Laravel** y un **frontend en React**, que permite la creación, modificación y aprobación de normativas, así como la gestión de contenido multimedia. El sistema incluye autenticación, control de roles y permisos, y digitalización de normativas.
+Este proyecto es un sistema integral para la **gestión de normativas municipales**, **noticias** y **banners**. Está compuesto por un **backend en Laravel** y un **frontend en React**, que permite la creación, modificación y aprobación de normativas, así como la gestión de contenido multimedia. El sistema incluye autenticación, control de roles y permisos, y digitalización de normativas.
 
 ## Características
 
