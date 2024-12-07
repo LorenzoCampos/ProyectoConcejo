@@ -81,7 +81,7 @@ Este proyecto es un sistema integral para la **gestión de normativas municipale
   - **Login**: Página de inicio de sesión para usuarios.
   - **Register**: Página de registro de nuevos usuarios.
   
-- **Componentes**:
+- **Componentes** (algunas):
   - **Navbar**: Barra de navegación que permite el acceso rápido a las secciones.
   - **RegulationForm**: Formulario para crear y editar normativas.
   - **NewsBannerForm**: Formulario para gestionar noticias y banners.
