@@ -12,9 +12,9 @@ class Regulation extends Model
     protected $fillable = [
         'type',
         'number',
-        'date',
         'state',
         'subject',
+        'author_type',
         'pdf_process',
         'pdf_approved',
         'fk_user_creator'
@@ -43,5 +43,31 @@ class Regulation extends Model
     public function interactions()
     {
         return $this->hasMany(RegulationInteraction::class, 'fk_regulation');
+    }
+
+    /**
+     * Regulaciones que esta regulación modifica.
+     */
+    public function regulationsModified()
+    {
+        return $this->belongsToMany(
+            Regulation::class,
+            'regulation_interactions',
+            'fk_regulation',
+            'fk_mod_regulation'
+        );
+    }
+
+    /**
+     * Regulaciones que modifican esta regulación.
+     */
+    public function regulationsThatModify()
+    {
+        return $this->belongsToMany(
+            Regulation::class,
+            'regulation_interactions',
+            'fk_mod_regulation',
+            'fk_regulation'
+        );
     }
 }
