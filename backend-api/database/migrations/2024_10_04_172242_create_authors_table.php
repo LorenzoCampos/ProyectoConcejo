@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fk_regulation')->constrained('regulations'); // Relación con regulations
-            $table->string('type');
             $table->string('name')->nullable();
             $table->timestamps();
         });
