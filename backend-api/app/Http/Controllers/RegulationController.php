@@ -5,294 +5,180 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Regulation;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\Console\Input\Input;
+use App\Services\Regulations\Ordinance;
+use App\Services\Regulations\Correspondence;
+use App\Services\Regulations\Declaration;
+use App\Services\Regulations\Resolution;
+use App\Services\Regulations\Minute;
+use App\Services\Regulations\Decree;
 
 class RegulationController extends Controller
 {
-    // Guardar una nueva regulación
-    public function store(Request $request): JsonResponse
+    // filtros para las normativas
+    public function index(Request $request): JsonResponse
     {
-        try {
-            // 1. Validación inicial de campos comunes
-            $request->validate([
-                'type' => [
-                    'required',
-                    Rule::in(['Ordenanza', 'Minuta', 'Correspondencia', 'Declaracion', 'Resolucion', 'Decreto']),
-                ],
-                'author_type' => [
-                    'required',
-                    Rule::in(['DEM', 'Particular', 'Concejal']),
-                ],
-                'authors' => 'required|array|min:1',
-                'authors.*' => 'string',
-                'state' => [
-                    'required',
-                    Rule::in(['process', 'approved']),
-                ],
-                'key_words' => 'required|array',
-                'key_words.*' => 'string',
-                'subject' => 'nullable|string',
-            ]);
+        return response()->json(Regulation::all(), 200);
+    }
 
-            // 2. Validar si el tipo de autor está permitido para el tipo de regulación
-            $regulationType = $request->input('type');
-            $authorType = $request->input('author_type');
+    // STORE -------------------------------------------------------------------------------------------------------------------------------------
 
-            if (!$this->isAuthorTypeAllowed($regulationType, $authorType)) {
-                return response()->json(['error' => 'El tipo de autor no es válido para este tipo de regulación.'], 422);
-            }
+    public function store(Request $request)
+    {
+        $type = $request->input('type');
+        $regulationService = $this->getRegulationService($type, $request->all());
 
-            // 3. Validaciones adicionales basadas en el tipo de regulación
-            if ($regulationType === 'Correspondencia') {
-                // Para Correspondencia, los campos regulation_to, regulation_from, pdf_process y pdf_approved deben estar ausentes
-                $request->validate([
-                    'regulation_to' => 'prohibited',
-                    'regulation_from' => 'prohibited',
-                    'pdf_process' => 'prohibited',
-                    'pdf_approved' => 'prohibited',
-                ]);
-            } else {
-                // Para otros tipos de regulación, estos campos son opcionales
-                $request->validate([
-                    'regulation_to' => 'nullable|array',
-                    'regulation_to.*' => 'integer|exists:regulations,id',
-                    'regulation_from' => 'nullable|array',
-                    'regulation_from.*' => 'integer|exists:regulations,id',
-                    'pdf_process' => 'nullable|file|mimes:pdf|max:2048',
-                    'pdf_approved' => 'nullable|file|mimes:pdf|max:2048',
-                ]);
-            }
+        // Verificar si el usuario tiene permiso para crear la regulación
+        if (!$regulationService || !$regulationService->canCreate()) {
+            return response()->json(['error' => 'No tiene permiso para crear esta regulación.'], 403);
+        }
 
-            // 4. Crear la regulación después de todas las validaciones
-            $regulation = new Regulation();
-            $regulation->type = $regulationType;
-            $regulation->state = $request->input('state', 'process');
-            $regulation->subject = $request->input('subject');
-            $regulation->created_at = now();
-
-            // Generar el número correlativo para el tipo de regulación
-            $latestNumber = Regulation::where('type', $regulationType)->max('number');
-            $regulation->number = $latestNumber ? $latestNumber + 1 : 1;
-
-            $regulation->save();
-
-            // 5. Guardar los autores
-            foreach ($request->authors as $authorName) {
-                $regulation->authors()->create([
-                    'name' => $authorName,
-                    'type' => $request->author_type
-                ]);
-            }
-
-            // 6. Guardar las palabras clave
-            foreach ($request->key_words as $keywordName) {
-                $regulation->keywords()->create([
-                    'word' => $keywordName
-                ]);
-            }
-
-            // 7. Guardar regulaciones relacionadas si no es Correspondencia
-            if ($regulationType !== 'Correspondencia') {
-                // regulation_to
-                if ($request->has('regulation_to')) {
-                    $regulation->regulationsTo()->sync($request->regulation_to);
-                }
-
-                // regulation_from
-                if ($request->has('regulation_from')) {
-                    $regulation->regulationsFrom()->sync($request->regulation_from);
-                }
-
-                // 8. Guardar archivos PDF
-                if ($request->hasFile('pdf_process')) {
-                    $pdfProcessPath = $request->file('pdf_process')->store('pdfs', 'public');
-                    $regulation->pdf_process = $pdfProcessPath;
-                }
-
-                if ($request->hasFile('pdf_approved')) {
-                    $pdfApprovedPath = $request->file('pdf_approved')->store('pdfs', 'public');
-                    $regulation->pdf_approved = $pdfApprovedPath;
-                }
-            }
-
+        // Validar los datos de entrada
+        $validationErrors = $regulationService->validate(true);
+        if ($validationErrors) {
             return response()->json([
-                'message' => 'Regulación creada exitosamente',
-                'regulation' => $regulation
-            ], 201);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'error' => $e->getMessage()
+                'message' => 'Error de validación',
+                'errors' => $validationErrors,
             ], 422);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 400);
         }
+
+        // Preparar datos para la creación
+        $data = $regulationService->getData();
+        $data['number'] = $regulationService->generateNumber($type);
+
+        // Cargar PDFs si están presentes
+        if ($request->hasFile('pdf_process')) {
+            $pdfProcessPath = $regulationService->uploadPDF($request->file('pdf_process'));
+            $data['pdf_process'] = $pdfProcessPath;
+        }
+
+        if ($request->hasFile('pdf_approved')) {
+            $pdfApprovedPath = $regulationService->uploadPDF($request->file('pdf_approved'));
+            $data['pdf_approved'] = $pdfApprovedPath;
+        }
+
+        // Crear la regulación
+        $regulation = Regulation::create($data);
+
+        // Manejar palabras clave
+        if ($request->has('keywords')) {
+            $regulationService->handleKeywords($regulation, $request->input('keywords'));
+        }
+
+        // Manejar autores
+        if ($request->has('authors')) {
+            $regulationService->handleAuthors($regulation, $request->input('authors'), $request->input('author_type'));
+        }
+
+        // Relacionar regulaciones que modifica
+        if ($request->has('modifies')) {
+            $validModifies = $regulationService->validateRegulationIds($request->input('modifies'));
+            $regulationService->relateModifies($regulation, $validModifies);
+        }
+
+        // Relacionar regulaciones que la modifican
+        if ($request->has('modified_by')) {
+            $validModifiedBy = $regulationService->validateRegulationIds($request->input('modified_by'));
+            $regulationService->relateModifiedBy($regulation, $validModifiedBy);
+        }
+
+        // Responder con la regulación creada y sus relaciones
+        return response()->json(
+            $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify']),
+            201
+        );
     }
-    // Validar si el tipo de autor es permitido según el tipo de regulación
-    private function isAuthorTypeAllowed($regulationType, $authorType)
+
+    // UPDATE -------------------------------------------------------------------------------------------------------------------------------------
+
+    public function update(Request $request, $id)
     {
-        switch ($regulationType) {
-            case 'Ordenanza':
-                return in_array($authorType, ['DEM', 'Concejal']);
-            case 'Correspondencia':
-                return in_array($authorType, ['DEM', 'Particular']);
-            case 'Minuta':
-            case 'Declaracion':
-            case 'Resolucion':
-            case 'Decreto':
-                return $authorType === 'Concejal';
-            default:
-                return false;
+        // Encontrar la regulación por su ID
+        $regulation = Regulation::findOrFail($id);
+
+        // Obtener el servicio de la regulación basado en el tipo
+        $regulationService = $this->getRegulationService($regulation->type, $request->all());
+
+        // Verificar si el usuario tiene permiso para modificar la regulación
+        if (!$regulationService->canModify($regulation->state)) {
+            return response()->json(['error' => 'No tiene permiso para modificar esta regulación.'], 403);
         }
+
+        // Validar los datos enviados en la solicitud
+        $validationErrors = $regulationService->validate();
+        if ($validationErrors) {
+            return response()->json(['message' => 'Error de validación', 'errors' => $validationErrors], 422);
+        }
+
+        // Fusionar los datos actuales con los nuevos
+        $mergedData = $regulationService->mergeData($regulation->toArray());
+        $changes = $regulationService->handleUpdate($regulation->toArray());
+
+        // Actualizar la regulación solo si hay cambios
+        if (!empty($changes)) {
+            $regulation->update($mergedData);
+        }
+
+        // Manejo de relaciones y cambios en ellas
+        $relationChanges = [];
+
+        // Manejar palabras clave
+        if ($request->has('keywords')) {
+            $regulationService->handleKeywords($regulation, $request->input('keywords'));
+        }
+
+        // Manejar autores
+        if ($request->has('authors')) {
+            $authorChanges = $regulationService->detectAuthorChanges($regulation, $request->input('authors'));
+            $regulationService->handleAuthors($regulation, $request->input('authors'), $request->input('author_type'));
+            $relationChanges['authors'] = $authorChanges;
+        }
+
+        // Manejar regulaciones que esta regulación modifica
+        if ($request->has('modifies')) {
+            $validModifies = $regulationService->validateRegulationIds($request->input('modifies'));
+            $regulationService->relateModifies($regulation, $validModifies);
+
+            // Registrar cambios en la relación
+            $relationChanges['modifies'] = [
+                'added' => array_diff($validModifies, $regulation->modifies->pluck('id')->toArray()),
+                'removed' => array_diff($regulation->modifies->pluck('id')->toArray(), $validModifies),
+            ];
+        }
+
+        // Manejar regulaciones que modifican a esta regulación
+        if ($request->has('modified_by')) {
+            $validModifiedBy = $regulationService->validateRegulationIds($request->input('modified_by'));
+            $regulationService->relateModifiedBy($regulation, $validModifiedBy);
+
+            // Registrar cambios en la relación
+            $relationChanges['modifiedBy'] = [
+                'added' => array_diff($validModifiedBy, $regulation->modifiedBy->pluck('id')->toArray()),
+                'removed' => array_diff($regulation->modifiedBy->pluck('id')->toArray(), $validModifiedBy),
+            ];
+        }
+
+        // Registrar las modificaciones realizadas
+        if (!empty($changes) || !empty($relationChanges)) {
+            $regulationService->logModification($regulation->id, $changes, $relationChanges);
+        }
+
+        // Devolver la regulación con sus relaciones cargadas
+        return response()->json(
+            $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify']),
+            200
+        );
     }
 
-    public function show(Regulation $id): JsonResponse
+    private function getRegulationService(string $type, array $data)
     {
-        $regulation = Regulation::find($id);
-
-        if (!$regulation) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);  // Responder con status 404 si no existe
-        }
-
-        return response()->json([
-            'regulation' => $regulation,
-        ], 200);
+        return match ($type) {
+            'ordinance' => new Ordinance($data),
+            'correspondence' => new Correspondence($data),
+            'minute' => new Minute($data),
+            'declaration' => new Declaration($data),
+            'resolution' => new Resolution($data),
+            'decree' => new Decree($data),
+            default => null,
+        };
     }
-
-    public function update(Request $request, $id): JsonResponse
-    {
-        try {
-            // 1. Validar los datos entrantes
-            $request->validate([
-                'type' => [
-                    'required',
-                    Rule::in(['Ordenanza', 'Minuta', 'Correspondencia', 'Declaracion', 'Resolucion', 'Decreto']),
-                ],
-                'author_type' => [
-                    'required',
-                    Rule::in(['DEM', 'Particular', 'Concejal']),
-                ],
-                'authors' => 'required|array|min:1',
-                'authors.*' => 'string',
-                'state' => [
-                    'required',
-                    Rule::in(['process', 'approved']),
-                ],
-                'key_words' => 'required|array',
-                'key_words.*' => 'string',
-                'subject' => 'nullable|string',
-            ]);
-
-            // 2. Buscar la regulación en la base de datos
-            $regulation = Regulation::findOrFail($id);
-
-            // 3. Validar si el tipo de autor está permitido para el tipo de regulación
-            $regulationType = $request->input('type');
-            $authorType = $request->input('author_type');
-
-            if (!$this->isAuthorTypeAllowed($regulationType, $authorType)) {
-                return response()->json(['error' => 'El tipo de autor no es válido para este tipo de regulación.'], 422);
-            }
-
-            // 4. Validaciones adicionales basadas en el tipo de regulación
-            if ($regulationType === 'Correspondencia') {
-                // Prohibir campos específicos para 'Correspondencia'
-                $request->validate([
-                    'regulation_to' => 'prohibited',
-                    'regulation_from' => 'prohibited',
-                    'pdf_process' => 'prohibited',
-                    'pdf_approved' => 'prohibited',
-                ]);
-            } else {
-                // Para otros tipos de regulación, estos campos son opcionales
-                $request->validate([
-                    'regulation_to' => 'nullable|array',
-                    'regulation_to.*' => 'integer|exists:regulations,id',
-                    'regulation_from' => 'nullable|array',
-                    'regulation_from.*' => 'integer|exists:regulations,id',
-                    'pdf_process' => 'nullable|file|mimes:pdf|max:2048',
-                    'pdf_approved' => 'nullable|file|mimes:pdf|max:2048',
-                ]);
-            }
-
-            // 5. Actualizar la regulación con los nuevos datos
-            $regulation->type = $request->input('type');
-            $regulation->state = $request->input('state');
-            $regulation->subject = $request->input('subject');
-            $regulation->updated_at = now();
-
-            // Guardar cambios en la base de datos
-            $regulation->save();
-
-            // 6. Actualizar los autores
-            // Limpiar los autores antiguos y guardar los nuevos
-            $regulation->authors()->delete();
-            foreach ($request->authors as $authorName) {
-                $regulation->authors()->create([
-                    'name' => $authorName,
-                    'type' => $request->author_type
-                ]);
-            }
-
-            // 7. Actualizar las palabras clave
-            // Limpiar las palabras clave antiguas y guardar las nuevas
-            $regulation->keywords()->delete();
-            foreach ($request->key_words as $keywordName) {
-                $regulation->keywords()->create([
-                    'word' => $keywordName
-                ]);
-            }
-
-            // 8. Actualizar regulaciones relacionadas si no es 'Correspondencia'
-            if ($regulationType !== 'Correspondencia') {
-                // Actualizar 'regulation_to' si existe
-                if ($request->has('regulation_to')) {
-                    $regulation->regulationsTo()->sync($request->regulation_to);
-                }
-
-                // Actualizar 'regulation_from' si existe
-                if ($request->has('regulation_from')) {
-                    $regulation->regulationsFrom()->sync($request->regulation_from);
-                }
-
-                // 9. Actualizar los archivos PDF si se subieron
-                if ($request->hasFile('pdf_process')) {
-                    // Eliminar el archivo anterior y guardar el nuevo
-                    if ($regulation->pdf_process) {
-                        Storage::delete($regulation->pdf_process);
-                    }
-                    $pdfProcessPath = $request->file('pdf_process')->store('pdfs', 'public');
-                    $regulation->pdf_process = $pdfProcessPath;
-                }
-
-                if ($request->hasFile('pdf_approved')) {
-                    // Eliminar el archivo anterior y guardar el nuevo
-                    if ($regulation->pdf_approved) {
-                        Storage::delete($regulation->pdf_approved);
-                    }
-                    $pdfApprovedPath = $request->file('pdf_approved')->store('pdfs', 'public');
-                    $regulation->pdf_approved = $pdfApprovedPath;
-                }
-            }
-
-            // 10. Devolver la respuesta de éxito
-            return response()->json([
-                'message' => 'Regulación actualizada correctamente',
-                'regulation' => $regulation
-            ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 422);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 400);
-        }
-    }
-
 }
