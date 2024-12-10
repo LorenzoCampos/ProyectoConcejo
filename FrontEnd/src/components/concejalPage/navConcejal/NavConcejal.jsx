@@ -39,12 +39,16 @@ function NavConcejal() {
                 Volver al Home
               </NavDropdown.Item>
               
-              <NavDropdown.Item as={Link} to="/concejal/perfil">
-                Ver Perfil
+              <NavDropdown.Item as={Link} to="">
+                Ver Normativas
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/concejal/normativas">
+              <NavDropdown.Item as={Link} to="/concejal/cargar-normativas">
                 Cargar Normativas
+              </NavDropdown.Item>
+
+              <NavDropdown.Item as={Link} to="/concejal/perfil">
+                Ver Perfil
               </NavDropdown.Item>
                 
               <NavDropdown.Divider />
