@@ -34,18 +34,28 @@ function NavConcejal() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <NavDropdown title={role || "Usuario"} id="basic-nav-dropdown">
-              <NavDropdown.Item >something</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
+
+              <NavDropdown.Item as={Link} to="/">
+                Volver al Home
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              
+              <NavDropdown.Item as={Link} to="/concejal/perfil">
+                Ver Perfil
+              </NavDropdown.Item>
+
+              <NavDropdown.Item as={Link} to="/concejal/normativas">
+                Cargar Normativas
+              </NavDropdown.Item>
+                
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
+
+              <NavDropdown.Item>
               <Logout />
               </NavDropdown.Item>
             </NavDropdown>
          
         </Navbar.Collapse>
+
       </Container>
       
     </Navbar>

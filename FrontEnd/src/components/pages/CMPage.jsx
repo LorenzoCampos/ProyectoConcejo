@@ -4,6 +4,7 @@ import ListBanners from "../cmPage/getBanners/ListBanners";
 import BannerForm from "../cmPage/bannerForm/BannerForm";
 import ListNews from "../cmPage/listNews/ListNews";
 import NewsForm from "../cmPage/newsForm/NewsForm";
+import Perfil from "../cmPage/perfil/Perfil";
 //import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function CMPage() {
         <Route path="cargar-banner" element={<BannerForm />} />
         <Route path="ver-noticias" element={<ListNews />} />
         <Route path="cargar-noticia" element={<NewsForm />} />
+        <Route path="perfil" element={<Perfil />} />
       </Routes>
     </>
   );
