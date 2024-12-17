@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
@@ -10,9 +10,7 @@ import API from "../../../config/apiConfig";
 
 import "./regulations.css";
 
-
 function ListRegulations() {
-
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -50,6 +48,11 @@ function ListRegulations() {
           <thead>
             <tr>
               <th>
+                <Form.Control type="text" placeholder="Palabras clave..." />
+              </th>
+            </tr>
+            <tr>
+              <th>
                 <Form.Select
                   aria-label="Filtrar por tipo"
                   /* value={}
@@ -66,25 +69,25 @@ function ListRegulations() {
               </th>
               <th>
                 <div className="th-input">
-                  <Form.Control type="number" placeholder="N°..."/>
+                  <Form.Control type="number" placeholder="N°..." />
                 </div>
               </th>
               <th>
                 <div className="th-input">
                   <Form.Label>Desde:</Form.Label>
-                  <Form.Control type="date" placeholder="Desde..."/>  
+                  <Form.Control type="date" placeholder="Desde..." />
                 </div>
               </th>
               <th>
                 <div className="th-input">
                   <Form.Label>Hasta:</Form.Label>
-                  <Form.Control type="date" placeholder="Hasta..."/>
+                  <Form.Control type="date" placeholder="Hasta..." />
                 </div>
               </th>
               <th>
                 <Form.Select
                   aria-label="Filtrar por estado"
-                 /*  value={}
+                  /*  value={}
                   onChange={} */
                 >
                   <option value="">Estado</option>
@@ -95,7 +98,7 @@ function ListRegulations() {
               <th>
                 <Form.Select
                   aria-label="Filtrar por autor"
-                 /*  value={}
+                  /*  value={}
                   onChange={} */
                 >
                   <option value="Autor">Autor</option>
@@ -109,6 +112,25 @@ function ListRegulations() {
               </th>
             </tr>
           </thead>
+
+          <tbody>
+            <tr>
+              <td>TYPE</td>
+              <td>NUMBER</td>
+              <td>START_DATE</td>
+              <td>END_DATE</td>
+              <td>STATUS</td>
+              <td>AUTHOR</td>
+              <td className="td-actions">
+                <td>
+                  <Button variant="secondary">✎</Button>
+                </td>
+                <td>
+                  <Button variant="secondary">Ver detalles</Button>
+                </td>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
@@ -145,7 +167,7 @@ function ListRegulations() {
         </Toast>
       </ToastContainer>
     </div>
-  )
+  );
 }
 
 export default ListRegulations;
