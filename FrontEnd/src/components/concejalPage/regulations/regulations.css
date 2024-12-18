@@ -16,6 +16,12 @@
   --light-color: #859fd320;
 }
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .regulations-container {
   margin-top: 1em;
   display: flex;
@@ -42,12 +48,29 @@
   text-align: center;
 }
 
+.td-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 .table th {
   text-align: center;
   font-size: 1rem;
   vertical-align: middle;
 
   width: 0%;
+}
+
+.table-result {
+  th {
+    background-color: var(--bs-table-bg) !important;
+    color: var(--primary-color) !important;
+    font-weight: 800;
+    border-bottom-width: var(--form-color) !important;
+    border-style: solid var(--form-color) !important;
+  }
 }
 
 .words {
@@ -94,5 +117,7 @@ div button.btn.btn-primary {
   display: flex;
   justify-content: center;
 }
+
+
 
 

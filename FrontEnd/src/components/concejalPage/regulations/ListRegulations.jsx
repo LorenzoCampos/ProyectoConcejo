@@ -1,6 +1,8 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Pagination from "react-bootstrap/Pagination";
+import Spinner from "react-bootstrap/Spinner";
+
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
@@ -11,12 +13,18 @@ import API from "../../../config/apiConfig";
 import "./regulations.css";
 
 function ListRegulations() {
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  const getRegulations = async () => {
+  const getRegulations = async (page = 1) => {
+    setLoading(true);
     try {
       let headersList = {
         Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -24,33 +32,53 @@ function ListRegulations() {
       };
 
       let reqOptions = {
-        url: API.LIST_REGULATIONS,
+        url: API.LIST_REGULATIONS + `?page=${page}`,
         method: "GET",
         headers: headersList,
       };
 
       const response = await axios.request(reqOptions);
-      setData(response.data);
-      /* console.log(response.data); */
+
+      setData(response.data.data);
+      setCurrentPage(response.data.current_page); // Actualiza la página actual
+      setLastPage(response.data.last_page); // Actualiza la última página
     } catch (error) {
       if (error.response) {
         setToastMessage("Error al obtener las normativas.");
         setShowErrorToast(true);
       }
     }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getRegulations(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= lastPage) {
+      getRegulations(newPage); // Llama a la función para obtener los datos de la nueva página
+    }
   };
 
   return (
     <div className="regulations-container">
       <h1 className="title-text">Lista de Normativas</h1>
+
       <div className="table-responsive">
         <table className="table">
+          <tr>
+            <th>
+              <div className="th-input">
+                <Form.Label>Buscador:</Form.Label>
+                <Form.Control type="text" placeholder="Texto..." />
+              </div>
+            </th>
+          </tr>
+        </table>
+        <table className="table">
           <thead>
-            <tr>
-              <th>
-                <Form.Control type="text" placeholder="Palabras clave..." />
-              </th>
-            </tr>
             <tr>
               <th>
                 <Form.Select
@@ -66,11 +94,6 @@ function ListRegulations() {
                   <option value="Inactivo">Declaración</option>
                   <option value="Inactivo">Correspondencia</option>
                 </Form.Select>
-              </th>
-              <th>
-                <div className="th-input">
-                  <Form.Control type="number" placeholder="N°..." />
-                </div>
               </th>
               <th>
                 <div className="th-input">
@@ -112,27 +135,87 @@ function ListRegulations() {
               </th>
             </tr>
           </thead>
-
-          <tbody>
-            <tr>
-              <td>TYPE</td>
-              <td>NUMBER</td>
-              <td>START_DATE</td>
-              <td>END_DATE</td>
-              <td>STATUS</td>
-              <td>AUTHOR</td>
-              <td className="td-actions">
-                <td>
-                  <Button variant="secondary">✎</Button>
-                </td>
-                <td>
-                  <Button variant="secondary">Ver detalles</Button>
-                </td>
-              </td>
-            </tr>
-          </tbody>
         </table>
+
+        {loading ? (
+          <div className="spinner-container">
+            <Spinner animation="border" role="status" size="md">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr className="table-result">
+                <th>Tipo</th>
+                <th>N°</th>
+                <th>Palabras Clave</th>
+                <th>Fecha de creación</th>
+                <th>Estado</th>
+                <th>Autor</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((regulation) => (
+                <tr key={regulation.id}>
+                  <td>{regulation.type}</td>
+                  <td>{regulation.number}</td>
+                  <td>Palabra...</td>
+                  <td>{regulation.created_at}</td>
+                  <td>{regulation.state}</td>
+                  <td>{regulation.author_type}</td>
+                  <td>
+                    <div className="td-buttons">
+                      <td>
+                        <a target="_blank" href={regulation.pdf_process}>
+                          <Button variant="secondary">PDF</Button>
+                        </a>
+                      </td>
+                      <td>
+                        <Button variant="secondary">✎</Button>
+                      </td>
+                      <td>
+                        <Button variant="secondary">Detalles</Button>
+                      </td>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
+
+      <Pagination>
+        <Pagination.First
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+        />
+        <Pagination.Prev
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        />
+
+        {Array.from({ length: lastPage }, (_, i) => i + 1).map((page) => (
+          <Pagination.Item
+            key={page}
+            active={page === currentPage}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </Pagination.Item>
+        ))}
+
+        <Pagination.Next
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === lastPage}
+        />
+        <Pagination.Last
+          onClick={() => handlePageChange(lastPage)}
+          disabled={currentPage === lastPage}
+        />
+      </Pagination>
 
       {/* Toasts */}
       <ToastContainer position="top-end" className="p-3">
