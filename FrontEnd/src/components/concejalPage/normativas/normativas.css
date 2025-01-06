@@ -1,0 +1,40 @@
+.input-keywords {
+  display: flex;
+  flex-direction: row;
+  margin: none !important;
+}
+
+div button.btn.btn-primary {
+  margin: 0px !important;
+  margin-left: 5px !important;
+}
+
+.form-banner {
+  min-width: 60vw !important;
+}
+
+.word-list {
+  display: flex;
+  margin: 10px;
+  flex-wrap: wrap;
+  width: 50em;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+
+  margin: 3px;
+  padding: 4px;
+  border-radius: 5px;
+  /* border: 2px solid #3058a6b3; */
+  background: #ece5e5;
+}
+
+.btn-delete {
+  margin: 0px !important;
+  margin-left: 5px !important;
+}
