@@ -38,3 +38,18 @@ div button.btn.btn-primary {
   margin: 0px !important;
   margin-left: 5px !important;
 }
+
+/* Search dropdown */
+
+.position-relative {
+  position: relative;
+}
+
+.search-dropdown {
+  position: absolute;
+  z-index: 1050; /* Bootstrap requiere z-index alto */
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
