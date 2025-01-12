@@ -12,6 +12,15 @@ div button.btn.btn-primary {
 .form-banner {
   min-width: 60vw !important;
 }
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 140ms;
+  z-index: 1000;
+}
+
+.list-group-item:hover {
+  background-color: #d8daff;
+}
 
 .word-list {
   display: flex;
@@ -30,7 +39,6 @@ div button.btn.btn-primary {
   margin: 3px;
   padding: 4px;
   border-radius: 5px;
-  /* border: 2px solid #3058a6b3; */
   background: #ece5e5;
 }
 
