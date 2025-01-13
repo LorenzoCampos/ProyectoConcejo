@@ -1,0 +1,63 @@
+.input-keywords {
+  display: flex;
+  flex-direction: row;
+  margin: none !important;
+}
+
+div button.btn.btn-primary {
+  margin: 0px !important;
+  margin-left: 5px !important;
+}
+
+.form-banner {
+  min-width: 60vw !important;
+}
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 140ms;
+  z-index: 1000;
+}
+
+.list-group-item:hover {
+  background-color: #d8daff;
+}
+
+.word-list {
+  display: flex;
+  margin: 10px;
+  flex-wrap: wrap;
+  width: 50em;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+
+  margin: 3px;
+  padding: 4px;
+  border-radius: 5px;
+  background: #ece5e5;
+}
+
+.btn-delete {
+  margin: 0px !important;
+  margin-left: 5px !important;
+}
+
+/* Search dropdown */
+
+.position-relative {
+  position: relative;
+}
+
+.search-dropdown {
+  position: absolute;
+  z-index: 1050; /* Bootstrap requiere z-index alto */
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+

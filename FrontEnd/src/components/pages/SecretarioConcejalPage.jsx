@@ -1,7 +1,6 @@
-import NavConcejal from "../concejalPage/navConcejal/NavConcejal";
-import CargarNormativas from "../concejalPage/normativas/CargarNormativa";
-import Perfil from "../concejalPage/perfil/Perfil";
-import ListRegulations from "../concejalPage/regulations/ListRegulations";
+import CargarNormativas from "../secretarioConcejalPage/normativas/CargarNormativa";
+import Perfil from "../secretarioConcejalPage/perfil/Perfil";
+import ListRegulations from "../secretarioConcejalPage/regulations/ListRegulations";
 
 import { Routes, Route } from "react-router-dom";
 import NavbarForRole from "../navbar/NavbarForRole";
@@ -12,11 +11,10 @@ function SecretarioConcejalPage() {
 
         <>
         <NavbarForRole/>
-        <NavConcejal/>
 
         <Routes>
             <Route path="" element={<ListRegulations/>}/>
-            <Route path="cargar-normativas" element={<CargarNormativas/>}/>
+            <Route path="cargar-normativa" element={<CargarNormativas/>}/>
             <Route path="perfil" element={<Perfil/>}/>
         </Routes>
         </>
