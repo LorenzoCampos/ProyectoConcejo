@@ -1,15 +1,17 @@
 import NavConcejal from "../concejalPage/navConcejal/NavConcejal";
-import CargarNormativas from "../concejalPage/normativas/CargarNormativas";
+import CargarNormativas from "../concejalPage/normativas/CargarNormativa";
 import Perfil from "../concejalPage/perfil/Perfil";
 import ListRegulations from "../concejalPage/regulations/ListRegulations";
 
 import { Routes, Route } from "react-router-dom";
+import NavbarForRole from "../navbar/NavbarForRole";
 
 
-function ConcejalPage() {
+function SecretarioConcejalPage() {
     return(
 
         <>
+        <NavbarForRole/>
         <NavConcejal/>
 
         <Routes>
@@ -20,4 +22,4 @@ function ConcejalPage() {
         </>
     );
 }
-export default ConcejalPage;
+export default SecretarioConcejalPage;

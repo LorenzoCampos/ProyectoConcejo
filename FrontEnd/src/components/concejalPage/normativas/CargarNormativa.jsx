@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 
 import API from "../../../config/apiConfig";
 import "./normativas.css";
 
-function CargarNormativas() {
+function CargarNormativa() {
   const [userRole, setUserRole] = useState("");
 
   const [word, setWord] = useState("");
@@ -614,4 +614,4 @@ function CargarNormativas() {
   );
 }
 
-export default CargarNormativas;
+export default CargarNormativa;

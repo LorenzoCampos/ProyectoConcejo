@@ -25,8 +25,8 @@ import GetUsers from "./adminPage/getUsers/GetUsers"
 import CMPage from "./pages/CMPage"
 import BannerCM from "./cmPage/bannerCM/BannerCM";
 
-/* ConcejalPage */
-import ConcejalPage from "./pages/ConcejalPage"
+/* SecretarioConcejalPage */
+import SecretarioConcejalPage from "./pages/SecretarioConcejalPage"
 
 /* Bootstrap */
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -47,7 +47,7 @@ export{
     Logout,
     AdminPage,
     CMPage,
-    ConcejalPage,
+    SecretarioConcejalPage,
     NavAdmin,
     GetUsers,
     BannerCM

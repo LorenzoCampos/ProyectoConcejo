@@ -7,11 +7,12 @@ import NewsForm from "../cmPage/newsForm/NewsForm";
 import Perfil from "../cmPage/perfil/Perfil";
 //import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import NavbarForRole from "../navbar/NavbarForRole";
 
 function CMPage() {
   return (
     <>
- 
+      <NavbarForRole/>
       <NavCM />
       <Routes>
         <Route path="" element={<ListBanners />} />
