@@ -72,6 +72,9 @@
     border-style: solid var(--form-color) !important;
   }
 }
+table.table {
+  margin: auto;
+}
 
 .words {
   color: var(--form-color) !important;
@@ -117,7 +120,14 @@ div button.btn.btn-primary {
   display: flex;
   justify-content: center;
 }
+button.btn.btn-primary{
+  
+  border: none;
+}
 
 
 
 
+button.pdf-btn.btn.btn-primary{
+  background-color: red;
+}

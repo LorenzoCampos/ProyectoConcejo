@@ -8,6 +8,9 @@ import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import { FaRegFilePdf } from "react-icons/fa";
+
+
 import API from "../../../config/apiConfig";
 
 import "./regulations.css";
@@ -62,6 +65,39 @@ function ListRegulations() {
     }
   };
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
+
+
+  const typeTranslations = {
+    "ordinance": "Ordenanza",
+    "resolution": "Resolución",
+    "minutes": "Minutas",
+    "decree": "Decreto",
+    "declaration": "Declaración",
+    "correspondence": "Correspondencia"
+  };
+  function translateType(type) {
+    return typeTranslations[type] || type; // Si no hay traducción, muestra el valor original
+  }
+  
+  const stateTranslations = {
+    "process": "En proceso",
+    "approved": "Aprobado"
+  };
+  function translateState(state) {
+    return stateTranslations[state] || state; // Si no hay traducción, devuelve el valor original
+  }
+    
+  
   return (
     <div className="regulations-container">
       <h1 className="title-text">Lista de Normativas</h1>
@@ -159,24 +195,25 @@ function ListRegulations() {
             <tbody>
               {data.map((regulation) => (
                 <tr key={regulation.id}>
-                  <td>{regulation.type}</td>
+                  <td>{translateType(regulation.type)}</td>
                   <td>{regulation.number}</td>
                   <td>Palabra...</td>
-                  <td>{regulation.created_at}</td>
-                  <td>{regulation.state}</td>
+                  <td>{formatDate(regulation.created_at)}</td>
+                  <td>{translateState(regulation.state)}</td>
                   <td>{regulation.author_type}</td>
                   <td>
                     <div className="td-buttons">
                       <td>
                         <a target="_blank" href={regulation.pdf_process}>
-                          <Button variant="secondary">PDF</Button>
+                          <Button variant="primary" className="pdf-btn"><FaRegFilePdf style={{ color: 'white'}}/>
+                          </Button>
                         </a>
                       </td>
                       <td>
-                        <Button variant="secondary">✎</Button>
+                        <Button variant="secondary" className="edit-btn">✎</Button>
                       </td>
                       <td>
-                        <Button variant="secondary">Detalles</Button>
+                        <Button variant="primary" className="detail-btn">Detalles</Button>
                       </td>
                     </div>
                   </td>

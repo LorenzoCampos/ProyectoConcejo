@@ -178,7 +178,7 @@ function Register() {
           
          
 
-          <div className="form-btn">
+          <div className="form-btn register-btn">
             <Button variant="primary" type="submit">
               Registrar
             </Button>
