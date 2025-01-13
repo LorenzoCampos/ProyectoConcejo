@@ -16,18 +16,27 @@ function NavbarForRole() {
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     const userRole = localStorage.getItem("role");
+    console.log("Stored Name:", storedName);
+    console.log("User Role:", userRole);
     setUserRole(userRole);
 
     if (storedName) {
+      setName(storedName);
       const formattedName = storedName.split(" ").join("+"); // Formatear nombre para URL
-      setAvatar(
-        `https://ui-avatars.com/api/?name=${formattedName}&background=BE9A60&color=ffffff&size=50&rounded=true`
-      );
+
+      console.log("Formatted Name for Avatar:", formattedName);
+
+      const avatarUrl = `https://ui-avatars.com/api/?name=${formattedName}&background=BE9A60&color=ffffff&size=50&rounded=true`;
+      console.log("Avatar URL:", avatarUrl);
+
+      setAvatar(avatarUrl);
     } else {
       setAvatar("Usuario");
       setName("Usuario");
     }
-  }, []);
+  }, []); // Dependencia en el estado adicional
+
+  
 
   return (
     <>
@@ -50,21 +59,21 @@ function NavbarForRole() {
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 
-                {userRole === "concejal" || userRole === "secretario" && (
+                {(userRole === "concejal" || userRole === "secretario" || userRole === "admin") && (
                   <>
                     <Nav.Link as={Link} to="">Ver Normativas</Nav.Link>
                     <Nav.Link as={Link} to="cargar-normativa">Cargar normativa</Nav.Link>
                     
                   </>
                 )}
+
                 {userRole === "admin" && (
                   <>
-                    <Nav.Link as={Link} to="ver-normativas">Ver Normativas</Nav.Link>
-                    <Nav.Link as={Link} to="cargar-normativa">Cargar normativa</Nav.Link>
-                    <Nav.Link as={Link} to="">Gestionar Usuarios</Nav.Link>
+                    <Nav.Link as={Link} to="gestionar-usuarios">Gestionar Usuarios</Nav.Link>
                     <Nav.Link as={Link} to="registrar-usuario">Registrar Usuario</Nav.Link>
                   </>
                 )}
+
                 {userRole === "cm" && (
                   <>
                     <Nav.Link as={Link} to="ver-banners">Gestionar Banners</Nav.Link>
@@ -75,11 +84,12 @@ function NavbarForRole() {
                 <NavDropdown
               title={
                 <div className="user-info">
-                  {avatar ? (
+                  {avatar && avatar !== "Usuario" ? (
                     <img src={avatar} alt="User Avatar" className="avatar" />
                   ) : (
-                    <FaRegUserCircle className="default-avatar" /> && name
+                    <FaRegUserCircle className="default-avatar" />&&<span className="user-name">{name}</span>
                   )}
+                 
                 </div>
               }
               id="user-dropdown"
