@@ -357,10 +357,8 @@ function CargarNormativa() {
   };
 
   return (
-    <div className="container">
-      <Container>
-        <Row>
-          <Col>
+    <div className="container cont-norm">
+      
             <h1 className="text-center title-text">Registrar Normativa</h1>
             {message && (
               <Alert variant={messageType} className="text-center">
@@ -609,9 +607,6 @@ function CargarNormativa() {
                 </div>
               </Form>
             </div>
-          </Col>
-        </Row>
-      </Container>
     </div>
   );
 }

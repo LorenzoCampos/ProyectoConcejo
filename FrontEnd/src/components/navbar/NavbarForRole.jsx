@@ -22,7 +22,7 @@ function NavbarForRole() {
 
     if (storedName) {
       setName(storedName);
-      const formattedName = storedName.split(" ").join("+"); // Formatear nombre para URL
+      const formattedName = storedName.split(" ").join("+");
 
       console.log("Formatted Name for Avatar:", formattedName);
 
@@ -34,9 +34,7 @@ function NavbarForRole() {
       setAvatar("Usuario");
       setName("Usuario");
     }
-  }, []); // Dependencia en el estado adicional
-
-  
+  }, []);
 
   return (
     <>
@@ -45,7 +43,9 @@ function NavbarForRole() {
           <Navbar.Brand as={Link} to="/">
             <img className="logo" src="public/logo1.png" alt="Logo" />
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-sm`}
             aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
@@ -53,56 +53,88 @@ function NavbarForRole() {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
-                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                <div className="user-info">
+                  {avatar && avatar !== "Usuario" ? (
+                    <img src={avatar} alt="User Avatar" className="avatar" />
+                  ) : (
+                    <FaRegUserCircle className="default-avatar" />
+                  )}
+                  <span className="user-name">{name}</span>
+                </div>
               </Offcanvas.Title>
             </Offcanvas.Header>
+
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 
-                {(userRole === "concejal" || userRole === "secretario" || userRole === "admin") && (
+
+                {(userRole === "concejal" ||
+                  userRole === "secretario" ||
+                  userRole === "admin") && (
                   <>
-                    <Nav.Link as={Link} to="">Ver Normativas</Nav.Link>
-                    <Nav.Link as={Link} to="cargar-normativa">Cargar normativa</Nav.Link>
-                    
+                    <Nav.Link as={Link} to="" className="link-nav" style={{ fontSize: "1rem" }}>
+                      Ver Normativas
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="cargar-normativa" className="link-nav" style={{ fontSize: "1rem" }}>
+                      Cargar normativa
+                    </Nav.Link>
                   </>
                 )}
 
                 {userRole === "admin" && (
                   <>
-                    <Nav.Link as={Link} to="gestionar-usuarios">Gestionar Usuarios</Nav.Link>
-                    <Nav.Link as={Link} to="registrar-usuario">Registrar Usuario</Nav.Link>
+                    <Nav.Link as={Link} to="gestionar-usuarios" className="link-nav" style={{ fontSize: "1rem" }}>
+                      Gestionar Usuarios
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="registrar-usuario" className="link-nav" style={{ fontSize: "1rem" }}>
+                      Registrar Usuario
+                    </Nav.Link>
                   </>
                 )}
 
                 {userRole === "cm" && (
                   <>
-                    <Nav.Link as={Link} to="ver-banners">Gestionar Banners</Nav.Link>
-                    <Nav.Link as={Link} to="">Gestionar Noticias</Nav.Link>
+                    <Nav.Link as={Link} to="ver-banners" className="link-nav" style={{ fontSize: "1rem" }}>
+                      Gestionar Banners
+                    </Nav.Link>
+                    <Nav.Link as={Link} to=""className="link-nav" style={{ fontSize: "1rem" }}>
+                      Gestionar Noticias
+                    </Nav.Link>
                   </>
                 )}
 
-                <NavDropdown
-              title={
-                <div className="user-info">
-                  {avatar && avatar !== "Usuario" ? (
-                    <img src={avatar} alt="User Avatar" className="avatar" />
-                  ) : (
-                    <FaRegUserCircle className="default-avatar" />&&<span className="user-name">{name}</span>
-                  )}
-                 
+                <div className="d-none d-sm-block">
+                  <NavDropdown
+                    title={
+                      <div className="user-info">
+                        {avatar && avatar !== "Usuario" ? (
+                          <img
+                            src={avatar}
+                            alt="User Avatar"
+                            className="avatar"
+                          />
+                        ) : (
+                          <>
+                          <FaRegUserCircle className="default-avatar" />
+                          <span className="user-name">{name}</span>
+                        </>
+                          
+                        )}
+                      </div>
+                    }
+                    id="user-dropdown"
+                    align="end"
+                  >
+                    <NavDropdown.Item>Ver Perfil</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/">
+                  Volver al Home
+                  </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item>
+                      <Logout />
+                    </NavDropdown.Item>
+                  </NavDropdown>
                 </div>
-              }
-              id="user-dropdown"
-              align="end"
-            > 
-              <NavDropdown.Item >
-                Ver Perfil
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item>
-                <Logout />
-              </NavDropdown.Item>
-            </NavDropdown>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
