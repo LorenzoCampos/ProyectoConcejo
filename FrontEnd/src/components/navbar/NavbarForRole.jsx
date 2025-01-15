@@ -66,16 +66,24 @@ function NavbarForRole() {
 
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                
-
                 {(userRole === "concejal" ||
                   userRole === "secretario" ||
                   userRole === "admin") && (
                   <>
-                    <Nav.Link as={Link} to="" className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to=""
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Ver Normativas
                     </Nav.Link>
-                    <Nav.Link as={Link} to="cargar-normativa" className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to="cargar-normativa"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Cargar normativa
                     </Nav.Link>
                   </>
@@ -83,10 +91,20 @@ function NavbarForRole() {
 
                 {userRole === "admin" && (
                   <>
-                    <Nav.Link as={Link} to="gestionar-usuarios" className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to="gestionar-usuarios"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Gestionar Usuarios
                     </Nav.Link>
-                    <Nav.Link as={Link} to="registrar-usuario" className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to="registrar-usuario"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Registrar Usuario
                     </Nav.Link>
                   </>
@@ -94,10 +112,20 @@ function NavbarForRole() {
 
                 {userRole === "cm" && (
                   <>
-                    <Nav.Link as={Link} to="ver-banners" className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to="ver-banners"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Gestionar Banners
                     </Nav.Link>
-                    <Nav.Link as={Link} to=""className="link-nav" style={{ fontSize: "1rem" }}>
+                    <Nav.Link
+                      as={Link}
+                      to=""
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
                       Gestionar Noticias
                     </Nav.Link>
                   </>
@@ -115,10 +143,9 @@ function NavbarForRole() {
                           />
                         ) : (
                           <>
-                          <FaRegUserCircle className="default-avatar" />
-                          <span className="user-name">{name}</span>
-                        </>
-                          
+                            <FaRegUserCircle className="default-avatar" />
+                            <span className="user-name">{name}</span>
+                          </>
                         )}
                       </div>
                     }
@@ -127,13 +154,24 @@ function NavbarForRole() {
                   >
                     <NavDropdown.Item>Ver Perfil</NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/">
-                  Volver al Home
-                  </NavDropdown.Item>
+                      Volver al Home
+                    </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item>
                       <Logout />
                     </NavDropdown.Item>
                   </NavDropdown>
+                </div>
+                <div className="d-block d-sm-none">
+                  <Nav.Link as={Link} to="/profile">
+                    Ver Perfil
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/">
+                    Volver al Home
+                  </Nav.Link>
+                  <Nav.Link>
+                    <Logout />
+                  </Nav.Link>
                 </div>
               </Nav>
             </Offcanvas.Body>
