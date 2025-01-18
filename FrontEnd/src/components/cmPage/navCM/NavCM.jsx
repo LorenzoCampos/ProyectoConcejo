@@ -38,6 +38,9 @@ function NavCM() {
                   <NavDropdown.Item as={Link} to="/">
                     Volver al Home
                   </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/cm/perfil">
+                    Ver Perfil
+                  </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="">
                     Ver Banners
                   </NavDropdown.Item>

@@ -33,8 +33,8 @@ function ListBanners() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const [showDeleteBannerModal, setShowDeleteBannerModal] = useState(false);
-const [bannerIdToDelete, setBannerIdToDelete] = useState(null);
-const [itemType, setItemType] = useState("");
+  const [bannerIdToDelete, setBannerIdToDelete] = useState(null);
+  const [itemType, setItemType] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -97,8 +97,14 @@ const [itemType, setItemType] = useState("");
 
       let bodyContent = new FormData();
       bodyContent.append("status", newState);
-      bodyContent.append("publication_date", currentBannerPublicationDate || "");
-      bodyContent.append("unpublication_date", currentBannerUnpublicationDate || "");
+      bodyContent.append(
+        "publication_date",
+        currentBannerPublicationDate || ""
+      );
+      bodyContent.append(
+        "unpublication_date",
+        currentBannerUnpublicationDate || ""
+      );
 
       if (selectedFile) {
         bodyContent.append("image", selectedFile);
@@ -121,33 +127,39 @@ const [itemType, setItemType] = useState("");
   };
 
   const deleteBanner = (bannerId) => {
-    setItemType("banner")
+    setItemType("banner");
     setBannerIdToDelete(bannerId);
-  setShowDeleteBannerModal(true);
+    setShowDeleteBannerModal(true);
   };
 
-    const handleDelete = async ()=> {
-      try {
-        let headersList = {
-          Authorization: "Bearer " + localStorage.getItem("authToken"),
-          "Content-Type": "application/json",
-        };
+  const handleDelete = async () => {
+    try {
+      let headersList = {
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
+        "Content-Type": "application/json",
+      };
 
-        await axios.delete(API.DELETE_BANNERS + bannerIdToDelete, {
-          headers: headersList,
-        });
-        setToastMessage(itemType === "banner" ? "Banner eliminado correctamente." : "Noticia eliminada correctamente.");
-        setShowSuccessToast(true);
-        getAlldata(); 
-        setShowDeleteBannerModal(false);
-        setItemType("banner")
-      } catch (error) {
-        setToastMessage(itemType === "banner" ? "Error al eliminar el banner." : "Error al eliminar la noticia.");
-        setShowErrorToast(true);
-        setShowDeleteBannerModal(false);
-
-      }
-    
+      await axios.delete(API.DELETE_BANNERS + bannerIdToDelete, {
+        headers: headersList,
+      });
+      setToastMessage(
+        itemType === "banner"
+          ? "Banner eliminado correctamente."
+          : "Noticia eliminada correctamente."
+      );
+      setShowSuccessToast(true);
+      getAlldata();
+      setShowDeleteBannerModal(false);
+      setItemType("banner");
+    } catch (error) {
+      setToastMessage(
+        itemType === "banner"
+          ? "Error al eliminar el banner."
+          : "Error al eliminar la noticia."
+      );
+      setShowErrorToast(true);
+      setShowDeleteBannerModal(false);
+    }
   };
 
   const handleFilterChange = (e) => {
@@ -231,8 +243,7 @@ const [itemType, setItemType] = useState("");
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={updateState}>
-
-          <Form.Group>
+            <Form.Group>
               <img
                 src={currentBannerImg}
                 alt="img"

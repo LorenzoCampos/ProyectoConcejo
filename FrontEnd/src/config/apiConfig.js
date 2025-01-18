@@ -26,7 +26,14 @@ const API = {
   DELETE_NEWS: `${URL}/news-banners/`,
 
   //User
-  LIST_NEWS_USER: `${URL}/news/published`
+  LIST_NEWS_USER: `${URL}/news/published`,
+
+  //Regulations
+  LIST_REGULATIONS: `${URL}/regulations`, // Lista de Normativas
+  SHOW_REGULATION: `${URL}/regulations/`, // Vista de una Sola Normativa
+  CREATE_REGULATIONS: `${URL}/regulations`, // Crear Normativa
+  UPDATE_REGULATIONS: `${URL}/regulations/` // Modificar Normativa
+
 };
 
 export default API;

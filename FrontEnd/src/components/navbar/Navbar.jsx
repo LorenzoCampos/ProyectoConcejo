@@ -34,9 +34,9 @@ function NavBar(onHomeClick) {
               {isAuthenticated ? (
                 <>
                   {role === "admin" && <Nav.Link as={Link} to="/admin" className='link-nav'>Admin Panel</Nav.Link>}
-                  {role === "concejal" && <Nav.Link as={Link} to="/concejal" className='link-nav'>Concejal Panel</Nav.Link>}
+                  {role === "concejal" && <Nav.Link as={Link} to="/secretario-concejal" className='link-nav'>Concejal Panel</Nav.Link>}
                   {role === "cm" && <Nav.Link as={Link} to="/cm" className='link-nav'>CM Panel</Nav.Link>}
-                  {role === "secretario" && <Nav.Link as={Link} to="/secretario" className='link-nav'>Secretario Panel</Nav.Link>}
+                  {role === "secretario" && <Nav.Link as={Link} to="/secretario-concejal" className='link-nav'>Secretario Panel</Nav.Link>}
                 
                 </>
               ) : (

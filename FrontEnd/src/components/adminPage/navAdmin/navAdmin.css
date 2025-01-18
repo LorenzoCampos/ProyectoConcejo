@@ -15,7 +15,11 @@
     --third-color: #BE9A60;
 }
 
-
+/* Elimina la flecha de los dropdowns */
+.dropdown-toggle::after {
+    display: none !important;
+  }
+  
 
 @media (min-width: 992px) {
     .navbar-expand-lg {
@@ -23,3 +27,5 @@
         justify-content: center !important;
     }
 }
+
+  

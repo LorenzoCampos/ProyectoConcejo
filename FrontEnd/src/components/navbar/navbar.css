@@ -61,3 +61,33 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
 }
 
 
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-nav {
+        align-items: center;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 750px) { 
+    .navbar-expand-sm .navbar-nav .nav-link {
+        font-size: 0.5rem !important;
+        padding: 2px;
+        margin: 5px;
+    }
+}
+@media (min-width: 750px) and (max-width: 850px) { 
+    .navbar-expand-sm .navbar-nav .nav-link {
+        font-size: 0.7rem !important;
+        padding: 2px;
+        margin: 5px;
+    }
+}
+
+/* Solo mostrar el nombre en pantallas grandes */
+@media (max-width: 576px) {
+    .user-info .user-name {
+      display: none;
+    }
+  }
+  
+ 
+  
