@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->integer('number');
-            $table->date('date');
             $table->string('state');
             $table->string('subject');
-            $table->string('pdf_process');
-            $table->string('pdf_approved');
+            $table->string('author_type');
+            $table->string('pdf_process')->nullable();
+            $table->string('pdf_approved')->nullable();
             $table->foreignId('fk_user_creator')->constrained('users'); // Relación con usuarios
             $table->timestamps();
         });
