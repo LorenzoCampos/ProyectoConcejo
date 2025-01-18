@@ -39,7 +39,7 @@ abstract class BaseNewBanner
     {
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images/news_banners', 'public');
-            return 'https:lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
+            return 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
         }
         return null;
     }
