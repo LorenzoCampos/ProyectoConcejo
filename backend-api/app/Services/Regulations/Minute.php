@@ -6,21 +6,27 @@ use Illuminate\Support\Facades\Validator;
 
 class Minute extends BaseRegulation
 {
-    public function validate()
+    public function validate(bool $isCreation = true)
     {
-        $validator = Validator::make($this->data, [
-            'type' => 'required|string|in:minute',
-            'number' => 'nullable|integer', // Se genera automáticamente si no está presente
-            'date' => 'required|date',
-            'state' => 'required|string|in:process,approved',
-            'subject' => 'required|string|max:255',
-            'pdf_process' => 'nullable|string',
-            'pdf_approved' => 'nullable|string',
-            'author_type' => 'required|string|in:Concejal',
-            'authors' => 'required|array|min:1', // Al menos un autor
-            'authors.*' => 'required|string|max:255', // Cada autor debe ser un nombre válido
-        ]);
+        $rules = [
+            'type' => $isCreation ? 'required|string|in:minute' : 'sometimes|string|in:minute',
+            'number' => 'nullable|integer',
+            'state' => $isCreation ? 'required|string|in:process,approved' : 'sometimes|string|in:process,approved',
+            'subject' => $isCreation ? 'required|string|max:255' : 'sometimes|string|max:255',
+            'pdf_process' => 'nullable|file',
+            'pdf_approved' => 'nullable|file',
+            'modifies' => 'nullable|array',
+            'modifies.*' => 'nullable|integer|max:255',
+            'modified_by' => 'nullable|array',
+            'modified_by.*' => 'nullable|integer|max:255',
+            'author_type' => $isCreation ? 'required|string|in:concejal' : 'sometimes|string|in:concejal',
+            'authors' => $isCreation ? 'required|array|min:1' : 'sometimes|array|min:1',
+            'authors.*' => 'required|string|max:255',
+            'keywords' => 'nullable|array',
+            'keywords.*' => 'nullable|string|max:255',
+        ];
 
+        $validator = Validator::make($this->data, $rules);
         if ($validator->fails()) {
             return $validator->errors();
         }

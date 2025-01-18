@@ -6,18 +6,21 @@ use Illuminate\Support\Facades\Validator;
 
 class Correspondence extends BaseRegulation
 {
-    public function validate()
+    public function validate(bool $isCreation = true)
     {
-        $validator = Validator::make($this->data, [
-            'type' => 'required|string|in:correspondence',
-            'number' => 'nullable|integer', // Se genera automáticamente si no está presente
-            'state' => 'required|string|in:process,approved',
-            'subject' => 'required|string|max:255',
-            'author_type' => 'required|string|in:DEM,Particular',
-            'authors' => 'required|array|min:1', // Al menos un autor
-            'authors.*' => 'required|string|max:255', // Cada autor debe ser un nombre válido
-        ]);
+        $rules = [
+            'type' => $isCreation ? 'required|string|in:correspondence' : 'sometimes|string|in:correspondence',
+            'number' => 'nullable|integer',
+            'state' => $isCreation ? 'required|string|in:process,approved' : 'sometimes|string|in:process,approved',
+            'subject' => $isCreation ? 'required|string|max:255' : 'sometimes|string|max:255',
+            'author_type' => $isCreation ? 'required|string|in:DEM,particular' : 'sometimes|string|in:DEM,particular',
+            'authors' => $isCreation ? 'required|array|min:1' : 'sometimes|array|min:1',
+            'authors.*' => 'required|string|max:255',
+            'keywords' => 'nullable|array',
+            'keywords.*' => 'nullable|string|max:255',
+        ];
 
+        $validator = Validator::make($this->data, $rules);
         if ($validator->fails()) {
             return $validator->errors();
         }
@@ -32,7 +35,7 @@ class Correspondence extends BaseRegulation
     public function getData(): array
     {
         return array_intersect_key($this->data, array_flip([
-            'type', 'number', 'state', 'subject', 'author_type', 'authors'
+            'type', 'number', 'state', 'subject', 'fk_user_creator', 'author_type', 'authors', 'keywords'
         ]));
     }
 }
