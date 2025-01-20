@@ -213,6 +213,7 @@ function ListBanners() {
                 <td>{banner.unpublication_date}</td>
                 <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
                 <td>
+                  <div className="d-flex gap-3 justify-content-center">
                   <Button
                     className="me-2"
                     variant="primary"
@@ -226,6 +227,9 @@ function ListBanners() {
                   >
                     Eliminar
                   </Button>
+
+                  </div>
+                  
                 </td>
               </tr>
             ))}

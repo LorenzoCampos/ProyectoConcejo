@@ -10,4 +10,11 @@ export default defineConfig({
     PurgeCSSPlugin({
       content: glob.sync([
         './index.html',
-        './src/**/*.{js,jsx,ts,tsx,vue}',  // Ajusta las rutas de tus archivos de 
+        './src/**/*.{js,jsx,ts,tsx,vue}',  // Ajusta las rutas de tus archivos de código
+      ]),
+    }),
+  ],
+  define: {
+    global: 'window',
+  },
+});
