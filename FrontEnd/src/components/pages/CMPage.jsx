@@ -13,7 +13,6 @@ function CMPage() {
   return (
     <>
       <NavbarForRole/>
-      <NavCM />
       <Routes>
         <Route path="" element={<ListBanners />} />
         <Route path="cargar-banner" element={<BannerForm />} />
