@@ -263,14 +263,26 @@ function ListRegulations() {
                 <tr key={regulation.id}>
                   <td>{translateType(regulation.type)}</td>
                   <td>{regulation.number}</td>
-                  <td>Palabra...</td>
+                  <td>
+                    {regulation.keywords && regulation.keywords.length > 0 ? (
+                      regulation.keywords.map((keyword, index) => (
+                        <span key={index}>
+                          {keyword.word.charAt(0).toUpperCase() +
+                            keyword.word.slice(1)}
+                          {index < regulation.keywords.length - 1 ? " - " : ""}
+                        </span>
+                      ))
+                    ) : (
+                      <span>No keywords available</span>
+                    )}
+                  </td>
                   <td>{formatDate(regulation.created_at)}</td>
                   <td>{translateState(regulation.state)}</td>
                   <td>{regulation.author_type}</td>
                   <td>
                     <div className="td-buttons">
                       <td>
-                        {regulation.state === "approved" && (
+                        {regulation.pdf_approved && (
                           <a target="_blank" href={regulation.pdf_approved}>
                             <Button variant="primary" className="pdf-btn">
                               <FaRegFilePdf style={{ color: "white" }} />
@@ -278,9 +290,20 @@ function ListRegulations() {
                           </a>
                         )}
 
-                        {regulation.state === "process" && (
+                        {regulation.pdf_process ? (
                           <a target="_blank" href={regulation.pdf_process}>
                             <Button variant="primary" className="pdf-btn">
+                              <FaRegFilePdf style={{ color: "white" }} />
+                            </Button>
+                          </a>
+                        ) : (
+                          // button inactivo para las normativas que no tengan pdf
+                          <a target="_blank" disabled>
+                            <Button
+                              variant="secondary"
+                              className="pdf-btn "
+                              disabled
+                            >
                               <FaRegFilePdf style={{ color: "white" }} />
                             </Button>
                           </a>
