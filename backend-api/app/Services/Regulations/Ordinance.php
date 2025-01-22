@@ -10,24 +10,24 @@ class Ordinance extends BaseRegulation
     public function validate(bool $isCreation = true)
     {
         $rules = [
-            'type' => $isCreation ? 'required|string|in:ordinance' : '',
-            'number' => 'nullable|integer', // Se genera automáticamente si no está presente
+            'type' => $isCreation ? 'required|string|in:ordinance' : 'sometimes|string|in:ordinance',
+            'number' => 'nullable|integer',
             'state' => $isCreation ? 'required|string|in:process,approved' : 'sometimes|string|in:process,approved',
             'subject' => $isCreation ? 'required|string|max:255' : 'sometimes|string|max:255',
-            // debe recibir un pdf
             'pdf_process' => 'nullable|file',
             'pdf_approved' => 'nullable|file',
+            'modifies' => 'nullable|array',
+            'modifies.*' => 'nullable|integer|max:255',
+            'modified_by' => 'nullable|array',
+            'modified_by.*' => 'nullable|integer|max:255',
             'author_type' => $isCreation ? 'required|string|in:DEM,concejal' : 'sometimes|string|in:DEM,concejal',
-            'authors' =>  $isCreation ? 'required|array|min:1' : 'sometimes|array|min:1', // Al menos un autor
-            'authors.*' => 'required|string|max:255', // Cada autor debe ser un nombre válido
+            'authors' => $isCreation ? 'required|array|min:1' : 'sometimes|array|min:1',
+            'authors.*' => 'required|string|max:255',
             'keywords' => 'nullable|array',
-            'keywords.*' => 'required|string|max:255', // Cada palabra clave debe ser un nombre valido
+            'keywords.*' => 'nullable|string|max:255',
         ];
 
         $validator = Validator::make($this->data, $rules);
-
-
-
         if ($validator->fails()) {
             return $validator->errors();
         }

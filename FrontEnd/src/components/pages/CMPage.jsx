@@ -1,5 +1,4 @@
 // CMPage.js
-import NavCM from "../cmPage/navCM/NavCM"; 
 import ListBanners from "../cmPage/getBanners/ListBanners";
 import BannerForm from "../cmPage/bannerForm/BannerForm";
 import ListNews from "../cmPage/listNews/ListNews";
@@ -13,7 +12,6 @@ function CMPage() {
   return (
     <>
       <NavbarForRole/>
-      <NavCM />
       <Routes>
         <Route path="" element={<ListBanners />} />
         <Route path="cargar-banner" element={<BannerForm />} />

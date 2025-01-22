@@ -11,12 +11,10 @@ class Modification extends Model
 
     protected $fillable = [
         'fk_regulation',
-        'date',
         'name_cell',
         'old_cell',
-        'fk_old_user',
         'new_cell',
-        'fk_new_user'
+        'fk_user'
     ];
 
     public function regulation()

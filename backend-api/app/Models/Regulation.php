@@ -40,7 +40,7 @@ class Regulation extends Model
         return $this->hasMany(KeyWord::class, 'fk_regulation');
     }
 
-    public function interactions()
+    public function regulationInteractions()
     {
         return $this->hasMany(RegulationInteraction::class, 'fk_regulation');
     }

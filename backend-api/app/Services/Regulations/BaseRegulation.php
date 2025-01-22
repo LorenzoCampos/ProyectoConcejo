@@ -38,7 +38,7 @@ abstract class BaseRegulation
     public function uploadPDF($file): string
     {
         $path = $file->store('pdfs', 'public');
-        $endPath = 'https:lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $path;
+        $endPath = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $path;
         return $endPath;
     }
 
@@ -106,25 +106,6 @@ abstract class BaseRegulation
         $this->syncRelation($regulation, 'keywords', $keywords, fn($word) => ['word' => $word]);
     }
 
-    // -----------------------------------------------------------------------------------------------------------
-
-    /**
-     * Detectar cambios en los autores asociados.
-     *
-     * @param Model $regulation Instancia de la regulación.
-     * @param array $newAuthors Nuevos autores enviados en la petición.
-     * @return array Cambios detectados (added, removed).
-     */
-    public function detectAuthorChanges(Model $regulation, array $newAuthors): array
-    {
-        $currentAuthors = $regulation->authors->pluck('name')->toArray();
-
-        return [
-            'added' => array_diff($newAuthors, $currentAuthors),
-            'removed' => array_diff($currentAuthors, $newAuthors),
-        ];
-    }
-
     // ------------------------------------------------------------------------------------------------------------
 
     /**
@@ -148,7 +129,7 @@ abstract class BaseRegulation
      */
     public function relateModifies(Model $regulation, array $modifiesIds): void
     {
-        $this->syncRelation($regulation, 'modifies', $modifiesIds);
+        $this->syncRelation($regulation, 'regulationInteractions', $modifiesIds, fn($id) => ['rule' => "modifies", 'fk_mod_regulation' => $id]);
     }
 
     // ------------------------------------------------------------------------------------------------------------
@@ -161,7 +142,7 @@ abstract class BaseRegulation
      */
     public function relateModifiedBy(Model $regulation, array $modifiedByIds): void
     {
-        $this->syncRelation($regulation, 'modifiedBy', $modifiedByIds);
+        $this->syncRelation($regulation, 'regulationInteractions', $modifiedByIds, fn($id) => ['rule' => "modifiedBy", 'fk_mod_regulation' => $id]);
     }
 
     // -----------------------------------------------------------------------------------------------------------
@@ -198,7 +179,7 @@ abstract class BaseRegulation
     public function canModify(string $state): bool
     {
         // Admin y Secretario/a pueden modificar
-        if ($this->currentUser->hasRole(['admin', 'secretary'])) {
+        if ($this->currentUser->hasRole(['admin', 'secretario'])) {
             return true;
         }
 
@@ -228,69 +209,74 @@ abstract class BaseRegulation
 
         switch ($this->data['type']) {
             case 'ordinance':
-                return in_array($authorType, ['DEM', 'Concejal']);
+                return in_array($authorType, ['DEM', 'concejal']);
             case 'correspondence':
-                return in_array($authorType, ['DEM', 'Particular']);
+                return in_array($authorType, ['DEM', 'particular']);
             case 'minute':
             case 'declaration':
             case 'resolution':
             case 'decree':
-                return $authorType === 'Concejal' && count($authors) > 0;
+                return $authorType === 'concejal' && count($authors) > 0;
             default:
                 return false;
         }
     }
 
+
+    public function detectAuthorChanges(Model $regulation, array $newAuthors): array
+    {
+        $currentAuthors = $regulation->authors->pluck('name')->toArray();
+        return [
+            'added' => array_diff($newAuthors, $currentAuthors),
+            'removed' => array_diff($currentAuthors, $newAuthors),
+        ];
+    }
+
     // -----------------------------------------------------------------------------------------------------------
 
     /**
- * Registrar una modificación en la tabla 'modifications'.
- *
- * @param int $regulationId ID de la regulación.
- * @param array $changes Cambios en atributos simples.
- * @param array $relationChanges Cambios en relaciones (e.g., modifies, modifiedBy, authors).
- */
-public function logModification(int $regulationId, array $changes, array $relationChanges = []): void
-{
-    foreach ($changes as $field => [$oldValue, $newValue]) {
-        Modification::create([
-            'fk_regulation' => $regulationId,
-            'date' => now(),
-            'name_cell' => $field,
-            'old_cell' => $oldValue,
-            'new_cell' => $newValue,
-            'fk_old_user' => $this->currentUser->id,
-            'fk_new_user' => $this->currentUser->id,
-        ]);
-    }
-
-    foreach ($relationChanges as $relation => $items) {
-        foreach ($items['added'] as $item) {
+     * Registrar modificaciones en la tabla 'modifications'.
+     *
+     * @param int $regulationId ID de la regulación.
+     * @param array $changes Cambios en atributos simples.
+     * @param array $relationChanges Cambios en relaciones.
+     */
+    public function logModification(int $regulationId, array $changes, array $relationChanges = []): void
+    {
+        // Cambios en atributos simples
+        foreach ($changes as $field => [$oldValue, $newValue]) {
             Modification::create([
                 'fk_regulation' => $regulationId,
-                'date' => now(),
-                'name_cell' => "relation: $relation - added",
-                'old_cell' => null,
-                'new_cell' => json_encode($item), // Serializar el objeto agregado.
-                'fk_old_user' => $this->currentUser->id,
-                'fk_new_user' => $this->currentUser->id,
+                'name_cell' => $field,
+                'old_cell' => $oldValue,
+                'new_cell' => $newValue,
+                'fk_user' => $this->currentUser->id
             ]);
         }
 
-        foreach ($items['removed'] as $item) {
-            Modification::create([
-                'fk_regulation' => $regulationId,
-                'date' => now(),
-                'name_cell' => "relation: $relation - removed",
-                'old_cell' => json_encode($item), // Serializar el objeto eliminado.
-                'new_cell' => null,
-                'fk_old_user' => $this->currentUser->id,
-                'fk_new_user' => $this->currentUser->id,
-            ]);
+        // Cambios en relaciones
+        foreach ($relationChanges as $relation => $items) {
+            foreach ($items['added'] as $item) {
+                Modification::create([
+                    'fk_regulation' => $regulationId,
+                    'name_cell' => "relation: $relation - added",
+                    'old_cell' => null,
+                    'new_cell' => json_encode($item),
+                    'fk_user' => $this->currentUser->id
+                ]);
+            }
+
+            foreach ($items['removed'] as $item) {
+                Modification::create([
+                    'fk_regulation' => $regulationId,
+                    'name_cell' => "relation: $relation - removed",
+                    'old_cell' => json_encode($item),
+                    'new_cell' => null,
+                    'fk_user' => $this->currentUser->id
+                ]);
+            }
         }
     }
-}
-
 
     // -----------------------------------------------------------------------------------------------------------
 
@@ -302,9 +288,16 @@ public function logModification(int $regulationId, array $changes, array $relati
      */
     public function handleUpdate(array $currentData): array
     {
+        // dd($currentData);
         $changes = array_filter($this->mergeData($currentData), function ($value, $key) use ($currentData) {
-            return $currentData[$key] !== $value;
+            return array_key_exists($key, $currentData) && $currentData[$key] !== $value;
         }, ARRAY_FILTER_USE_BOTH);
+
+        // Asegurarse de que los valores antiguos y nuevos se están generando correctamente
+        foreach ($changes as $key => $newValue) {
+            $oldValue = $currentData[$key] ?? null;
+            $changes[$key] = [$oldValue, $newValue];
+        }
 
         return $changes;
     }
@@ -319,6 +312,13 @@ public function logModification(int $regulationId, array $changes, array $relati
      */
     public function mergeData(array $currentData): array
     {
+        // Inicializar claves faltantes en $currentData
+        foreach ($this->data as $key => $value) {
+            if (!array_key_exists($key, $currentData)) {
+                $currentData[$key] = null;
+            }
+        }
+
         return array_merge($currentData, array_filter($this->data, function ($value) {
             return $value !== null;
         }));
@@ -332,7 +332,7 @@ public function logModification(int $regulationId, array $changes, array $relati
     public function validateAndSetState(array $currentData): void
     {
         if (isset($this->data['state']) && $this->data['state'] !== $currentData['state']) {
-            if ($this->currentUser->hasRole(['Admin', 'Secretary'])) {
+            if ($this->currentUser->hasRole(['Admin', 'Secretario'])) {
                 return; // Permitir cambio de estado
             }
             unset($this->data['state']); // Revertir si el usuario no tiene permiso

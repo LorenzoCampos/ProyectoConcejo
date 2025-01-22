@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
 
-        Route::middleware(['permission:ver normativa'])->get('regulations', [RegulationController::class,'getAllRegulations']);
+        Route::middleware(['permission:ver normativa'])->get('regulations', [RegulationController::class,'index']);
         Route::middleware(['permission:ver normativa'])->get('regulations/{id}', [RegulationController::class,'show']);
         Route::middleware(['permission:crear normativa'])->post('regulations', [RegulationController::class,'store']);
         Route::middleware(['permission:modificar normativa'])->post('regulations/{id}', [RegulationController::class,'update']);

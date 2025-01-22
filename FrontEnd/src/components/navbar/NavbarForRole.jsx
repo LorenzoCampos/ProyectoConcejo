@@ -114,7 +114,7 @@ function NavbarForRole() {
                   <>
                     <Nav.Link
                       as={Link}
-                      to="ver-banners"
+                      to=""
                       className="link-nav"
                       style={{ fontSize: "1rem" }}
                     >
@@ -122,11 +122,27 @@ function NavbarForRole() {
                     </Nav.Link>
                     <Nav.Link
                       as={Link}
-                      to=""
+                      to="ver-noticias"
                       className="link-nav"
                       style={{ fontSize: "1rem" }}
                     >
                       Gestionar Noticias
+                    </Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="cargar-banner"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      Cargar Banner
+                    </Nav.Link>
+                    <Nav.Link
+                      as={Link}
+                      to="cargar-noticia"
+                      className="link-nav"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      Cargar Noticia
                     </Nav.Link>
                   </>
                 )}
