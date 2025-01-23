@@ -108,7 +108,7 @@ function NewsForm() {
     e.preventDefault();
 
     // Validación simple para asegurarnos que se ingresan todos los datos
-    if (!selectedFile || !unpublicationDate) {
+    if (!selectedFile) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;

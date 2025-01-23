@@ -237,8 +237,8 @@ const [itemType, setItemType] = useState("");
                     className="desc"
                     dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
                   ></td>
-                  <td>{news.publication_date}</td>
-                  <td>{news.unpublication_date}</td>
+                  {/* <td>{news.publication_date}</td>
+                  <td>{news.unpublication_date}</td> */}
                   <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
 
                   <td>
