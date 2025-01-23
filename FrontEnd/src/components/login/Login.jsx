@@ -24,7 +24,6 @@ function Login() {
   const loginData = async (e) => {
     e.preventDefault();
 
-
     try {
       const deviceId = getDeviceId();
 
@@ -45,8 +44,7 @@ function Login() {
         data: bodyContent,
       };
 
-      const response = await axios.request(reqOptions);     
-      
+      const response = await axios.request(reqOptions);
 
       // Obtiene el token de la respuesta
       const token = response.data.token;
@@ -54,19 +52,16 @@ function Login() {
       const name = response.data.user.name;
 
       console.log(name);
-      
 
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userName", name);
 
-    
-      
       if (response.status === 200) {
         if (role === "admin") {
           console.log(role);
-          navigate ("/admin");
+          navigate("/admin");
         } else if (role === "concejal") {
           console.log(role);
           navigate("/secretario-concejal");
@@ -81,8 +76,6 @@ function Login() {
           navigate("/");
         }
       }
-
-
     } catch (error) {
       let message = "Error desconocido.";
       if (error.response) {
@@ -93,7 +86,9 @@ function Login() {
           setShowWarningToast(true); // Mostrar toast de advertencia
         } else {
           // Otro tipo de error
-          message = `Error ${error.response.status}: ${error.response.data.message || "Datos inválidos"}`;
+          message = `Error ${error.response.status}: ${
+            error.response.data.message || "Datos inválidos"
+          }`;
           setToastMessage(message);
           setShowErrorToast(true); // Mostrar toast de error general
         }
@@ -111,52 +106,49 @@ function Login() {
 
   return (
     <div className="content">
-<div className="container">
-      <div className="login-container">
-        <h1>Bienvenido!</h1>
-        <p>Inicie sesión</p>
-        <div className="form-cont">
-        <Form onSubmit={loginData}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email"
-            className="mb-3"
-          >
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-              placeholder=""
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingPassword"
-            label="Contraseña"
-            className="mb-3"
-          >
-            <Form.Control
-              type="password"
-              placeholder=""
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-          </FloatingLabel>
-          <div className="form-btn">
-          <Button  variant="primary" type="submit">
-            Ingresar
-          </Button>
+      <div className="container">
+        <div className="login-container">
+          <h1>Bienvenido!</h1>
+          <p>Inicie sesión</p>
+          <div className="form-cont">
+            <Form onSubmit={loginData}>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Email"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                  placeholder=""
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Contraseña"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  placeholder=""
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              </FloatingLabel>
+              <div className="form-btn">
+                <Button variant="primary" type="submit">
+                  Ingresar
+                </Button>
+              </div>
+            </Form>
           </div>
-          
-        </Form>
-
         </div>
-        
       </div>
-    </div>
-     {/* Toast de error de servidor */}
-     <ToastContainer position="top-end" className="p-3">
+      {/* Toast de error de servidor */}
+      <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="danger"
           onClose={() => setShowErrorToast(false)}
@@ -171,7 +163,7 @@ function Login() {
       {/* Toast de advertencia para credenciales incorrectas */}
       <ToastContainer position="top-end" className="p-3">
         <Toast
-          bg="danger" 
+          bg="danger"
           onClose={() => setShowWarningToast(false)}
           show={showWarningToast}
           delay={3000}
@@ -181,7 +173,6 @@ function Login() {
         </Toast>
       </ToastContainer>
     </div>
-    
   );
 }
 export default Login;

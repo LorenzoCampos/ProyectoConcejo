@@ -142,6 +142,10 @@ function ListRegulations() {
     return stateTranslations[state] || state; // Si no hay traducción, devuelve el valor original
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
     <div className="regulations-container">
       <h1 className="title-text">Lista de Normativas</h1>
@@ -254,7 +258,7 @@ function ListRegulations() {
                 <th>Palabras Clave</th>
                 <th>Fecha de creación</th>
                 <th>Estado</th>
-                <th>Autor</th>
+                <th>Tipo de Autor</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -278,7 +282,7 @@ function ListRegulations() {
                   </td>
                   <td>{formatDate(regulation.created_at)}</td>
                   <td>{translateState(regulation.state)}</td>
-                  <td>{regulation.author_type}</td>
+                  <td>{capitalizeFirstLetter(regulation.author_type)}</td>
                   <td>
                     <div className="td-buttons">
                       <td>

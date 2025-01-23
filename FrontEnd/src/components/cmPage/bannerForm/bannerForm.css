@@ -14,7 +14,7 @@
     --secondary-color: #e4e1e163;
     --third-color: #BE9A60;
     --form-color:#3058a6b3;
-    --light-color:#859fd320;
+    --form-background-color: #859fd390;
 }
 
 
@@ -30,8 +30,9 @@ form{
 }
 .form-banner{
   padding: 0 25px 25px;
-  background-color: var(--light-color);
+  background-color: var(--form-background-color);
   border-radius: 10px;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
 
 button.btn-banner {

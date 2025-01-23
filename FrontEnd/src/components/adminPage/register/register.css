@@ -33,7 +33,9 @@ form{
 }
 .form-register{
   padding: 0 25px 25px;
-  background-color: var(--light-color);
+  background-color: var(--form-background-color);
+  border-radius: .75vw;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
 
 button.btn-news {

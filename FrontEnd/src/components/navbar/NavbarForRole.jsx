@@ -41,7 +41,7 @@ function NavbarForRole() {
       <Navbar key="sm" expand="sm" className="bg-body-tertiary mb-3">
         <Container fluid>
           <Navbar.Brand as={Link} to="/">
-            <img className="logo" src="public/logo1.png" alt="Logo" />
+            <img className="logo" src="../public/logo1.png" alt="Logo" />
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
