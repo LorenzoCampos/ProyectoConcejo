@@ -183,8 +183,8 @@ function ListBanners() {
           <thead>
             <tr>
               <th>Imagen</th>
-              <th>Fecha de publicación</th>
-              <th>Fecha de despublicación</th>
+              {/* <th>Fecha de publicación</th>
+              <th>Fecha de despublicación</th> */}
               <th>
                 <Form.Select
                   aria-label="Filtrar por estado"
@@ -209,8 +209,8 @@ function ListBanners() {
                     style={{ width: "100px" }}
                   />
                 </td>
-                <td>{banner.publication_date}</td>
-                <td>{banner.unpublication_date}</td>
+                {/* <td>{banner.publication_date}</td>
+                <td>{banner.unpublication_date}</td> */}
                 <td>{banner.status === 1 ? "Activo" : "Inactivo"}</td>
                 <td>
                   <div className="d-flex gap-3 justify-content-center">
@@ -274,7 +274,7 @@ function ListBanners() {
               </Form.Select>
             </Form.Group>
 
-            <Form.Group>
+            {/* <Form.Group>
               <Form.Label>Fecha de publicación</Form.Label>
               <Form.Control
                 type="datetime-local"
@@ -295,7 +295,7 @@ function ListBanners() {
                   setCurrentBannerUnpublicationDate(e.target.value)
                 }
               />
-            </Form.Group>
+            </Form.Group> */}
             <div className="btn-savechange">
               <Button type="submit" className="btn-banner">
                 Guardar cambios

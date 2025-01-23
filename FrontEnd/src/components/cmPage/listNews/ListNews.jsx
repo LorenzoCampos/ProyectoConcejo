@@ -202,8 +202,8 @@ const [itemType, setItemType] = useState("");
               <th>Imagen</th>
               <th>Título</th>
               <th className="desc">Descripción</th>
-              <th>Fecha de publicación</th>
-              <th>Fecha de despublicación</th>
+              {/* <th>Fecha de publicación</th>
+              <th>Fecha de despublicación</th> */}
               <th>
                 <Form.Select
                   aria-label="Filtrar por estado"
@@ -316,7 +316,7 @@ const [itemType, setItemType] = useState("");
               />
             </Form.Group>
 
-            <Form.Group>
+            {/* <Form.Group>
               <Form.Label>Fecha de publicación</Form.Label>
               <Form.Control
                 type="datetime-local"
@@ -333,7 +333,7 @@ const [itemType, setItemType] = useState("");
                 value={currentNewUnpublicationDate}
                 onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
               />
-            </Form.Group>
+            </Form.Group> */}
 
             <div className="btn-savechange">
               <Button type="submit" className="btn-news">

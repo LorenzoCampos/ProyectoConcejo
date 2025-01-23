@@ -221,7 +221,7 @@ function NewsForm() {
       
                   </Form.Group>
 
-                  <Form.Group controlId="publicationDate" className="mb-3">
+                  {/* <Form.Group controlId="publicationDate" className="mb-3">
                     <Form.Label>Fecha de Publicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -230,9 +230,9 @@ function NewsForm() {
                       disabled={status === "1"}
                       required={status === "0"}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
 
-                  <Form.Group controlId="unpublicationDate" className="mb-3">
+                  {/* <Form.Group controlId="unpublicationDate" className="mb-3">
                     <Form.Label>Fecha de Despublicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -240,7 +240,7 @@ function NewsForm() {
                       onChange={(e) => setUnpublicationDate(e.target.value)}
                       required={status === "1"}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
                   <div className="btn-container">
                     {/* <Button className="btn-news" onClick={openModal}>
                       Vista Previa

@@ -115,7 +115,7 @@ function BannerForm() {
                   </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="publicationDate" className="mb-3">
+                {/* <Form.Group controlId="publicationDate" className="mb-3">
                   <Form.Label>Fecha de Publicación</Form.Label>
                   <Form.Control
                     type="datetime-local"
@@ -134,7 +134,7 @@ function BannerForm() {
                     onChange={(e) => setUnpublicationDate(e.target.value)}
                     required={status === "1"}
                   />
-                </Form.Group>
+                </Form.Group> */}
                 <div className="btn-container">
                   {/* <Button onClick={openModal} className="btn-banner">
                     Vista Previa
