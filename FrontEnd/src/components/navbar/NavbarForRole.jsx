@@ -168,7 +168,7 @@ function NavbarForRole() {
                     id="user-dropdown"
                     align="end"
                   >
-                    <NavDropdown.Item>Ver Perfil</NavDropdown.Item>
+                    {/* <NavDropdown.Item>Ver Perfil</NavDropdown.Item> */}
                     <NavDropdown.Item as={Link} to="/">
                       Volver al Home
                     </NavDropdown.Item>
@@ -179,9 +179,9 @@ function NavbarForRole() {
                   </NavDropdown>
                 </div>
                 <div className="d-block d-sm-none">
-                  <Nav.Link as={Link} to="/profile">
+                  {/* <Nav.Link as={Link} to="/profile">
                     Ver Perfil
-                  </Nav.Link>
+                  </Nav.Link> */}
                   <Nav.Link as={Link} to="/">
                     Volver al Home
                   </Nav.Link>

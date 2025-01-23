@@ -136,9 +136,9 @@ function BannerForm() {
                   />
                 </Form.Group>
                 <div className="btn-container">
-                  <Button onClick={openModal} className="btn-banner">
+                  {/* <Button onClick={openModal} className="btn-banner">
                     Vista Previa
-                  </Button>
+                  </Button> */}
                   <Button className="btn-banner" type="submit">
                     Subir Banner
                   </Button>

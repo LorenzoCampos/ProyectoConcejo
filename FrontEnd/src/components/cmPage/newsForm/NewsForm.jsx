@@ -242,9 +242,9 @@ function NewsForm() {
                     />
                   </Form.Group>
                   <div className="btn-container">
-                    <Button className="btn-news" onClick={openModal}>
+                    {/* <Button className="btn-news" onClick={openModal}>
                       Vista Previa
-                    </Button>
+                    </Button> */}
                     <Button className="btn-news" type="submit">
                       Subir Noticia
                     </Button>
