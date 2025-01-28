@@ -1,0 +1,18 @@
+
+  
+  .videos-container-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+  
+  .video-item {
+    text-align: center;
+    
+  }
+  
+  iframe {
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
