@@ -33,7 +33,7 @@ function GetBannersPublic() {
       
       setBanners(response.data);
 
-      console.log(response.data);
+     
     } catch (error) {
       if(error.response){
         setToastMessage("Error al obtener los banners");

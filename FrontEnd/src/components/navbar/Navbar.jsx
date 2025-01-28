@@ -30,7 +30,7 @@ function NavBar(onHomeClick) {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="links">
               <Nav.Link as={Link} to="/" className='link-nav' onClick={onHomeClick}>Home</Nav.Link>
-              {/* <Nav.Link as={Link} to="/normativas" className='link-nav'>Normativas</Nav.Link> */}
+              <Nav.Link as={Link} to="/normativas" className='link-nav'>Normativas</Nav.Link>
               {isAuthenticated ? (
                 <>
                   {role === "admin" && <Nav.Link as={Link} to="/admin" className='link-nav'>Admin Panel</Nav.Link>}
