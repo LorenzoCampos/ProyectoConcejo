@@ -24,7 +24,8 @@ const modules = {
     ['blockquote'],
     [{ 'indent': '-1'}, { 'indent': '+1' }],
     [{ 'direction': 'rtl' }],
-    ['clean'] 
+    ['clean'] ,['link']
+
   ],
 };
 
@@ -33,8 +34,8 @@ function NewsForm() {
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [publicationDate, setPublicationDate] = useState("");
-  const [unpublicationDate, setUnpublicationDate] = useState("");
+  //const [publicationDate, setPublicationDate] = useState("");
+ // const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
   const [showNewsList, setShowNewsList] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -120,8 +121,8 @@ function NewsForm() {
     formData.append("status", status); // Enviar el estado como 0 o 1
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("publication_date", publicationDate); // Formato de fecha
-    formData.append("unpublication_date", unpublicationDate);
+    //formData.append("publication_date", publicationDate); // Formato de fecha
+    //formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "new"); //
 
     try {
