@@ -63,8 +63,8 @@ button.btn-see-more:hover {
   align-items: center;
   width: 100%; 
   font-size: 3rem;
-  background-color: var(--light-color);
-  color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--background-color);
   margin-top: 15px;
 }
 
