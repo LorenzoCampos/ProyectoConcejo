@@ -29,7 +29,7 @@ const modules = {
 };
 
 function NewsForm() {
-  const [selectedFile, setSelectedFile] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -44,40 +44,10 @@ function NewsForm() {
 
   // Extraer miniatura del reel de instagram
   const [videoUrl, setVideoUrl] = useState("");
-  const [thumbnail, setThumbnail] = useState(null);
 
   //const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleVideoUrlChange = async (e) => {
-    const url = e.target.value;
-    setVideoUrl(url);
-
-    if (url.include("instagram.com/reel/")) {
-      try {
-        const response = await axios.post(API.CREATE_NEWS, {
-          url: url,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.data.thumbnail) {
-          setThumbnail(response.data.thumbnail);
-        } else {
-          setThumbnail(null);
-          setToastMessage("No se pudo obtener la miniatura");
-          setShowErrorToast(true);
-        }
-      } catch (error) {
-        console.error("Error al obtener la miniatura:", error);
-        setToastMessage("Error al conectar con el servidor.");
-        setShowErrorToast(true);
-      }
-    }
-  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -144,6 +114,12 @@ function NewsForm() {
       return;
     }
 
+    if (!selectedFile && !videoUrl) {
+      setToastMessage("Por favor, ingresa el link de Instagram o selecciona una imagen.");
+      setShowWarningToast(true);
+      return;
+    }
+
     // Crear el FormData para enviar al backend
     const formData = new FormData();
     formData.append("image", selectedFile);
@@ -153,11 +129,7 @@ function NewsForm() {
     formData.append("description", description);
     //formData.append("publication_date", publicationDate); // Formato de fecha
     //formData.append("unpublication_date", unpublicationDate);
-    formData.append("type", "new"); //
-
-    if (thumbnail) {
-      formData.append("thumbnail", thumbnail);
-    }
+    formData.append("type", "new");
 
     try {
       const response = await axios.post(API.CREATE_NEWS, formData, {
@@ -217,7 +189,7 @@ function NewsForm() {
                       type="text"
                       placeholder="Ingresa la URL"
                       value={videoUrl}
-                      onChange={handleVideoUrlChange}
+                      onChange={(e) => setVideoUrl(e.target.value)}
                     />
                   </Form.Group>
 
