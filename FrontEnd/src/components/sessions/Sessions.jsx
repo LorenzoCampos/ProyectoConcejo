@@ -13,7 +13,6 @@ function Sessions() {
           `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=3&order=date&type=video&key=${apiKey}`
         );
         const data = await response.json();
-        console.log("Respuesta de YouTube:", data);
         const videoData = data.items.map((item) => ({
           id: item.id.videoId,
           title: item.snippet.title,

@@ -23,7 +23,7 @@ function News({ news, onSeeNew }) {
     <>
       <div className="cards-container">
         <div className="cards">
-          {news.slice(0, visibleCards).map((item) => (
+          {news.slice().reverse().slice(0, visibleCards).map((item) => (
             <Card key={item.id} className="shadow rounded">
               <Card.Img variant="top" src={item.image} />
 

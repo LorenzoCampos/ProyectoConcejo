@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Image } from "react-bootstrap";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -7,35 +7,34 @@ import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
-import ListNews from "../listNews/ListNews"
+import ListNews from "../listNews/ListNews";
 
-import ReactQuill from "react-quill";  // Importa React Quill
-import "react-quill/dist/quill.snow.css";  
+import ReactQuill from "react-quill"; // Importa React Quill
+import "react-quill/dist/quill.snow.css";
 
 import API from "../../../config/apiConfig";
 
-
 const modules = {
   toolbar: [
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['bold', 'italic', 'underline'],
-    [{ 'color': [] }, { 'background': [] }],
-    ['blockquote'],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
-    [{ 'direction': 'rtl' }],
-    ['clean'] ,['link']
-
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["bold", "italic", "underline"],
+    [{ color: [] }, { background: [] }],
+    ["blockquote"],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["clean"],
+    ["link"],
   ],
 };
 
 function NewsForm() {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState("");
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   //const [publicationDate, setPublicationDate] = useState("");
- // const [unpublicationDate, setUnpublicationDate] = useState("");
+  // const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
   const [showNewsList, setShowNewsList] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -43,9 +42,42 @@ function NewsForm() {
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
+  // Extraer miniatura del reel de instagram
+  const [videoUrl, setVideoUrl] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
+
   //const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleVideoUrlChange = async (e) => {
+    const url = e.target.value;
+    setVideoUrl(url);
+
+    if (url.include("instagram.com/reel/")) {
+      try {
+        const response = await axios.post(API.CREATE_NEWS, {
+          url: url,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.thumbnail) {
+          setThumbnail(response.data.thumbnail);
+        } else {
+          setThumbnail(null);
+          setToastMessage("No se pudo obtener la miniatura");
+          setShowErrorToast(true);
+        }
+      } catch (error) {
+        console.error("Error al obtener la miniatura:", error);
+        setToastMessage("Error al conectar con el servidor.");
+        setShowErrorToast(true);
+      }
+    }
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -58,13 +90,8 @@ function NewsForm() {
 
   const handleEditorChange = (value) => {
     setEditorValue(value);
-    setDescription(value);  // Guarda el valor del editor
+    setDescription(value); // Guarda el valor del editor
   };
-
-
-
-
-  
 
   /*   // Mapea los mensajes de error genéricos a mensajes personalizados
   const errorMessages = {
@@ -88,7 +115,9 @@ function NewsForm() {
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+    }
 
     // Generar vista previa de la imagen
     {
@@ -109,7 +138,7 @@ function NewsForm() {
     e.preventDefault();
 
     // Validación simple para asegurarnos que se ingresan todos los datos
-    if (!selectedFile) {
+    if (!status || !title || !description) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;
@@ -120,10 +149,15 @@ function NewsForm() {
     formData.append("image", selectedFile);
     formData.append("status", status); // Enviar el estado como 0 o 1
     formData.append("title", title);
+    formData.append("video_url", videoUrl);
     formData.append("description", description);
     //formData.append("publication_date", publicationDate); // Formato de fecha
     //formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "new"); //
+
+    if (thumbnail) {
+      formData.append("thumbnail", thumbnail);
+    }
 
     try {
       const response = await axios.post(API.CREATE_NEWS, formData, {
@@ -139,7 +173,7 @@ function NewsForm() {
         setToastMessage("Noticia subido exitosamente");
         setShowSuccessToast(true);
         setTimeout(() => {
-          setShowNewsList(true);  
+          setShowNewsList(true);
         }, 3000); // Tiempo de espera de 3 segundos
       }
     } catch (error) {
@@ -177,6 +211,23 @@ function NewsForm() {
               <h1 className="text-center title-text">Cargar Noticia</h1>
               <div className="form-news">
                 <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>URL del Video (Reel de Instagram)</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Ingresa la URL"
+                      value={videoUrl}
+                      onChange={handleVideoUrlChange}
+                    />
+                  </Form.Group>
+
+{/*                   {thumbnail && (
+                    <div className="text-center">
+                      <p>Miniatura generada:</p>
+                      <Image src={thumbnail} alt="Miniatura" fluid />
+                    </div>
+                  )} */}
+
                   <Form.Group controlId="formFile">
                     <Form.Label>Seleccionar imagen</Form.Label>
                     <Form.Control
@@ -210,16 +261,13 @@ function NewsForm() {
                   <Form.Group className="mb-3">
                     <Form.Label>Descripción</Form.Label>
                     <ReactQuill
-                    as="textarea"
+                      as="textarea"
                       value={editorValue}
                       onChange={handleEditorChange}
                       rows={4}
                       placeholder="Escribe la descripción aquí..."
                       modules={modules}
-                     
                     />
-                   
-      
                   </Form.Group>
 
                   {/* <Form.Group controlId="publicationDate" className="mb-3">
@@ -262,7 +310,6 @@ function NewsForm() {
         file={selectedFile}
         title={title}
         description={description}
-        
       />
 
       {/* Toast error */}
