@@ -37,19 +37,16 @@ function GetUsers() {
       };
 
       const response = await axios.request(reqOptions);
-     
-      
-      setData(response.data);
 
+      setData(response.data);
 
       console.log(response.data);
     } catch (error) {
-      if(error.response){
+      if (error.response) {
         let message = "Error al obtener los usuarios.";
         setToastMessage(message);
         setShowErrorToast(true);
       }
-      
     }
   };
 
@@ -112,7 +109,7 @@ function GetUsers() {
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.role ? user.role : "Sin rol"}</td>
-              <td className="td-actions" >
+              <td className="td-actions">
                 <Form.Group>
                   <Form.Control
                     className="form-select"
@@ -121,7 +118,8 @@ function GetUsers() {
                     onChange={(e) => handleRoleChange(e, user.id)}
                   >
                     <option value="">---Seleccionar un rol---</option>
-                    <option value="secretario">Secretario</option>
+                    <option value="asesor">Asesor</option>
+                    <option value="mesa de entrada">Mesa de Entrada</option>
                     <option value="concejal">Concejal</option>
                     <option value="cm">CM</option>
                     <option value="user">Usuario</option>
@@ -131,7 +129,6 @@ function GetUsers() {
                   Guardar
                 </Button>
               </td>
-              
             </tr>
           ))}
         </tbody>

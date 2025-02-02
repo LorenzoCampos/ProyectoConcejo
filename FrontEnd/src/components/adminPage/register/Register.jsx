@@ -50,7 +50,6 @@ function Register() {
       const response = await axios.request(reqOptions);
 
       if (response.status === 201) {
-
         let message = "Usuario registrado correctamente.";
         setToastMessage(message);
         setShowSuccessToast(true);
@@ -108,82 +107,82 @@ function Register() {
       <div className="register-container">
         <h1 className="title-text">Registrar Usuario</h1>
         <div className="form-register">
-        <Form onSubmit={registerData}>
-          <Form.Group controlId="formName">
-            <Form.Label>Nombre y apellido</Form.Label>
-            <Form.Control
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              required
-              autoFocus
-            />
-          </Form.Group>
+          <Form onSubmit={registerData}>
+            <Form.Group controlId="formName">
+              <Form.Label>Nombre y apellido</Form.Label>
+              <Form.Control
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+                autoFocus
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-          </Form.Group>
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formConfirmEmail">
-            <Form.Label>Confirmar Email</Form.Label>
-            <Form.Control
-              type="email"
-              value={emailConfirmation}
-              onChange={(event) => setEmailConfirmation(event.target.value)}
-              required
-            />
-          </Form.Group>
+            <Form.Group controlId="formConfirmEmail">
+              <Form.Label>Confirmar Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={emailConfirmation}
+                onChange={(event) => setEmailConfirmation(event.target.value)}
+                required
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formPassword">
-            <Form.Label>Contraseña</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-          </Form.Group>
-          
-          <Form.Group controlId="formConfirmPassword">
-            <Form.Label>Confirmar Contraseña</Form.Label>
-            <Form.Control
-              type="password"
-              value={passwordConfirmation}
-              onChange={(event) => setPasswordConfirmation(event.target.value)}
-              required
-            />
-          </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formRol">
-            <Form.Label>Rol</Form.Label>
-            <Form.Select
-              aria-label="Default select example"
-              className="form-select"
-              onChange={(event) => setRole(event.target.value)}
-            >
-              <option value="user"> ---Seleccione el rol--- </option>
-              <option value="secretario">Secretario</option>
-              <option value="concejal">Concejal</option>
-              <option value="cm">CM</option>
-              <option value="user">Usuario</option>
-            </Form.Select>
-            
-          </Form.Group>
-          
-         
+            <Form.Group controlId="formConfirmPassword">
+              <Form.Label>Confirmar Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                value={passwordConfirmation}
+                onChange={(event) =>
+                  setPasswordConfirmation(event.target.value)
+                }
+                required
+              />
+            </Form.Group>
 
-          <div className="form-btn register-btn">
-            <Button variant="primary" type="submit">
-              Registrar
-            </Button>
-          </div>
-        </Form>
+            <Form.Group controlId="formRol">
+              <Form.Label>Rol</Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                className="form-select"
+                onChange={(event) => setRole(event.target.value)}
+              >
+                <option value="">---Seleccionar un rol---</option>
+                <option value="asesor">Asesor</option>
+                <option value="mesa de entrada">Mesa de Entrada</option>
+                <option value="concejal">Concejal</option>
+                <option value="cm">CM</option>
+                <option value="user">Usuario</option>
+              </Form.Select>
+            </Form.Group>
+
+            <div className="form-btn register-btn">
+              <Button variant="primary" type="submit">
+                Registrar
+              </Button>
+            </div>
+          </Form>
         </div>
       </div>
 
@@ -214,7 +213,6 @@ function Register() {
           </Toast>
         </ToastContainer>
       </div>
-
     </div>
   );
 }

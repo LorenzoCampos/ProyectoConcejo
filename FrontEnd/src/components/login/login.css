@@ -1,96 +1,64 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Nunito Sans", sans-serif;
-
-}
-
-
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; 
-}
-
-.content{
-  flex: 1; 
-}
-
-
-:root {
-  --background-color: #ffffff;
-    --primary-color: #102550;
-    --secondary-color: #e4e1e163;
-    --third-color: #BE9A60;
-    --form-color:#3058a6b3;
-    --light-color: #859fd320;
+.content {
+  flex: 1;
 }
 
 .container {
   display: flex;
   justify-content: center;
-  
-  
 }
-.form-cont{
+
+.form-cont {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: var(--form-background-color);
-  border-radius: .75vw;
-  padding: 20px; 
+  border-radius: 0.75vw;
+  padding: 20px;
   overflow: hidden;
   margin-bottom: 40px;
   box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
-
-/* .form-cont label {
-  color: var(--form-color) !important;
-} */
 
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 150px;
-  padding: 20px; 
+  padding: 20px;
   overflow: hidden;
   width: 450px;
   border-radius: 15px;
-  
 }
 
-.form-btn{
+.form-btn {
   display: flex;
   justify-content: center;
 }
 
-.form-btn button{
+.form-btn button {
   background-color: var(--primary-color);
   color: var(--background-color);
   border: none;
 }
+
 input#floatingInput {
   width: 350px;
 }
 
-.form-btn button:hover{
+.form-btn button:hover {
   background-color: var(--background-color);
   color: var(--primary-color);
 }
+
 a.dropdown-item:hover {
-  background:var(--form-color);
+  background: var(--form-color);
   color: var(--background-color);
 }
 
-.login-container h1{
+.login-container h1 {
   color: var(--form-color) !important;
   font-size: 2.5rem !important;
   font-weight: 900 !important;
   text-shadow: 2px 2px 4px rgb(255, 255, 255);
   -webkit-text-stroke: 2px rgba(7, 19, 182, 0.249);
- 
 }

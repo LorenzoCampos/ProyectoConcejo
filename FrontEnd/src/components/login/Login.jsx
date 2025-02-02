@@ -64,13 +64,13 @@ function Login() {
           navigate("/admin");
         } else if (role === "concejal") {
           console.log(role);
-          navigate("/secretario-concejal");
+          navigate("/asesor-concejal");
         } else if (role === "cm") {
           console.log(role);
           navigate("/cm");
-        } else if (role === "secretario") {
+        } else if (role === "asesor") {
           console.log(role);
-          navigate("/secretario-concejal");
+          navigate("/asesor-concejal");
         } else {
           console.log(role);
           navigate("/");

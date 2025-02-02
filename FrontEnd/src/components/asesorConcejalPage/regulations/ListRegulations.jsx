@@ -5,6 +5,8 @@ import Spinner from "react-bootstrap/Spinner";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
+
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -33,6 +35,13 @@ function ListRegulations() {
   const [to, setToDate] = useState("");
   const [state, setState] = useState("");
   const [author_type, setAuthorType] = useState("");
+
+  const navigate = useNavigate();
+
+  // Función para manejar la redirección
+  const handleEditClick = (id) => {
+    navigate(`/admin/modificar-normativa/${id}`);
+  };
 
   const getRegulations = async (page = 1, s = {}) => {
     console.log("s:", s);
@@ -313,9 +322,13 @@ function ListRegulations() {
                           </a>
                         )}
                       </td>
-                      {(userRole === "admin" || userRole === "secretario") && (
+                      {(userRole === "admin" || userRole === "asesor") && (
                         <td>
-                          <Button variant="secondary" className="edit-btn">
+                          <Button
+                            variant="secondary"
+                            className="edit-btn"
+                            onClick={() => handleEditClick(regulation.id)} // Usa la función de redirección
+                          >
                             ✎
                           </Button>
                         </td>
