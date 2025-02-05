@@ -6,22 +6,20 @@
   margin: 1%;
   padding: 1%;
   border: var(--primary-color) 2px solid;
-  border-radius: 10px;
+  border-radius: .75rem;
   background-color: var(--secondary-color);
   gap: 10px;
-}
-
-.social-media {
   position: fixed;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--background-color);
-  padding: 10px;
   z-index: 1000;
+}
+
+@media (max-width: 600px) {
+  .social-media {
+    
+  }
 }
 
 .icon {
@@ -31,8 +29,12 @@
   transition: color 0.3s ease;
 }
 
+svg {
+  width: 8vh;
+}
+
 svg:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   cursor: pointer;
   transition: 0.3s;
 }
