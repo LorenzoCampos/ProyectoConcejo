@@ -8,19 +8,211 @@
 }
 
 :root {
-  --background-color: #ffffff;
+  --background-color: #fff;
   --primary-color: #102550;
   --secondary-color: #d9d9d9;
-  --third-color: #be9a60;
+  --third-color: #dbb476;
+  --table-primary-color: #ccab75;
+  --table-secondary-color: #ccab7556;
   --form-color: #3058a6b3;
   --form-background-color: #859fd390;
   --light-color: #859fd320;
   --form-background-color: #f5f5f5;
+
+  --body-background-color-light: #edf4fc;
+
+  --body-background-color-dark: #121212;
+}
+
+body {
+  background-color: var(--body-background-color-light);
 }
 
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: transparent;
+}
+
+@media (max-width: 600px) {
+  #root {
+    height: 100%;
+  }
+}
+
+.internal-title {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-shadow: 5px 5px 5px rgba(0, 34, 255, 0.24);
+  -webkit-text-stroke: 1px rgba(7, 19, 182, 0.249);
+}
+
+.form-control, .form-select {
+  border: 1px solid #9fa1a5;
+}
+
+/* Settings Paginas con formularios */
+
+.page-form {
+  padding-top: 10vh;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  min-height: 90vh;
+  max-height: 1000vh;
+}
+
+.content-page-container {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.content-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--form-background-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+.content-form .form-control {
+  padding: .375rem .75rem;
+}
+
+@media (max-width: 600px) {
+  .content-form {
+    box-shadow: none;
+    background-color: transparent;
+    width: 100%;
+  }
+}
+
+/* End Settings Paginas con formularios */
+
+/* -------------------------------------------------------------------------------- */
+
+/* Settings Paginas con tablas*/
+
+.page-table {
+  padding-top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 90vh;
+  max-height: 1000vh;
+}
+
+.content-page-container {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.content-table {
+  width: 96vw;
+}
+
+.content-table__table {
+  border-collapse: collapse;
+  margin: 0;
+  width: 100%;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+.content-table__table tr {
+  padding: 0.45rem;
+}
+
+.content-table__table thead tr {
+  background-color: var(--table-primary-color);
+}
+
+.content-table__table thead tr {
+  color: #be2727;
+  font-size: 1.15rem;
+}
+
+.content-table__table tbody tr:nth-child(even) {
+  background-color: var(--table-secondary-color);
+}
+
+.content-table__table th, .content-table__table td {
+  font-size: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.content-table__table thead th {
+  color: #000000;
+  font-size: 1.15rem;
+}
+
+.accion-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 930px) {
+  .content-table__table {
+    border: 3px solid var(--table-primary-color);
+  }
+
+  .content-table__table thead tr {
+    display: none;
+  }
+
+  .content-table__table tr {
+    display: block;
+  }
+
+  .content-table__table th, .content-table__table td {
+    padding: .5rem;
+  }
+
+  .content-table__table td {
+    text-align: right;
+    display: block;
+    font-size: 1rem;
+    align-items: center;
+  }
+
+  .content-table__table td::before {
+    content: attr(data-title) ": ";
+    float: left;
+  }
+
+  .content-table__table tbody tr:nth-child(even) {
+    background-color: var(--table-secondary-color);
+  }
+
+  .accion-buttons {
+    justify-content: flex-end;
+  }
+}
+
+/* End Settings Paginas con tablas */
+
+.container {
+  display: flex;
+  margin: 1rem;
+  justify-content: center;
+  padding: 0;
 }
