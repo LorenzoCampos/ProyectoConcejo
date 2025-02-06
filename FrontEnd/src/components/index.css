@@ -13,7 +13,7 @@
   --secondary-color: #d9d9d9;
   --third-color: #dbb476;
   --table-primary-color: #ccab75;
-  --table-secondary-color: #ccab7556;
+  --table-secondary-color: #ccab7523;
   --form-color: #3058a6b3;
   --form-background-color: #859fd390;
   --light-color: #859fd320;
@@ -43,10 +43,10 @@ body {
 
 .internal-title {
   color: var(--primary-color);
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 900;
-  text-shadow: 5px 5px 5px rgba(0, 34, 255, 0.24);
-  -webkit-text-stroke: 1px rgba(7, 19, 182, 0.249);
+  text-shadow: .2em 0.2em 1.4em rgba(0, 0, 0, 0.3);
+
 }
 
 .form-control, .form-select {
@@ -158,8 +158,12 @@ body {
   text-align: center;
 }
 
+.content-table__table td p {
+  margin: .3rem;
+}
+
 .content-table__table thead th {
-  color: #000000;
+  color: var(--primary-color);
   font-size: 1.15rem;
 }
 
@@ -194,9 +198,15 @@ body {
     align-items: center;
   }
 
+  .content-table__table td p {
+    margin: 0;
+  }
+
   .content-table__table td::before {
     content: attr(data-title) ": ";
     float: left;
+    text-decoration: underline;
+    color: var(--primary-color);
   }
 
   .content-table__table tbody tr:nth-child(even) {

@@ -8,6 +8,9 @@ import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import DeleteModal from "../deleteModal/DeleteModal";
 
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+
 import "./listBanners.css";
 import API from "../../../config/apiConfig";
 
@@ -243,7 +246,7 @@ function ListBanners() {
                           variant="primary"
                           onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
                         >
-                          Editar
+                          <CiEdit size={25}/>
                         </Button>
                       </div>
                       <div>
@@ -252,7 +255,7 @@ function ListBanners() {
                           variant="danger"
                           onClick={() => deleteBanner(banner.id)}
                         >
-                          Eliminar
+                          <MdDelete size={25}/>
                         </Button>
                       </div>
                     </div>

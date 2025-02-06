@@ -1,5 +1,5 @@
 .desc {
-  white-space: nowrap;
+
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 30vw;
@@ -7,4 +7,13 @@
 
 .quill {
   background-color: #fff;
+}
+
+@media (max-width: 930px) {
+  .desc {
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 }

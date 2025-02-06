@@ -31,7 +31,7 @@ function Home() {
                     <GetNewsPublic onSeeNew={handleShowSeeNew} />
                     <Contact />
                     <Social />
-                   
+                    
                 </>
             )}
             

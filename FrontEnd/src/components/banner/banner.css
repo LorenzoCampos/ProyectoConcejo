@@ -1,6 +1,5 @@
 .banner {
   display: flex;
-  margin-top: 100px;
 }
 
 .carousel {
@@ -9,7 +8,7 @@
   height: 50vh;
   justify-content: center;
   align-items: center;
-  background-color: var(--secondary-color);
+  background-color: transparent;
   overflow: hidden;
   transition: transform 0.5s ease-in-out;
 }
@@ -60,6 +59,5 @@ span.carousel-control-prev-icon {
 @media screen and (max-height: 1100px) {
   .banner {
     display: flex;
-    margin-top: 160px;
   }
 }

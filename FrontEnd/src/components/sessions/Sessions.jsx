@@ -27,9 +27,9 @@ function Sessions() {
   }, [channelId, apiKey]);
 
   return (
-    <div className="news-container">
-      <div className="title-news">
-        <p>Sesiones</p>
+    <div className="news-container home-container">
+      <div className="title-news home-title-container">
+        <p className="home-title">Sesiones</p>
       </div>
       <div className="videos-container-list">
         {videos.map((video) => (
@@ -43,7 +43,9 @@ function Sessions() {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-            <p>{video.title}</p>
+            <div className="video-title-container">
+              <p className="video-title">{video.title}</p>
+            </div>
           </div>
         ))}
       </div>

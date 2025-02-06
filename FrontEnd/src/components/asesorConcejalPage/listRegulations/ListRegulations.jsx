@@ -2,6 +2,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
 import Spinner from "react-bootstrap/Spinner";
+import { CiEdit } from "react-icons/ci";
+
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -333,7 +335,8 @@ function ListRegulations() {
                               className="edit-btn"
                               onClick={() => handleEditClick(regulation.id)} // Usa la función de redirección
                             >
-                              ✎
+                              <CiEdit />
+
                             </Button>
                           </div>
                         )}

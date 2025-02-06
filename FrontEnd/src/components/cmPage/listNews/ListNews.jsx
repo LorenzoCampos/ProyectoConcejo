@@ -10,6 +10,10 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 import DeleteModal from "../deleteModal/DeleteModal";
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+
+
 
 import "./listNews.css";
 
@@ -17,14 +21,14 @@ import API from "../../../config/apiConfig";
 
 const modules = {
   toolbar: [
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ align: [] }],
-    ["bold", "italic", "underline"],
-    [{ color: [] }, { background: [] }],
-    ["blockquote"],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-    ["clean"],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'color': [] }, { 'background': [] }],
+    ['blockquote'],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'direction': 'rtl' }],
+    ['clean'] 
   ],
 };
 
@@ -264,17 +268,19 @@ function ListNews() {
                           <Button
                             className="me-2"
                             variant="primary"
-                            onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
+                            onClick={() => openModalNew(news)} // Abre el modal con el banner seleccionado
                           >
-                            Editar
+                            <CiEdit size={25}/>
+
                           </Button>
                         </div>
                         <div>
                           <Button
                             variant="danger"
-                            onClick={() => deleteBanner(banner.id)}
+                            onClick={() => deleteNews(news.id)}
                           >
-                            Eliminar
+                            <MdDelete size={25}/>
+
                           </Button>
                         </div>
                       </div>
