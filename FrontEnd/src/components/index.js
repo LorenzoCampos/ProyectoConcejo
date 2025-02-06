@@ -24,7 +24,7 @@ import Logout from "./logout/Logout";
 
 /* AdminPage */
 import AdminPage from "./pages/AdminPage"
-import GetUsers from "./adminPage/getUsers/GetUsers"
+import ListUsers from "./adminPage/listUsers/ListUsers"
 
 /* CMPage */
 import CMPage from "./pages/CMPage"
@@ -49,6 +49,6 @@ export{
     AdminPage,
     CMPage,
     AsesorConcejalPage,
-    GetUsers,
+    ListUsers,
     BannerCM
 }
