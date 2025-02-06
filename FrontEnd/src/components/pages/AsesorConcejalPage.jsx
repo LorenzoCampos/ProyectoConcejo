@@ -1,6 +1,5 @@
-import CargarNormativas from "../asesorConcejalPage/normativas/CargarNormativa";
-import Perfil from "../asesorConcejalPage/perfil/Perfil";
-import ListRegulations from "../asesorConcejalPage/regulations/ListRegulations";
+import LoadRegulations from "../asesorConcejalPage/loadRegulation/LoadRegulation";
+import ListRegulations from "../asesorConcejalPage/listRegulations/ListRegulations";
 
 import { Routes, Route } from "react-router-dom";
 import NavbarForRole from "../navbar/NavbarForRole";
@@ -12,9 +11,8 @@ function AsesorConcejalPage() {
 
       <Routes>
         <Route path="" element={<ListRegulations />} />
-        <Route path="cargar-normativa" element={<CargarNormativas />} />
+        <Route path="cargar-normativa" element={<LoadRegulations />} />
         <Route path="modificar-normativa/:id" element={<ModificarNormativa />} />
-        <Route path="perfil" element={<Perfil />} />
       </Routes>
     </>
   );
