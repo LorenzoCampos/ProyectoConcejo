@@ -115,7 +115,9 @@ function NewsForm() {
     }
 
     if (!selectedFile && !videoUrl) {
-      setToastMessage("Por favor, ingresa el link de Instagram o selecciona una imagen.");
+      setToastMessage(
+        "Por favor, ingresa el link de Instagram o selecciona una imagen."
+      );
       setShowWarningToast(true);
       return;
     }
@@ -175,74 +177,71 @@ function NewsForm() {
   }
 
   return (
-    <div className="container">
-      <div className="news-form">
-        <Container>
-          <Row>
-            <Col>
-              <h1 className="text-center title-text">Cargar Noticia</h1>
-              <div className="form-news">
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>URL del Video (Reel de Instagram)</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Ingresa la URL"
-                      value={videoUrl}
-                      onChange={(e) => setVideoUrl(e.target.value)}
-                    />
-                  </Form.Group>
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Cargar Noticia</h1>
+        <div className="content-form">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>URL del Video (Reel de Instagram)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa la URL"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+              />
+            </Form.Group>
 
-{/*                   {thumbnail && (
-                    <div className="text-center">
-                      <p>Miniatura generada:</p>
-                      <Image src={thumbnail} alt="Miniatura" fluid />
-                    </div>
-                  )} */}
+            {/* {thumbnail && (
+                  <div className="text-center">
+                    <p>Miniatura generada:</p>
+                    <Image src={thumbnail} alt="Miniatura" fluid />
+                  </div>
+                )} */}
 
-                  <Form.Group controlId="formFile">
-                    <Form.Label>Seleccionar imagen</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                    />
-                  </Form.Group>
+            <Form.Group controlId="formFile">
+              <Form.Label>Seleccionar imagen</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
 
-                  <Form.Group controlId="status" className="mb-3">
-                    <Form.Label>Estado</Form.Label>
-                    <Form.Select
-                      as="select"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value={0}>Inactivo</option>
-                      <option value={1}>Activo</option>
-                    </Form.Select>
-                  </Form.Group>
+            <Form.Group controlId="status" className="mb-3">
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                as="select"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value={0}>Inactivo</option>
+                <option value={1}>Activo</option>
+              </Form.Select>
+            </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Título</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                  </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Título</Form.Label>
+              <Form.Control
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Descripción</Form.Label>
-                    <ReactQuill
-                      as="textarea"
-                      value={editorValue}
-                      onChange={handleEditorChange}
-                      rows={4}
-                      placeholder="Escribe la descripción aquí..."
-                      modules={modules}
-                    />
-                  </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Descripción</Form.Label>
+              <ReactQuill
+                as="textarea"
+                value={editorValue}
+                onChange={handleEditorChange}
+                rows={4}
+                placeholder="Escribe la descripción aquí..."
+                modules={modules}
+              />
+            </Form.Group>
 
-                  {/* <Form.Group controlId="publicationDate" className="mb-3">
+            {/* <Form.Group controlId="publicationDate" className="mb-3">
                     <Form.Label>Fecha de Publicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -253,7 +252,7 @@ function NewsForm() {
                     />
                   </Form.Group> */}
 
-                  {/* <Form.Group controlId="unpublicationDate" className="mb-3">
+            {/* <Form.Group controlId="unpublicationDate" className="mb-3">
                     <Form.Label>Fecha de Despublicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -262,67 +261,64 @@ function NewsForm() {
                       required={status === "1"}
                     />
                   </Form.Group> */}
-                  <div className="btn-container">
-                    {/* <Button className="btn-news" onClick={openModal}>
+            <div className="btn-container">
+              {/* <Button className="btn-news" onClick={openModal}>
                       Vista Previa
                     </Button> */}
-                    <Button className="btn-news" type="submit">
-                      Subir Noticia
-                    </Button>
-                  </div>
-                </Form>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <PreviewNews
-        isOpen={isOpen}
-        closeModal={closeModal}
-        file={selectedFile}
-        title={title}
-        description={description}
-      />
+              <Button className="btn-news" type="submit">
+                Subir Noticia
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </div >
+    <PreviewNews
+      isOpen={isOpen}
+      closeModal={closeModal}
+      file={selectedFile}
+      title={title}
+      description={description}
+    />
 
-      {/* Toast error */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="danger"
-          onClose={() => setShowErrorToast(false)}
-          show={showErrorToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
+  {/* Toast error */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="danger"
+      onClose={() => setShowErrorToast(false)}
+      show={showErrorToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
 
-      {/* Toast exito */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="warning"
-          onClose={() => setShowWarningToast(false)}
-          show={showWarningToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
+  {/* Toast exito */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="warning"
+      onClose={() => setShowWarningToast(false)}
+      show={showWarningToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
 
-      {/* Toast exito */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="success"
-          onClose={() => setShowSuccessToast(false)}
-          show={showSuccessToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
-    </div>
+  {/* Toast exito */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="success"
+      onClose={() => setShowSuccessToast(false)}
+      show={showSuccessToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
+    </div >
   );
 }
 
