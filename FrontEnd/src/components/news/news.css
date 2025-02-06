@@ -21,12 +21,6 @@ button.btn-see-more {
   border: none;
 }
 
-button.btn-see-more:hover {
-  background-color: var(--background-color);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-}
-
 .limited-text {
   display: -webkit-box;
   -webkit-box-orient: vertical;
