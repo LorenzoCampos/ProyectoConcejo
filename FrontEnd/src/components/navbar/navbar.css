@@ -1,5 +1,6 @@
 .nav-cont {
   display: flex;
+  flex-direction: column;
 }
 
 .user-info {
@@ -58,7 +59,7 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
 }
 
 .logo {
-  height: 10vh;
+  height: 8vh;
 }
 
 @media (min-width: 576px) {
