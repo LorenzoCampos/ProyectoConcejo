@@ -1,4 +1,5 @@
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -16,14 +17,14 @@ import API from "../../../config/apiConfig";
 
 const modules = {
   toolbar: [
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['bold', 'italic', 'underline'],
-    [{ 'color': [] }, { 'background': [] }],
-    ['blockquote'],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
-    [{ 'direction': 'rtl' }],
-    ['clean'] 
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["bold", "italic", "underline"],
+    [{ color: [] }, { background: [] }],
+    ["blockquote"],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["clean"],
   ],
 };
 
@@ -52,8 +53,8 @@ function ListNews() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-const [currentNewsIdToDelete, setCurrentNewsIdToDelete] = useState(null);
-const [itemType, setItemType] = useState("");
+  const [currentNewsIdToDelete, setCurrentNewsIdToDelete] = useState(null);
+  const [itemType, setItemType] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -122,7 +123,10 @@ const [itemType, setItemType] = useState("");
       let bodyContent = new FormData();
       bodyContent.append("status", newState);
       bodyContent.append("publication_date", currentNewPublicationDate || "");
-      bodyContent.append("unpublication_date", currentNewUnpublicationDate || "");
+      bodyContent.append(
+        "unpublication_date",
+        currentNewUnpublicationDate || ""
+      );
       bodyContent.append("title", currentNewTitle);
       bodyContent.append("description", currentNewDescription);
 
@@ -155,27 +159,27 @@ const [itemType, setItemType] = useState("");
   const deleteNews = (newsId) => {
     setItemType("noticia");
     setCurrentNewsIdToDelete(newsId);
-    setShowDeleteModal(true); 
+    setShowDeleteModal(true);
   };
   const handleDelete = async () => {
-      try {
-        let headersList = {
-          Authorization: "Bearer " + localStorage.getItem("authToken"),
-          "Content-Type": "multipart/form-data",
-        };
+    try {
+      let headersList = {
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
+        "Content-Type": "multipart/form-data",
+      };
 
-        await axios.delete(API.DELETE_NEWS + currentNewsIdToDelete, { headers: headersList });
-        setToastMessage("Noticia eliminada correctamente.");
-        setShowSuccessToast(true);
-        getAlldata(); // Refrescar la lista
-        setShowDeleteModal(false)
-      } catch (error) {
-        setToastMessage("Error al eliminar la noticia.");
-        setShowErrorToast(true);
-        setShowDeleteModal(false)
-      }
-      
-    
+      await axios.delete(API.DELETE_NEWS + currentNewsIdToDelete, {
+        headers: headersList,
+      });
+      setToastMessage("Noticia eliminada correctamente.");
+      setShowSuccessToast(true);
+      getAlldata(); // Refrescar la lista
+      setShowDeleteModal(false);
+    } catch (error) {
+      setToastMessage("Error al eliminar la noticia.");
+      setShowErrorToast(true);
+      setShowDeleteModal(false);
+    }
   };
 
   const handleFilterChange = (e) => {
@@ -193,197 +197,199 @@ const [itemType, setItemType] = useState("");
   };
 
   return (
-    <div className="news-container">
-      <h1 className="title-text">Lista de Noticias</h1>
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Imagen</th>
-              <th>Título</th>
-              <th className="desc">Descripción</th>
-              {/* <th>Fecha de publicación</th>
-              <th>Fecha de despublicación</th> */}
-              <th>
-                <Form.Select
-                  aria-label="Filtrar por estado"
-                  value={filterStatus}
-                  onChange={handleFilterChange}
-                >
-                  <option value="">Filtrar por estado</option>
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
-                </Form.Select>
-              </th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((news) => {
-              // Sanitizar la descripción antes de usar dangerouslySetInnerHTML
-              const sanitizedDescription = DOMPurify.sanitize(news.description);
-
-              return (
-                <tr key={news.id}>
-                  <td>
-                    <img
-                      src={news.image}
-                      alt="banner"
-                      style={{ width: "100px" }}
-                    />
-                  </td>
-                  <td className="title-new-td">{news.title}</td>
-                  <td
-                    className="desc"
-                    dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-                  ></td>
-                  {/* <td>{news.publication_date}</td>
-                  <td>{news.unpublication_date}</td> */}
-                  <td>{news.status === 1 ? "Activo" : "Inactivo"}</td>
-
-                  <td>
-                    <Button
-                      className="me-2"
-                      variant="primary"
-                      onClick={() => openModalNew(news)}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => deleteNews(news.id)}
-                    >
-                      Eliminar
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Noticia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={updateState}>
-            <Form.Group>
-              <img
-                src={currentImage}
-                alt="img"
-                style={{ width: "200px", marginLeft: "25%" }}
-              />
-            </Form.Group>
-            <Form.Group controlId="formFile">
-              <Form.Label>Seleccionar imagen</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Estado</Form.Label>
+    <div className="page-table">
+      <div className="content-page-container">
+        <h1 className="internal-title">Lista de Noticias</h1>
+        <div className="filter-regulations">
+          <div className="filter-inputs">
+            <div className="filter-group">
+              <Form.Label>Estado:</Form.Label>
               <Form.Select
-                value={currentNewStatus}
-                onChange={(e) => setCurrentNewStatus(Number(e.target.value))}
+                aria-label="Filtrar por estado"
+                value={filterStatus}
+                onChange={handleFilterChange}
               >
-                <option value={1}>Activo</option>
-                <option value={0}>Inactivo</option>
+                <option value="">Filtrar por estado</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
               </Form.Select>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Titulo</Form.Label>
-              <Form.Control
-                type="text"
-                value={currentNewTitle}
-                onChange={(e) => setCurrentNewTitle(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Descripción</Form.Label>
-              {/* Usamos ReactQuill aquí */}
-              <ReactQuill
-                value={currentNewDescription}
-                onChange={(value) => setCurrentNewDescription(value)}
-                modules={modules} // Barra de herramientas personalizada
-                placeholder="Escribe la descripción aquí..."
-              />
-            </Form.Group>
-
-            {/* <Form.Group>
-              <Form.Label>Fecha de publicación</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={currentNewPublicationDate}
-                onChange={(e) => setCurrentNewPublicationDate(e.target.value)}
-                disabled={currentNewStatus === 1}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Fecha de despublicación</Form.Label>
-              <Form.Control
-                type="datetime-local"
-                value={currentNewUnpublicationDate}
-                onChange={(e) => setCurrentNewUnpublicationDate(e.target.value)}
-              />
-            </Form.Group> */}
-
-            <div className="btn-savechange">
-              <Button type="submit" className="btn-news">
-                Guardar cambios
-              </Button>
             </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
+          </div>
+          <div>
+            <Button className="btn-banner" as={Link} to="/cm/cargar-noticia">
+              Crear nueva noticia
+            </Button>
+          </div>
+        </div>
+        <div className="content-table">
+          <table className="content-table__table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((news) => {
+                // Sanitizar la descripción antes de usar dangerouslySetInnerHTML
+                const sanitizedDescription = DOMPurify.sanitize(
+                  news.description
+                );
 
-      {/* Modal de Confirmación de Eliminación */}
-      <DeleteModal
-        show={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
-        itemType={itemType}
-      />
+                return (
+                  <tr key={news.id}>
+                    <td data-title="Imagen">
+                      <img
+                        src={news.image}
+                        alt="banner"
+                        style={{ width: "100px" }}
+                      />
+                    </td>
+                    <td data-title="Título">{news.title}</td>
+                    <td
+                      data-title="Descripción"
+                      className="desc"
+                      dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+                    ></td>
+                    <td data-title="Estado">
+                      {news.status === 1 ? "Activo" : "Inactivo"}
+                    </td>
 
-      {/* Toasts */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="success"
-          onClose={() => setShowSuccessToast(false)}
-          show={showSuccessToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
+                    <td data-title="Acciones">
+                      <div className="accion-buttons">
+                        <div>
+                          <Button
+                            className="me-2"
+                            variant="primary"
+                            onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
+                          >
+                            Editar
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            variant="danger"
+                            onClick={() => deleteBanner(banner.id)}
+                          >
+                            Eliminar
+                          </Button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
-        <Toast
-          bg="warning"
-          onClose={() => setShowWarningToast(false)}
-          show={showWarningToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Editar Noticia</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={updateState}>
+              <Form.Group>
+                <img
+                  src={currentImage}
+                  alt="img"
+                  style={{ width: "200px", marginLeft: "25%" }}
+                />
+              </Form.Group>
+              <Form.Group controlId="formFile">
+                <Form.Label>Seleccionar imagen</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </Form.Group>
 
-        <Toast
-          bg="danger"
-          onClose={() => setShowErrorToast(false)}
-          show={showErrorToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
+              <Form.Group>
+                <Form.Label>Estado</Form.Label>
+                <Form.Select
+                  value={currentNewStatus}
+                  onChange={(e) => setCurrentNewStatus(Number(e.target.value))}
+                >
+                  <option value={1}>Activo</option>
+                  <option value={0}>Inactivo</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Titulo</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={currentNewTitle}
+                  onChange={(e) => setCurrentNewTitle(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Descripción</Form.Label>
+                {/* Usamos ReactQuill aquí */}
+                <ReactQuill
+                  className="quill-editor"
+                  value={currentNewDescription}
+                  onChange={(value) => setCurrentNewDescription(value)}
+                  modules={modules} // Barra de herramientas personalizada
+                  placeholder="Escribe la descripción aquí..."
+                />
+              </Form.Group>
+
+              <div className="btn-savechange">
+                <Button type="submit" className="btn-news">
+                  Guardar cambios
+                </Button>
+              </div>
+            </Form>
+          </Modal.Body>
+        </Modal>
+
+        {/* Modal de Confirmación de Eliminación */}
+        <DeleteModal
+          show={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDelete}
+          itemType={itemType}
+        />
+
+        {/* Toasts */}
+        <ToastContainer position="top-end" className="p-3">
+          <Toast
+            bg="success"
+            onClose={() => setShowSuccessToast(false)}
+            show={showSuccessToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+
+          <Toast
+            bg="warning"
+            onClose={() => setShowWarningToast(false)}
+            show={showWarningToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+
+          <Toast
+            bg="danger"
+            onClose={() => setShowErrorToast(false)}
+            show={showErrorToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+      </div>
     </div>
   );
 }
