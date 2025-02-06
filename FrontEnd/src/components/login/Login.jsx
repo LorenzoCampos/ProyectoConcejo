@@ -71,6 +71,9 @@ function Login() {
         } else if (role === "asesor") {
           console.log(role);
           navigate("/asesor-concejal");
+        } else if (role === "mesa de entrada") {
+          console.log(role);
+          navigate("/asesor-concejal");
         } else {
           console.log(role);
           navigate("/");
@@ -105,49 +108,48 @@ function Login() {
   };
 
   return (
-    <div className="content">
-      <div className="container">
-        <div className="login-container">
-          <h1>Bienvenido!</h1>
-          <p>Inicie sesión</p>
-          <div className="form-cont">
-            <Form onSubmit={loginData}>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Email"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                  placeholder=""
-                />
-              </FloatingLabel>
-              <FloatingLabel
-                controlId="floatingPassword"
-                label="Contraseña"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder=""
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                />
-              </FloatingLabel>
-              <div className="form-btn">
-                <Button variant="primary" type="submit">
-                  Ingresar
-                </Button>
-              </div>
-            </Form>
-          </div>
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Inicie sesión</h1>
+        <div className="content-form">
+          <Form onSubmit={loginData}>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Email"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                className="filter-input-border"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+                placeholder=""
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingPassword"
+              label="Contraseña"
+              className="mb-3"
+            >
+              <Form.Control
+                type="password"
+                className="filter-input-border"
+                placeholder=""
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </FloatingLabel>
+            <div className="form-btn">
+              <Button variant="primary" type="submit">
+                Ingresar
+              </Button>
+            </div>
+          </Form>
         </div>
       </div>
-      {/* Toast de error de servidor */}
+
       <ToastContainer position="top-end" className="p-3">
         <Toast
           bg="danger"
