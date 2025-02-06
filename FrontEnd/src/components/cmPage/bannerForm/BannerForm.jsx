@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import Preview from "./Preview";
-import ListBanners from "../getBanners/ListBanners"
+import ListBanners from "../listBanners/ListBanners";
 
 import "./bannerForm.css";
 import API from "../../../config/apiConfig";
@@ -12,8 +12,6 @@ import API from "../../../config/apiConfig";
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0);
-  const [publicationDate, setPublicationDate] = useState("");
-  const [unpublicationDate, setUnpublicationDate] = useState("");
   const [showBannerList, setShowBannerList] = useState(false);
 
   const [toastMessage, setToastMessage] = useState("");
@@ -73,8 +71,8 @@ function BannerForm() {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
         setTimeout(() => {
-          setShowBannerList(true);  
-        }, 3000); 
+          setShowBannerList(true);
+        }, 3000);
       }
     } catch (error) {
       if (error.response) {
@@ -88,66 +86,39 @@ function BannerForm() {
   }
 
   return (
-    <div className="container">
-      <Container>
-        <Row>
-          <Col>
-            <h1 className="text-center title-text">Cargar Banner</h1>
-            <div className="form-banner">
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formFile">
-                  <Form.Label>Seleccionar imagen</Form.Label>
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </Form.Group>
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Cargar Banner</h1>
+        <div className="content-form">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formFile">
+              <Form.Label>Seleccionar imagen</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
 
-                <Form.Group controlId="status" className="mb-3">
-                  <Form.Label>Estado</Form.Label>
-                  <Form.Select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                  >
-                    <option value={0}>Inactivo</option>
-                    <option value={1}>Activo</option>
-                  </Form.Select>
-                </Form.Group>
+            <Form.Group controlId="status" className="mb-3">
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value={0}>Inactivo</option>
+                <option value={1}>Activo</option>
+              </Form.Select>
+            </Form.Group>
 
-                {/* <Form.Group controlId="publicationDate" className="mb-3">
-                  <Form.Label>Fecha de Publicación</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    value={publicationDate}
-                    onChange={(e) => setPublicationDate(e.target.value)}
-                    disabled={status === "1"} 
-                    required={status === "0"}
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="unpublicationDate" className="mb-3">
-                  <Form.Label>Fecha de Despublicación</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    value={unpublicationDate}
-                    onChange={(e) => setUnpublicationDate(e.target.value)}
-                    required={status === "1"}
-                  />
-                </Form.Group> */}
-                <div className="btn-container">
-                  {/* <Button onClick={openModal} className="btn-banner">
-                    Vista Previa
-                  </Button> */}
-                  <Button className="btn-banner" type="submit">
-                    Subir Banner
-                  </Button>
-                </div>
-              </Form>
+            <div className="btn-container">
+              <Button className="btn-banner" type="submit">
+                Subir Banner
+              </Button>
             </div>
-          </Col>
-        </Row>
-      </Container>
+          </Form>
+        </div>
+      </div>
 
       <Preview isOpen={isOpen} closeModal={closeModal} file={selectedFile} />
 
