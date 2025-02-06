@@ -103,15 +103,16 @@ function Register() {
   };
 
   return (
-    <div className="container">
-      <div className="register-container">
-        <h1 className="title-text">Registrar Usuario</h1>
-        <div className="form-register">
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Registrar Usuario</h1>
+        <div className="content-form">
           <Form onSubmit={registerData}>
-            <Form.Group controlId="formName">
+            <Form.Group controlId="formName" className="mb-3">
               <Form.Label>Nombre y apellido</Form.Label>
               <Form.Control
                 type="text"
+                placeholder="Nombre y apellido"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 required
@@ -119,40 +120,44 @@ function Register() {
               />
             </Form.Group>
 
-            <Form.Group controlId="formEmail">
+            <Form.Group controlId="formEmail" className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
+                placeholder="Email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
               />
             </Form.Group>
 
-            <Form.Group controlId="formConfirmEmail">
+            <Form.Group controlId="formConfirmEmail" className="mb-3">
               <Form.Label>Confirmar Email</Form.Label>
               <Form.Control
                 type="email"
+                placeholder="Confirmar Email"
                 value={emailConfirmation}
                 onChange={(event) => setEmailConfirmation(event.target.value)}
                 required
               />
             </Form.Group>
 
-            <Form.Group controlId="formPassword">
+            <Form.Group controlId="formPassword" className="mb-3">
               <Form.Label>Contraseña</Form.Label>
               <Form.Control
                 type="password"
+                placeholder="Contraseña"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
               />
             </Form.Group>
 
-            <Form.Group controlId="formConfirmPassword">
+            <Form.Group controlId="formConfirmPassword" className="mb-3">
               <Form.Label>Confirmar Contraseña</Form.Label>
               <Form.Control
                 type="password"
+                placeholder="Confirmar Contraseña"
                 value={passwordConfirmation}
                 onChange={(event) =>
                   setPasswordConfirmation(event.target.value)
@@ -161,7 +166,7 @@ function Register() {
               />
             </Form.Group>
 
-            <Form.Group controlId="formRol">
+            <Form.Group controlId="formRol" className="mb-3">
               <Form.Label>Rol</Form.Label>
               <Form.Select
                 aria-label="Default select example"
