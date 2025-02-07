@@ -267,7 +267,7 @@ function ListNews() {
                         <div>
                           <Button
                             className="me-2"
-                            variant="primary"
+                            variant="warning"
                             onClick={() => openModalNew(news)} // Abre el modal con el banner seleccionado
                           >
                             <CiEdit size={25}/>

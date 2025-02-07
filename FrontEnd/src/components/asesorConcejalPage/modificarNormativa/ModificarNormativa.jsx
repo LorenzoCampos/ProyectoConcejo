@@ -261,6 +261,7 @@ function ModificarNormativa() {
             "Content-Type": "application/json",
           },
         });
+        console.log("Respuesta de la API:", response.data);
 
         if (response.status === 200) {
           console.log(response.data);
@@ -273,8 +274,10 @@ function ModificarNormativa() {
           setSubject(normativa.subject);
           setPdfProcess(normativa.pdf_process);
           setPdfApproved(normativa.pdf_approved);
-          setSelectedItems(normativa.modifies);
-          setSelectedItemsModifiedBy(normativa.modified_by);
+         // setSelectedItems(normativa.modifies);
+         // setSelectedItemsModifiedBy(normativa.modified_by);
+          setSelectedItems(normativa.regulations_modified || []); 
+          setSelectedItemsModifiedBy(normativa.regulations_that_modify || []);
         }
       } catch (error) {
         console.error("Error al obtener la normativa:", error);
@@ -579,7 +582,7 @@ function ModificarNormativa() {
                   <div className="word-list">
                     {selectedItems.map((item, index) => (
                       <div key={index} className="list">
-                        <span>{normativas.modifies}</span>
+                        {/*<span>{normativas.modifies}</span>*/}
                         <span className="flex-grow-1">
                           {item.type} N° {item.number}
                         </span>
@@ -626,7 +629,7 @@ function ModificarNormativa() {
                   <div className="word-list">
                     {selectedItemsModifiedBy.map((item, index) => (
                       <div key={index} className="list">
-                        <span>{normativas.modified_by}</span>
+                       {/* <span>{normativas.modified_by}</span>*/}
                         <span className="flex-grow-1">
                           {item.type} N° {item.number}
                         </span>

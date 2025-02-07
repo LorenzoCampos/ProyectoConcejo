@@ -243,7 +243,7 @@ function ListBanners() {
                         <Button
                           title="Editar banner"
                           className="me-2"
-                          variant="primary"
+                          variant="warning"
                           onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
                         >
                           <CiEdit size={25}/>

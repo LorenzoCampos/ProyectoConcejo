@@ -3,6 +3,8 @@ import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
 import Spinner from "react-bootstrap/Spinner";
 import { CiEdit } from "react-icons/ci";
+import { TbListDetails } from "react-icons/tb";
+
 
 
 import ToastContainer from "react-bootstrap/ToastContainer";
@@ -331,7 +333,7 @@ function ListRegulations() {
                           <div>
                             <Button
                               title="Editar"
-                              variant="secondary"
+                              variant="warning"
                               className="edit-btn"
                               onClick={() => handleEditClick(regulation.id)} // Usa la función de redirección
                             >
@@ -341,8 +343,9 @@ function ListRegulations() {
                           </div>
                         )}
                         <div>
-                          <Button variant="primary" className="detail-btn" title="Detalles">
-                            Detalles
+                          <Button variant="info" className="detail-btn" title="Detalles">
+                          <TbListDetails />
+
                           </Button>
                         </div>
                       </div>
