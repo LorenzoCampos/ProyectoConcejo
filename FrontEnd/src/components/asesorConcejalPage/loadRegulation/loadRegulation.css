@@ -41,6 +41,8 @@ div button.btn.btn-primary {
 @media (max-width: 930px) {
   .word-list {
     width: 60vw;
+  }
+}
 
 @media (max-width: 600px) {
   .word-list {
