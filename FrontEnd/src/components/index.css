@@ -46,7 +46,12 @@ body {
   font-size: 2.5rem;
   font-weight: 900;
   text-shadow: .2em 0.2em 1.4em rgba(0, 0, 0, 0.3);
+}
 
+@media (max-width: 600px) {
+  .internal-title {
+    text-align: center;
+  }
 }
 
 .form-control, .form-select {
