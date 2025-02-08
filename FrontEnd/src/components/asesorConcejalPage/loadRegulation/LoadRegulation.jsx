@@ -125,6 +125,12 @@ function LoadRegulation() {
     setSubject(e.target.value);
   };
 
+  const adjustTextareaHeight = (e) => {
+    // poner que sea una linea al principio
+    e.target.style.height = "1px";
+    e.target.style.height = `${e.target.scrollHeight}px`;
+  };
+
   const addWord = () => {
     if (word.trim() !== "") {
       setWordList([...wordList, word.trim()]);
@@ -412,6 +418,7 @@ function LoadRegulation() {
                   variant="primary"
                   onClick={addAuthors}
                   disabled={typeAuthor === "DEM"}
+                  title="Agregar"
                 >
                   +
                 </Button>
@@ -460,7 +467,7 @@ function LoadRegulation() {
                   value={word}
                   onChange={handleWordChange}
                 />
-                <Button variant="primary" onClick={addWord}>
+                <Button title="Agregar" variant="primary" onClick={addWord}>
                   +
                 </Button>
               </div>
@@ -486,7 +493,9 @@ function LoadRegulation() {
             <Form.Group controlId="description" className="mb-3">
               <Form.Label>Tema: </Form.Label>
               <Form.Control
-                type="text"
+                className="input-subject"
+                onInput={adjustTextareaHeight}
+                as="textarea"
                 placeholder="breve descripcion..."
                 onChange={handleSubjectChange}
               />

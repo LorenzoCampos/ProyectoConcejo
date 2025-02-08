@@ -20,11 +20,32 @@ div button.btn.btn-primary {
   background-color: #d8daff;
 }
 
+.input-subject {
+  resize: none;
+  overflow: hidden;
+}
+
 .word-list {
   display: flex;
   margin: 10px;
   flex-wrap: wrap;
-  width: 50em;
+  width: 40vw;
+}
+
+@media (max-width: 1366px) {
+  .word-list {
+    width: 50vw;
+  }
+}
+
+@media (max-width: 930px) {
+  .word-list {
+    width: 60vw;
+
+@media (max-width: 600px) {
+  .word-list {
+    width: 80vw;
+  }
 }
 
 .list {
