@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { NavDropdown } from "react-bootstrap";
@@ -12,6 +12,8 @@ function NavbarForRole() {
   const [userRole, setUserRole] = useState("");
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
@@ -31,10 +33,15 @@ function NavbarForRole() {
 
       setAvatar(avatarUrl);
     } else {
-      setAvatar("Usuario");
+      setAvatar("");
       setName("Usuario");
     }
   }, []);
+
+  const handleLinkClick = (path) => {
+    navigate(path);
+    setShowOffcanvas(false);
+  };
 
   return (
     <>
@@ -49,17 +56,19 @@ function NavbarForRole() {
               <img className="logo" src="../../../public/logo1.png" alt="Logo" />
             </Navbar.Brand>
 
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} onClick={() => setShowOffcanvas(true)} />
 
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-sm`}
               aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
               placement="end"
+              show={showOffcanvas}
+              onHide={() => setShowOffcanvas(false)}
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
                   <div className="user-info">
-                    {avatar && avatar !== "Usuario" ? (
+                    {avatar ? (
                       <img src={avatar} alt="User Avatar" className="avatar" />
                     ) : (
                       <FaRegUserCircle className="default-avatar" />
@@ -81,6 +90,7 @@ function NavbarForRole() {
                         to=""
                         className="link-nav"
                         style={{ fontSize: "1rem" }}
+                        onClick={() => handleLinkClick("/normativas")}
                       >
                         Ver Normativas
                       </Nav.Link>
@@ -89,6 +99,7 @@ function NavbarForRole() {
                         to="cargar-normativa"
                         className="link-nav"
                         style={{ fontSize: "1rem" }}
+                        onClick={() => handleLinkClick("/cargar-normativa")}
                       >
                         Cargar normativa
                       </Nav.Link>
@@ -102,6 +113,7 @@ function NavbarForRole() {
                         to="gestionar-usuarios"
                         className="link-nav"
                         style={{ fontSize: "1rem" }}
+                        onClick={() => handleLinkClick("/gestionar-usuarios")}
                       >
                         Gestionar Usuarios
                       </Nav.Link>
@@ -115,6 +127,7 @@ function NavbarForRole() {
                         to=""
                         className="link-nav"
                         style={{ fontSize: "1rem" }}
+                        onClick={() => handleLinkClick("/gestionar-banners")}
                       >
                         Gestionar Banners
                       </Nav.Link>
@@ -123,6 +136,7 @@ function NavbarForRole() {
                         to="ver-noticias"
                         className="link-nav"
                         style={{ fontSize: "1rem" }}
+                        onClick={() => handleLinkClick("/ver-noticias")}
                       >
                         Gestionar Noticias
                       </Nav.Link>
@@ -133,7 +147,7 @@ function NavbarForRole() {
                     <NavDropdown
                       title={
                         <div className="user-info">
-                          {avatar && avatar !== "Usuario" ? (
+                          {avatar ? (
                             <img
                               src={avatar}
                               alt="User Avatar"
@@ -150,8 +164,7 @@ function NavbarForRole() {
                       id="user-dropdown"
                       align="end"
                     >
-                      {/* <NavDropdown.Item>Ver Perfil</NavDropdown.Item> */}
-                      <NavDropdown.Item as={Link} to="/">
+                      <NavDropdown.Item as={Link} to="/" onClick={() => handleLinkClick("/")}>
                         Volver al Home
                       </NavDropdown.Item>
                       <NavDropdown.Divider />
@@ -161,10 +174,7 @@ function NavbarForRole() {
                     </NavDropdown>
                   </div>
                   <div className="d-block d-sm-none">
-                    {/* <Nav.Link as={Link} to="/profile">
-                    Ver Perfil
-                  </Nav.Link> */}
-                    <Nav.Link as={Link} to="/">
+                    <Nav.Link as={Link} to="/" onClick={() => handleLinkClick("/")}>
                       Volver al Home
                     </Nav.Link>
                     <Nav.Link>
