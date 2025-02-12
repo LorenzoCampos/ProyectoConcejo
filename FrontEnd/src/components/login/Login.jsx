@@ -59,24 +59,25 @@ function Login() {
       localStorage.setItem("userName", name);
 
       if (response.status === 200) {
-        if (role === "admin") {
-          console.log(role);
-          navigate("/admin");
-        } else if (role === "concejal") {
-          console.log(role);
-          navigate("/asesor-concejal");
-        } else if (role === "cm") {
-          console.log(role);
-          navigate("/cm");
-        } else if (role === "asesor") {
-          console.log(role);
-          navigate("/asesor-concejal");
-        } else if (role === "mesa de entrada") {
-          console.log(role);
-          navigate("/asesor-concejal");
-        } else {
-          console.log(role);
-          navigate("/");
+        switch (role) {
+          case "admin":
+            navigate("/admin");
+            break;
+          case "concejal":
+            navigate("/asesor-concejal");
+            break;
+          case "asesor":
+            navigate("/asesor-concejal");
+            break;
+          case "mesa de entrada":
+            navigate("/asesor-concejal");
+            break;
+          case "cm":
+            navigate("/cm");
+            break;
+          default:
+            navigate("/");
+            break;
         }
       }
     } catch (error) {
