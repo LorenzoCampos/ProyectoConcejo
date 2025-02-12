@@ -1,0 +1,11 @@
+.container-pdf-modify {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 1rem 0 0 1rem;
+}
+
+.container-pdf-modify__pdf {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
