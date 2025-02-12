@@ -6,6 +6,9 @@ import { Form, Button, Alert } from "react-bootstrap";
 import API from "../../../config/apiConfig";
 import "./modificarNormativa.css";
 
+import { FaRegFilePdf } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+
 function ModificarNormativa() {
   const { id } = useParams();
 
@@ -30,12 +33,17 @@ function ModificarNormativa() {
   const [pdfProcess, setPdfProcess] = useState(null);
   const [pdfApproved, setPdfApproved] = useState(null);
 
+  const [originalPdfProcess, setOriginalPdfProcess] = useState(null);
+  const [originalPdfApproved, setOriginalPdfApproved] = useState(null);
+
   const [type, setType] = useState("");
   const [typeAuthor, setTypeAuthor] = useState("");
   const [subject, setSubject] = useState("");
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // "success" o "danger"
+
+  // const [initialData, setInitialData] = useState({});
 
   const searchResultsRef = useRef(null);
   const searchResultsModifiedByRef = useRef(null);
@@ -272,8 +280,22 @@ function ModificarNormativa() {
           setSubject(normativa.subject);
           setPdfProcess(normativa.pdf_process);
           setPdfApproved(normativa.pdf_approved);
-          setSelectedItems(normativa.regulations_modified || []); 
+          setSelectedItems(normativa.regulations_modified || []);
           setSelectedItemsModifiedBy(normativa.regulations_that_modify || []);
+
+          // setInitialData({
+          //   typeAuthor: normativa.author_type,
+          //   status: normativa.state,
+          //   subject: normativa.subject,
+          //   pdfProcess: normativa.pdf_process,
+          //   pdfApproved: normativa.pdf_approved,
+          //   selectedItems: normativa.regulations_modified,
+          //   selectedItemsModifiedBy: normativa.regulations_that_modify,
+          // });
+
+          // Guardar los valores originales de los PDFs
+          setOriginalPdfProcess(normativa.pdf_process);
+          setOriginalPdfApproved(normativa.pdf_approved);
         }
       } catch (error) {
         console.error("Error al obtener la normativa:", error);
@@ -315,15 +337,23 @@ function ModificarNormativa() {
       formData.append(`keywords[${index}]`, keyword);
     });
     formData.append("subject", subject);
-    if (pdfProcess) {
+
+    if (pdfProcess === null) {
+      formData.append("pdf_process", undefined);
+    } else if (pdfProcess !== originalPdfProcess) {
       formData.append("pdf_process", pdfProcess);
     }
-    if (pdfApproved) {
+
+    if (pdfApproved === null) {
+      formData.append("pdf_approved", undefined);
+    } else if (pdfApproved !== originalPdfApproved) {
       formData.append("pdf_approved", pdfApproved);
     }
+
     selectedItems.forEach((item, index) => {
       formData.append(`modifies[${index}]`, item.id);
     });
+
     selectedItemsModifiedBy.forEach((item, index) => {
       formData.append(`modified_by[${index}]`, item.id);
     });
@@ -343,22 +373,13 @@ function ModificarNormativa() {
       // Manejo de la respuesta
       if (response.status === 200) {
         setMessage("Normativa modificada correctamente.");
+        console.log(response.data);
         setMessageType("success");
         window.scrollTo(0, 0); // Desplazar hacia arriba
 
-        // Limpiar los campos del formulario
-        setType("");
-        setTypeAuthor("");
-        setAuthors("");
-        setAuthorsList([]);
-        setStatus("");
-        setWord("");
-        setWordList([]);
-        setSubject("");
-        setPdfProcess(null);
-        setPdfApproved(null);
-        setSelectedItems([]);
-        setSelectedItemsModifiedBy([]);
+/*         setTimeout(() => {
+          window.location.reload();
+        }, 1000); */
       }
     } catch (error) {
       // Manejo de errores
@@ -370,6 +391,7 @@ function ModificarNormativa() {
         setMessage(
           `Error al enviar la solicitud: ${error.response.data.message}`
         );
+        console.log(error.response.data);
       } else {
         setMessage(`Error al enviar la solicitud: ${error.message}`);
       }
@@ -540,15 +562,69 @@ function ModificarNormativa() {
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
-                  <Form.Control type="file" onChange={handlePdfProcessChange} />
+                  <Form.Control
+                    type="file"
+                    onChange={(e) => setPdfProcess(e.target.files[0])}
+                  />
+                  {pdfProcess && pdfProcess !== "delete" && (
+                    <>
+                      <div className="container-pdf-modify">
+                        <b className="container-pdf-modify__b">
+                          Pdf cargado actualmente:
+                        </b>
+                        <Button
+                          title="Ver PDF"
+                          className="container-pdf-modify__pdf"
+                          variant="danger"
+                          href={pdfProcess}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaRegFilePdf style={{ color: "white" }} />
+                        </Button>
+                        <Button
+                          title="Eliminar PDF"
+                          className="container-pdf-modify__delete"
+                          variant="danger"
+                          onClick={() => setPdfProcess(null)}
+                        >
+                          <MdDelete size={20} />
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </Form.Group>
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
                   <Form.Control
                     type="file"
-                    onChange={handlePdfApprovedChange}
+                    onChange={(e) => setPdfApproved(e.target.files[0])}
                   />
+                  {pdfApproved && (
+                    <div className="container-pdf-modify">
+                      <b className="container-pdf-modify__b">
+                        Pdf cargado actualmente:
+                      </b>
+                      <Button
+                        className="container-pdf-modify__pdf"
+                        variant="danger"
+                        href={pdfApproved}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaRegFilePdf style={{ color: "white" }} />
+                      </Button>
+                      <Button
+                        title="Eliminar PDF"
+                        className="container-pdf-modify__delete"
+                        variant="danger"
+                        onClick={() => setPdfApproved(null)}
+                      >
+                        <MdDelete size={20} />
+                      </Button>
+                    </div>
+                  )}
                 </Form.Group>
 
                 <Form.Group controlId="normToModif" className="mb-3">
@@ -625,7 +701,7 @@ function ModificarNormativa() {
                   <div className="word-list">
                     {selectedItemsModifiedBy.map((item, index) => (
                       <div key={index} className="list">
-                       {/* <span>{normativas.modified_by}</span>*/}
+                        {/* <span>{normativas.modified_by}</span>*/}
                         <span className="flex-grow-1">
                           {item.type} N° {item.number}
                         </span>
