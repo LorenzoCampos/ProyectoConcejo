@@ -5,8 +5,6 @@ import Spinner from "react-bootstrap/Spinner";
 import { CiEdit } from "react-icons/ci";
 import { TbListDetails } from "react-icons/tb";
 
-
-
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 
@@ -301,17 +299,32 @@ function ListRegulations() {
                     <td data-title="Acciones">
                       <div className="accion-buttons">
                         <div>
-                          {regulation.pdf_approved && (
-                            <a target="_blank" href={regulation.pdf_approved}>
-                              <Button variant="primary" className="pdf-btn" title="PDF Aprobado">
-                                <FaRegFilePdf style={{ color: "white" }} />
-                              </Button>
-                            </a>
-                          )}
-
+                        <div>
+                            {type === "correspondence" && (
+                              <div>
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            {regulation.pdf_approved && (
+                              <a target="_blank" href={regulation.pdf_approved}>
+                                <Button
+                                  variant="primary"
+                                  className="pdf-btn"
+                                  title="PDF Aprobado"
+                                >
+                                  <FaRegFilePdf style={{ color: "white" }} />
+                                </Button>
+                              </a>
+                            )}
+                          </div>
                           {regulation.pdf_process ? (
                             <a target="_blank" href={regulation.pdf_process}>
-                              <Button variant="primary" className="pdf-btn" title="PDF En Proceso">
+                              <Button
+                                variant="primary"
+                                className="pdf-btn"
+                                title="PDF En Proceso"
+                              >
                                 <FaRegFilePdf style={{ color: "white" }} />
                               </Button>
                             </a>
@@ -329,6 +342,7 @@ function ListRegulations() {
                             </a>
                           )}
                         </div>
+
                         {(userRole === "admin" || userRole === "asesor") && (
                           <div>
                             <Button
@@ -338,14 +352,16 @@ function ListRegulations() {
                               onClick={() => handleEditClick(regulation.id)} // Usa la función de redirección
                             >
                               <CiEdit />
-
                             </Button>
                           </div>
                         )}
                         <div>
-                          <Button variant="info" className="detail-btn" title="Detalles">
-                          <TbListDetails />
-
+                          <Button
+                            variant="info"
+                            className="detail-btn"
+                            title="Detalles"
+                          >
+                            <TbListDetails />
                           </Button>
                         </div>
                       </div>
