@@ -252,8 +252,6 @@ function ModificarNormativa() {
 
   useEffect(() => {
     const fetchNormativa = async () => {
-
-      console.log("Hasta aca llego");
       try {
         const response = await axios.get(API.SHOW_REGULATION + id, {
           headers: {
@@ -274,8 +272,6 @@ function ModificarNormativa() {
           setSubject(normativa.subject);
           setPdfProcess(normativa.pdf_process);
           setPdfApproved(normativa.pdf_approved);
-         // setSelectedItems(normativa.modifies);
-         // setSelectedItemsModifiedBy(normativa.modified_by);
           setSelectedItems(normativa.regulations_modified || []); 
           setSelectedItemsModifiedBy(normativa.regulations_that_modify || []);
         }
@@ -345,7 +341,7 @@ function ModificarNormativa() {
       );
 
       // Manejo de la respuesta
-      if (response.status === 201) {
+      if (response.status === 200) {
         setMessage("Normativa modificada correctamente.");
         setMessageType("success");
         window.scrollTo(0, 0); // Desplazar hacia arriba
