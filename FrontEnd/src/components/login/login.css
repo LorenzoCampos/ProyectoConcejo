@@ -13,6 +13,12 @@ input#floatingInput {
   width: 350px;
 }
 
+@media (max-width: 600px) {
+  input#floatingInput {
+    width: 85vw;
+  }
+}
+
 .form-btn button:hover {
   background-color: var(--background-color);
   color: var(--primary-color);
