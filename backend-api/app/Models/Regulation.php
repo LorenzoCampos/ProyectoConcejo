@@ -55,7 +55,7 @@ class Regulation extends Model
             'regulation_interactions',
             'fk_regulation',
             'fk_mod_regulation'
-        );
+        )->withPivot('rule')->wherePivot('rule', 'modifies');
     }
 
     /**
@@ -68,6 +68,6 @@ class Regulation extends Model
             'regulation_interactions',
             'fk_mod_regulation',
             'fk_regulation'
-        );
+        )->withPivot('rule')->wherePivot('rule', 'modifiedBy');
     }
 }
