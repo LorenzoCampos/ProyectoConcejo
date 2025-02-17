@@ -1,6 +1,6 @@
 // apiConfig.js
 
-const URL = "https://api-concejoarroyoseco.duckdns.org";
+const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
 const API = {
   // Login & logout
