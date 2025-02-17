@@ -22,7 +22,7 @@ function LoadRegulation() {
   const [searchResultsModifiedBy, setSearchResultsModifiedBy] = useState([]);
   const [selectedItemsModifiedBy, setSelectedItemsModifiedBy] = useState([]);
 
-  const [status, setStatus] = useState("");
+  const [state, setState] = useState("process");
 
   const [pdfProcess, setPdfProcess] = useState(null);
   const [pdfApproved, setPdfApproved] = useState(null);
@@ -100,8 +100,8 @@ function LoadRegulation() {
     setAuthors(e.target.value);
   };
 
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
+  const handleStateChange = (e) => {
+    setState(e.target.value);
   };
 
   const handlePdfProcessChange = (e) => {
@@ -256,11 +256,14 @@ function LoadRegulation() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setMessage(""); // Resetear mensaje
+    setMessageType("");
+
     // Verificar si el tipo no es "correspondence" y el estado es "approved" sin PDF aprobado
-    if (type !== "correspondence" && status === "approved" && !pdfApproved) {
+    if (type !== "correspondence" && state === "approved" && !pdfApproved) {
       setMessage("Debe subir el PDF de la normativa aprobada.");
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
@@ -270,7 +273,7 @@ function LoadRegulation() {
         "Como concejal, solo puede crear regulaciones con el tipo de autor 'concejal'."
       );
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
@@ -280,7 +283,7 @@ function LoadRegulation() {
     authorsList.forEach((author, index) => {
       formData.append(`authors[${index}]`, author);
     });
-    formData.append("state", status);
+    formData.append("state", state);
     wordList.forEach((keyword, index) => {
       formData.append(`keywords[${index}]`, keyword);
     });
@@ -297,31 +300,28 @@ function LoadRegulation() {
     selectedItemsModifiedBy.forEach((item, index) => {
       formData.append(`modified_by[${index}]`, item.id);
     });
-
+    formData.forEach((value, key) => {
+      console.log(value, key);
+    });
     try {
-      const response = await axios.post(
-        API.CREATE_REGULATIONS, // URL del endpoint
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Token de autenticación
-            "Content-Type": "multipart/form-data", // Tipo de contenido
-          },
-        }
-      );
+      const response = await axios.post(API.CREATE_REGULATIONS, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      // Manejo de la respuesta
       if (response.status === 201) {
         setMessage("Normativa creada correctamente.");
         setMessageType("success");
-        window.scrollTo(0, 0); // Desplazar hacia arriba
+        window.scrollTo(0, 0);
 
         // Limpiar los campos del formulario
         setType("");
         setTypeAuthor("");
         setAuthors("");
         setAuthorsList([]);
-        setStatus("");
+        setState("");
         setWord("");
         setWordList([]);
         setSubject("");
@@ -331,16 +331,27 @@ function LoadRegulation() {
         setSelectedItemsModifiedBy([]);
       }
     } catch (error) {
-      // Manejo de errores
       if (error.response) {
-        setMessage(`Error en la solicitud: ${error.response.data.message}`);
+        // Si el backend devuelve un error de validación
+        if (error.response.status === 422) {
+          const errors = error.response.data.errors;
+          let errorMessages = Object.values(errors)
+            .map((err) => err.join(" ")) // Unir mensajes de error por campo
+            .join(" | "); // Separar con barra
+
+          setMessage(`Errores de validación: ${errorMessages}`);
+        } else {
+          setMessage(`Error en la solicitud: ${error.response.data.message}`);
+        }
       } else {
         setMessage(`Error al enviar la solicitud: ${error.message}`);
       }
+
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
     }
   };
+
 
   const getAuthorOptions = () => {
     if (type === "correspondence") {
@@ -443,12 +454,12 @@ function LoadRegulation() {
               </div>
             </Form.Group>
 
-            <Form.Group controlId="status" className="mb-3">
+            <Form.Group controlId="state" className="mb-3">
               <Form.Label>Estado:</Form.Label>
               <Form.Select
                 aria-label="Default select example"
-                value={status}
-                onChange={handleStatusChange}
+                value={state}
+                onChange={handleStateChange}
                 disabled={userRole === "concejal"}
               >
                 <option value="process">En proceso</option>
