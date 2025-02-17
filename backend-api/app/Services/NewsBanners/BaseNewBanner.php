@@ -24,23 +24,21 @@ abstract class BaseNewBanner
      * Fusiona datos existentes con los nuevos.
      * Solo sobrescribe los campos enviados (valores no nulos).
      */
+
     public function mergeData(array $currentData): array
     {
         return array_merge($currentData, array_filter($this->data, function ($value) {
-            return $value; // Solo sobrescribe si el valor es no nulo
+            return $value !== null; // Solo sobrescribe si el valor es no nulo
         }));
     }
-
     /**
      * Sube una imagen al almacenamiento público.
      * Devuelve la ruta de la imagen.
      */
     public function uploadImage(Request $request): ?string
     {
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images/news_banners', 'public');
-            return 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
-        }
+        $imagePath = $request->file('image')->store('images/news_banners', 'public');
+        return 'https://200.45.208.190/storage/' . $imagePath;
         return null;
     }
 
@@ -50,7 +48,7 @@ abstract class BaseNewBanner
     public function deleteImage($imagePath)
     {
         if ($imagePath) {
-            $oldImagePath = str_replace('https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $imagePath);
+            $oldImagePath = str_replace('https://200.45.208.190/storage/', '', $imagePath);
             Storage::disk('public')->delete($oldImagePath);
         }
     }
