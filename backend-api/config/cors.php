@@ -31,10 +31,10 @@ return [
 
     // 'supports_credentials' => true,
 
-    'paths' => ['api/*'],
-    'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'], // Para fines de desarrollo, puedes permitir todos los orígenes.
-    'allowed_headers' => ['*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Asegúrate de incluir todos los endpoints necesarios
+    'allowed_methods' => ['*'], // Permite todos los métodos (GET, POST, PUT, DELETE, etc.)
+    'allowed_origins' => ['http://localhost:5173'], // Permite el origen de tu frontend
+    'allowed_headers' => ['*'],  // Permite todos los encabezados
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => true,
