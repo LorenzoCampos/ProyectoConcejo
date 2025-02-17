@@ -30,6 +30,10 @@ function Logout() {
       }
 
     } catch (error) {
+      if (response.status === 404) {
+        localStorage.removeItem("authToken");
+      } 
+
       console.error(error);
     }
 
