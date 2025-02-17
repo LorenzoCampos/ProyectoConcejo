@@ -7,6 +7,8 @@ import axios from "axios";
 import "./banner.css";
 import Banner from "./Banner";
 
+import API from "../../config/apiConfig";
+
 function GetBannersPublic() {
   const [banners, setBanners] = useState([]);
 
@@ -23,7 +25,7 @@ function GetBannersPublic() {
         "Content-Type": "application/json",
       };
       let reqOptions = {
-        url: "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1/banners/published",
+        url: API.BANNERS_PUBLIC,
         method: "GET",
         headers: headersList,
       };

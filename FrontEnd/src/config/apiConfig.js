@@ -3,6 +3,12 @@
 const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
 const API = {
+  // Banners Public
+  BANNERS_PUBLIC: `${URL}/banners/published`,
+
+  // News Public
+  NEWS_PUBLIC: `${URL}/news/published`,
+
   // Login & logout
   LOGIN: `${URL}/login`,
   LOGOUT: `${URL}/logout`,
@@ -24,9 +30,6 @@ const API = {
   CREATE_NEWS: `${URL}/news-banners`,
   UPDATE_NEWS: `${URL}/news-banners/`,
   DELETE_NEWS: `${URL}/news-banners/`,
-
-  //User
-  LIST_NEWS_USER: `${URL}/news/published`,
 
   //Regulations
   LIST_REGULATIONS: `${URL}/regulations`, // Lista de Normativas

@@ -25,7 +25,7 @@ function GetNewsPublic({ onSeeNew }) {
         "Content-Type": "application/json",
       };
       let reqOptions = {
-        url: API.LIST_NEWS_USER,
+        url: API.NEWS_PUBLIC,
         method: "GET",
         headers: headersList,
       };
