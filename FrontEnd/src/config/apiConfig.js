@@ -1,6 +1,6 @@
 // apiConfig.js
 
-const URL = "http://200.45.208.190/api/v1";
+const URL = "https://api-concejoarroyoseco.duckdns.org";
 
 const API = {
   // Login & logout
