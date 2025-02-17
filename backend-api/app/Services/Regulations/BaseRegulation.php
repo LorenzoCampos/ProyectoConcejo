@@ -129,10 +129,8 @@ abstract class BaseRegulation
      */
     public function relateModifies(Model $regulation, array $modifiesIds): void
     {
-        $this->syncRelation($regulation, 'regulationInteractions', $modifiesIds, fn($id) => ['rule' => "modifies", 'fk_mod_regulation' => $id]);
+        $regulation->regulationsModified()->syncWithPivotValues($modifiesIds, ['rule' => 'modifies']);
     }
-
-    // ------------------------------------------------------------------------------------------------------------
 
     /**
      * Relacionar una regulación con otras que la modifican.
@@ -142,7 +140,7 @@ abstract class BaseRegulation
      */
     public function relateModifiedBy(Model $regulation, array $modifiedByIds): void
     {
-        $this->syncRelation($regulation, 'regulationInteractions', $modifiedByIds, fn($id) => ['rule' => "modifiedBy", 'fk_mod_regulation' => $id]);
+        $regulation->regulationsThatModify()->syncWithPivotValues($modifiedByIds, ['rule' => 'modifiedBy']);
     }
 
     // -----------------------------------------------------------------------------------------------------------

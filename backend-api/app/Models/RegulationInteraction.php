@@ -22,6 +22,6 @@ class RegulationInteraction extends Model
 
     public function modRegulation()
     {
-        return $this->belongsTo(RegulationInteraction::class, 'fk_mod_regulation');
+        return $this->belongsTo(Regulation::class, 'fk_mod_regulation');
     }
 }

@@ -28,7 +28,7 @@ class RegulationController extends Controller
         $orderDirection = $request->input('order_direction', 'desc'); // Dirección del ordenamiento, por defecto descendente
 
         // Construir la consulta base
-        $query = Regulation::query();
+        $query = Regulation::with('keywords');
 
         // Aplicar filtros condicionalmente
         $query->when($type, function ($q) use ($type) {
@@ -40,7 +40,6 @@ class RegulationController extends Controller
         });
 
         $query->when($author_type, function ($q) use ($author_type) {
-
             $q->where('author_type', $author_type);
         });
 
@@ -87,7 +86,7 @@ class RegulationController extends Controller
         $regulation = Regulation::findOrFail($id);
 
         // Cargar las relaciones de la regulación
-        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify']);
+        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify', 'modifications']);
 
         // Responder con la regulación y sus relaciones
         return response()->json($regulation, 200);
@@ -97,8 +96,6 @@ class RegulationController extends Controller
 
     public function store(Request $request)
     {
-        // return response()->json($request->all(), 201);
-
         $type = $request->input('type');
         $regulationService = $this->getRegulationService($type, $request->all());
 
@@ -110,12 +107,11 @@ class RegulationController extends Controller
                 'errors' => $validationErrors,
             ], 422);
         }
+
         // Verificar si el usuario tiene permiso para crear la regulación
         if (!$regulationService || !$regulationService->canCreate()) {
             return response()->json(['error' => 'No tiene permiso para crear esta regulación.'], 403);
         }
-
-
 
         // Preparar datos para la creación
         $data = $regulationService->getData();
@@ -134,6 +130,7 @@ class RegulationController extends Controller
 
         // Crear la regulación
         $regulation = Regulation::create($data);
+
         // Manejar palabras clave
         if ($request->has('keywords')) {
             $regulationService->handleKeywords($regulation, $request->input('keywords'));
@@ -210,7 +207,6 @@ class RegulationController extends Controller
         // Manejar autores
         if ($request->has('authors')) {
             $authorChanges = $regulationService->detectAuthorChanges($regulation, $request->input('authors'));
-            // Buscar el author_type en la regulacion actual
             $regulationService->handleAuthors($regulation, $request->input('authors'), $regulation->author_type);
             $relationChanges['authors'] = $authorChanges;
         }
@@ -220,8 +216,8 @@ class RegulationController extends Controller
             $validModifies = $regulationService->validateRegulationIds($request->input('modifies'));
 
             $relationChanges['modifies'] = [
-                'added' => array_diff($validModifies, $regulation->modifies->pluck('id')->toArray()),
-                'removed' => array_diff($regulation->modifies->pluck('id')->toArray(), $validModifies),
+                'added' => array_diff($validModifies, $regulation->regulationsModified->pluck('id')->toArray()),
+                'removed' => array_diff($regulation->regulationsModified->pluck('id')->toArray(), $validModifies),
             ];
 
             $regulationService->relateModifies($regulation, $validModifies);
@@ -232,8 +228,8 @@ class RegulationController extends Controller
             $validModifiedBy = $regulationService->validateRegulationIds($request->input('modified_by'));
 
             $relationChanges['modifiedBy'] = [
-                'added' => array_diff($validModifiedBy, $regulation->modifiedBy->pluck('id')->toArray()),
-                'removed' => array_diff($regulation->modifiedBy->pluck('id')->toArray(), $validModifiedBy),
+                'added' => array_diff($validModifiedBy, $regulation->regulationsThatModify->pluck('id')->toArray()),
+                'removed' => array_diff($regulation->regulationsThatModify->pluck('id')->toArray(), $validModifiedBy),
             ];
 
             $regulationService->relateModifiedBy($regulation, $validModifiedBy);
