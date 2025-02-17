@@ -7,39 +7,40 @@ import GetNewsPublic from "../news/GetNewsPublic"
 import { useState } from "react";
 import SeeNew from "../news/SeeNew"
 import Sessions from "../sessions/Sessions";
+import "./home.css";
 
 function Home() {
 
-    const [currentView, setCurrentView] = useState('home'); 
-    const [selectedNews, setSelectedNews] = useState(null);
+  const [currentView, setCurrentView] = useState('home');
+  const [selectedNews, setSelectedNews] = useState(null);
 
-    const handleShowSeeNew = (newsItem) => {
-        setSelectedNews(newsItem)
-        setCurrentView('seeNew');
+  const handleShowSeeNew = (newsItem) => {
+    setSelectedNews(newsItem)
+    setCurrentView('seeNew');
   };
-  const handleSHowHome = ()=> {
+  const handleSHowHome = () => {
     setCurrentView('home')
-};
-    return(
+  };
+  return (
+    <>
+      <Navbar onHomeClick={handleSHowHome} />
+      {currentView === 'home' && (
         <>
-        <Navbar onHomeClick ={ handleSHowHome}/>
-        {currentView === 'home' && (
-                <>
-                    
-                    <GetBannersPublic />
-                    <Sessions/>
-                    <GetNewsPublic onSeeNew={handleShowSeeNew} />
-                    <Contact />
-                    <Social />
-                    
-                </>
-            )}
-            
-
-            
-            {currentView === 'seeNew' && <SeeNew news={selectedNews}/>}
-            <Footer />
+          <div className="page-home">
+            <GetBannersPublic />
+            <Sessions />
+            <GetNewsPublic onSeeNew={handleShowSeeNew} />
+            <Contact />
+            <Social />
+          </div>
         </>
-    )
+      )}
+
+
+
+      {currentView === 'seeNew' && <SeeNew news={selectedNews} />}
+      <Footer />
+    </>
+  )
 }
 export default Home;
