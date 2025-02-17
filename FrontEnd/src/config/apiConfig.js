@@ -1,6 +1,6 @@
 // apiConfig.js
 
-const URL = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
+const URL = "http://200.45.208.190/api/v1";
 
 const API = {
   // Login & logout
