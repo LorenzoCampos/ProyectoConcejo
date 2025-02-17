@@ -38,7 +38,7 @@ abstract class BaseRegulation
     public function uploadPDF($file): string
     {
         $path = $file->store('pdfs', 'public');
-        $endPath = 'https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $path;
+        $endPath = 'http://200.45.208.190/storage/' . $path;
         return $endPath;
     }
 

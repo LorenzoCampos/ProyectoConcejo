@@ -59,7 +59,7 @@ class CustomVerifyEmail extends Notification
         );
 
         // Define la URL base para el frontend (ajústala según tu entorno)
-        $baseUrl = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public";
+        $baseUrl = "https://200.45.208.190";
 
         // Reemplaza la URL base por la del frontend
         $customerVerificationURL = str_replace(url('/'), $baseUrl, $verificationUrl);
