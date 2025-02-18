@@ -25,7 +25,7 @@ function NavBar(onHomeClick) {
     <div className="nav-cont">
       <Navbar expand="lg" className="bg-navbar fixed-top">
         <Container>
-          <Navbar.Brand as={Link} to="/"><img className="logo" src="../../../public/logo1.png" alt="Logo" /></Navbar.Brand>
+          <Navbar.Brand as={Link} to="/"><img className="logo" src="../../../src/images/logo1.png" alt="Logo" /></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="links">

@@ -50,6 +50,11 @@ a.nav-link {
   padding-left: 1rem;
 }
 
+a.link-nav.nav-link {
+  display: flex;
+  align-items: center;
+}
+
 a.link-nav.nav-link:hover {
   color: var(--background-color);
   background-color: var(--primary-color);
