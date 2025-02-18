@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
-import Preview from "./Preview";
 import ListBanners from "../listBanners/ListBanners";
 
 import "./bannerForm.css";
@@ -19,13 +18,7 @@ function BannerForm() {
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+
 
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
@@ -37,25 +30,25 @@ function BannerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedFile || !unpublicationDate) {
+{/*    if (!selectedFile || !unpublicationDate) {
       setToastMessage("Por favor, completa todos los campos.");
       setShowWarningToast(true);
       return;
-    }
+    }*/}
 
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("status", status);
-    formData.append("publication_date", publicationDate);
-    formData.append("unpublication_date", unpublicationDate);
+   // formData.append("publication_date", publicationDate);
+    //formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "banner");
 
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
     console.log("Status:", status);
-    console.log("Publication Date:", publicationDate);
-    console.log("Unpublication Date:", unpublicationDate);
+    //console.log("Publication Date:", publicationDate);
+    //console.log("Unpublication Date:", unpublicationDate);
 
     try {
       const response = await axios.post(API.CREATE_BANNERS, formData, {
@@ -120,7 +113,7 @@ function BannerForm() {
         </div>
       </div>
 
-      <Preview isOpen={isOpen} closeModal={closeModal} file={selectedFile} />
+     
 
       {/* Toasts para feedback */}
       <ToastContainer position="top-end" className="p-3">

@@ -28,3 +28,20 @@ a.dropdown-item:hover {
   background: var(--form-color);
   color: var(--background-color);
 }
+
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.login-title {
+  margin-bottom: 20px;
+}
+

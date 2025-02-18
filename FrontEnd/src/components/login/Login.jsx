@@ -7,6 +7,7 @@ import Toast from "react-bootstrap/Toast";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "./login.css";
 import API from "../../config/apiConfig";
@@ -19,6 +20,13 @@ function Login() {
   const [toastMessage, setToastMessage] = useState("");
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false); 
+
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const navigate = useNavigate();
 
   const loginData = async (e) => {
@@ -111,24 +119,40 @@ function Login() {
   return (
     <div className="page-form">
       <div className="content-page-container">
-        <h1 className="internal-title">Inicie sesión</h1>
-        <div className="content-form">
+      <div className="content-form">
+        <h1 className="internal-title login-title">Inicie sesión</h1>
           <Form onSubmit={loginData}>
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Email"
-              className="mb-3"
-            >
+          <Form.Group controlId="floatingInput" className="mb-3">
+              
               <Form.Control
                 type="email"
                 className="filter-input-border"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
-                placeholder=""
+                placeholder="Email"
               />
-            </FloatingLabel>
-            <FloatingLabel
+            </Form.Group>
+            <Form.Group controlId="floatingPassword" className="mb-3">
+              
+              <div className="password-container">
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  className="filter-input-border"
+                  placeholder="Contraseña"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+                <span
+                  className="password-toggle-icon"
+                  onClick={passwordVisibility}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              </Form.Group>
+          { /* <FloatingLabel
               controlId="floatingPassword"
               label="Contraseña"
               className="mb-3"
@@ -141,7 +165,7 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
                 required
               />
-            </FloatingLabel>
+            </FloatingLabel>*/}
             <div className="form-btn">
               <Button variant="primary" type="submit">
                 Ingresar
