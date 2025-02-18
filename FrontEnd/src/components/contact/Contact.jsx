@@ -9,10 +9,10 @@ function Contact() {
       </div>
       <div className="container-forms">
         <div className="form">
-          <img src="./src/images/tel.png" alt="" />
+          <img src="/assets/tel.png" alt="" />
         </div>
         <div className="form">
-          <img src="./src/images/contacto.png" alt="" />
+          <img src="/assets/contacto.png" alt="" />
         </div>
       </div>
     </>
