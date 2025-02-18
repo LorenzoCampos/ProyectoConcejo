@@ -6,8 +6,11 @@
 
 div button.btn.btn-primary {
   margin: 0px !important;
-  margin-left: 5px !important;
   margin: 15px;
+}
+
+.input-keywords{
+  gap: 5px;
 }
 
 .list-group-item {

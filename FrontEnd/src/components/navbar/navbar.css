@@ -74,6 +74,13 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
   gap: 2rem;
 }
 
+.container-nav-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+}
+
 @media (max-width: 990px) {
   .navbar-nav {
     background-color: #fff;

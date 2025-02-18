@@ -80,6 +80,7 @@ function NavbarForRole() {
 
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                <div className="container-nav-link d-flex flex-column flex-sm-row">
                   {(userRole === "concejal" ||
                     userRole === "asesor" ||
                     userRole === "mesa de entrada" ||
@@ -140,9 +141,10 @@ function NavbarForRole() {
                       >
                         Gestionar Noticias
                       </Nav.Link>
+                     
                     </>
                   )}
-
+ </div>
                   <div className="d-none d-sm-block">
                     <NavDropdown
                       title={
@@ -173,7 +175,7 @@ function NavbarForRole() {
                       </NavDropdown.Item>
                     </NavDropdown>
                   </div>
-                  <div className="d-block d-sm-none">
+                  <div className="d-block d-sm-none align-self-center">
                     <Nav.Link as={Link} to="/" onClick={() => handleLinkClick("/")}>
                       Volver al Home
                     </Nav.Link>
@@ -181,6 +183,7 @@ function NavbarForRole() {
                       <Logout />
                     </Nav.Link>
                   </div>
+                
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
