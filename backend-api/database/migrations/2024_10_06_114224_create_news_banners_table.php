@@ -22,6 +22,7 @@ return new class extends Migration
             // Exclusivo para noticias
             $table->string('title')->nullable(); // Título para noticias
             $table->text('description')->nullable(); // Descripción para noticias
+            $table->text('video_url')->nullable(); // URL de video para noticias
 
             // Fechas de publicación/despublicación (común para ambos)
             $table->timestamp('publication_date')->nullable(); // Fecha de publicación
