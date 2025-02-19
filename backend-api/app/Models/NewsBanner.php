@@ -18,6 +18,7 @@ class NewsBanner extends Model
         'title',              // Título (solo para noticias)
         'description',        // Descripción (solo para noticias)
         'image',              // Imagen común para ambos
+        'video_url',          // URL del video (solo para noticias)
         'status',             // Estado (público o no público)
         'publication_date',   // Fecha de publicación
         'unpublication_date', // Fecha de despublicación

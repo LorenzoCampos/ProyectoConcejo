@@ -24,6 +24,7 @@ class Banner extends BaseNewBanner
         // Remover campos no válidos para banners
         $this->data['title'] = null;
         $this->data['description'] = null;
+        $this->data['video_url'] = null;
 
         return null;
     }

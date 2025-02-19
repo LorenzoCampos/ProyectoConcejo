@@ -6,6 +6,8 @@ use App\Models\NewsBanner;
 use Illuminate\Http\Request;
 use App\Services\NewsBanners\Banner;
 use App\Services\NewsBanners\News;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class NewsBannerController extends Controller
 {
@@ -109,21 +111,21 @@ class NewsBannerController extends Controller
         $type = $request->input('type', $newsBanner->type);
 
         // Elegir la clase correcta según el tipo
-        $bannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
+        $newBannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
 
         // Fusionar datos existentes con los nuevos
-        $mergedData = $bannerService->mergeData($newsBanner->toArray());
+        $mergedData = $newBannerService->mergeData($newsBanner->toArray());
 
         // Validar con contexto de actualización
-        $validationErrors = $bannerService->validate(false); // false para actualización
+        $validationErrors = $newBannerService->validate(false); // false para actualización
         if ($validationErrors) {
             return response()->json($validationErrors, 422);
         }
 
         // Manejo de la imagen
         if ($request->hasFile('image')) {
-            $bannerService->deleteImage($newsBanner->image);
-            $mergedData['image'] = $bannerService->uploadImage($request);
+            $newBannerService->deleteImage($newsBanner->image);
+            $mergedData['image'] = $newBannerService->uploadImage($request->input('image'));
         }
 
         // Actualizar solo si hay cambios

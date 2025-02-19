@@ -39,16 +39,11 @@ function BannerForm() {
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("status", status);
-   // formData.append("publication_date", publicationDate);
-    //formData.append("unpublication_date", unpublicationDate);
     formData.append("type", "banner");
 
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
-    console.log("Status:", status);
-    //console.log("Publication Date:", publicationDate);
-    //console.log("Unpublication Date:", unpublicationDate);
 
     try {
       const response = await axios.post(API.CREATE_BANNERS, formData, {

@@ -38,7 +38,7 @@ abstract class BaseNewBanner
     public function uploadImage(Request $request): ?string
     {
         $imagePath = $request->file('image')->store('images/news_banners', 'public');
-        return 'https://200.45.208.190/storage/' . $imagePath;
+        return 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
         return null;
     }
 
@@ -48,7 +48,7 @@ abstract class BaseNewBanner
     public function deleteImage($imagePath)
     {
         if ($imagePath) {
-            $oldImagePath = str_replace('https://200.45.208.190/storage/', '', $imagePath);
+            $oldImagePath = str_replace('https://api-concejoarroyoseco.duckdns.org/storage/', '', $imagePath);
             Storage::disk('public')->delete($oldImagePath);
         }
     }
