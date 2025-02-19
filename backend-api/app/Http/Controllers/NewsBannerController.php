@@ -6,6 +6,8 @@ use App\Models\NewsBanner;
 use Illuminate\Http\Request;
 use App\Services\NewsBanners\Banner;
 use App\Services\NewsBanners\News;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class NewsBannerController extends Controller
 {
@@ -84,19 +86,79 @@ class NewsBannerController extends Controller
         $type = $request->input('type');
 
         // Elegir la clase correcta según el tipo
-        $bannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
+        $newBannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
 
         // Validar con contexto de creación
-        $validationErrors = $bannerService->validate(true); // true para creación
+        $validationErrors = $newBannerService->validate(true); // true para creación
         if ($validationErrors) {
             return response()->json($validationErrors, 422);
         }
 
-        // Subir imagen
-        $path = $bannerService->uploadImage($request);
+        // si hay video_url
+        if ($request->has('video_url')) {
+            $url = $request->input('video_url');
+
+            //     $response = Http::withHeaders([
+            //         'User-Agent' => 'Mozilla/5.0'
+            //     ])->get($url);
+
+            //     return response()->json([$response->status(), $response->body()]); // Ver el código de estado y respuesta de Instagram
+
+            //     if ($response->successful()) {
+            //         $html = $response->body();
+            //         preg_match('/<meta property="og:image" content="([^"]+)"/', $html, $matches);
+
+            //         if (!empty($matches[1])) {
+            //             $thumbnailUrl = $matches[1];
+
+            //             // Descargar la imagen
+            //             $imageData = file_get_contents($thumbnailUrl);
+            //             $fileName = 'images/news_banners/' . uniqid() . '.jpg';
+
+            //             // Guardar la imagen en el almacenamiento público
+            //             Storage::put("public/$fileName", $imageData);
+            //         }
+            //     }
+
+            $accessToken = 'EAAQHzhVvQjcBOZBCNWD38BoRcuAmwxLLlP5xu5oXbdop0YvyZA2aRfml1kxZCikaV27wS7dZC3ZA315atFHgiVDrMmWRMkLspdAx8jOPsDDRw7pF06s9tnPXLhT8MWQoJRpYOvoETA4WcFUVAo2BTq3OY22w1x7DZCSmH7MxPsyDjEFZCwg7U9dJqnhfeT00wzlvYWGsINanBuMWB06mZCSytTf1sw6fjB2PUwZDZD'; // Access Token válido
+            $reelUrl = "https://www.instagram.com/reel/DFa6seOyK4t/"; // URL del Reel
+
+            try {
+                // 1️⃣ Obtener el MEDIA_ID del Reel
+                $oembedUrl = "https://graph.facebook.com/v18.0/instagram_oembed?url=" . urlencode($reelUrl) . "&access_token=$accessToken";
+                $oembedResponse = Http::get($oembedUrl);
+                $oembedData = $oembedResponse->json();
+
+                dd($oembedData);
+
+                if (!isset($oembedData['id'])) {
+                    return response()->json(['error' => 'No se pudo obtener el ID del Reel'], 400);
+                }
+
+                $mediaId = $oembedData['id'];
+
+                // 2️⃣ Obtener la miniatura con el MEDIA_ID
+                $instagramApiUrl = "https://graph.facebook.com/v18.0/$mediaId?fields=thumbnail_url&access_token=$accessToken";
+                $response = Http::get($instagramApiUrl);
+                $data = $response->json();
+
+
+
+                if (!isset($data['thumbnail_url'])) {
+                    return response()->json(['error' => 'No se pudo obtener la miniatura'], 400);
+                }
+
+                return response()->json(['thumbnail' => $data['thumbnail_url']]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Error al procesar la solicitud'], 500);
+            }
+        }
+
+        // si hay imagen subir imagen
+        $path = $request->hasFile('image') ? $newBannerService->uploadImage($request->input('image')) : null;
 
         // Crear el banner o noticia
-        $newsBanner = NewsBanner::create(array_merge($bannerService->getData(), ['image' => $path]));
+        $newsBanner = NewsBanner::create(array_merge($newBannerService->getData(), ['image' => $path]));
 
         return response()->json($newsBanner, 201);
     }
@@ -109,21 +171,21 @@ class NewsBannerController extends Controller
         $type = $request->input('type', $newsBanner->type);
 
         // Elegir la clase correcta según el tipo
-        $bannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
+        $newBannerService = $type === 'banner' ? new Banner($request->all()) : new News($request->all());
 
         // Fusionar datos existentes con los nuevos
-        $mergedData = $bannerService->mergeData($newsBanner->toArray());
+        $mergedData = $newBannerService->mergeData($newsBanner->toArray());
 
         // Validar con contexto de actualización
-        $validationErrors = $bannerService->validate(false); // false para actualización
+        $validationErrors = $newBannerService->validate(false); // false para actualización
         if ($validationErrors) {
             return response()->json($validationErrors, 422);
         }
 
         // Manejo de la imagen
         if ($request->hasFile('image')) {
-            $bannerService->deleteImage($newsBanner->image);
-            $mergedData['image'] = $bannerService->uploadImage($request);
+            $newBannerService->deleteImage($newsBanner->image);
+            $mergedData['image'] = $newBannerService->uploadImage($request->input('image'));
         }
 
         // Actualizar solo si hay cambios
