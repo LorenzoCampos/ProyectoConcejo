@@ -35,7 +35,6 @@ function GetNewsPublic({ onSeeNew }) {
       
       setNews(response.data);
 
-      console.log(response.data);
     } catch (error) {
       if(error.response){
         setToastMessage("Error al obtener los banners");

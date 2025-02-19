@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Image } from "react-bootstrap";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -7,24 +7,24 @@ import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
-import ListNews from "../listNews/ListNews"
+import ListNews from "../listNews/ListNews";
 
-import ReactQuill from "react-quill";  // Importa React Quill
-import "react-quill/dist/quill.snow.css";  
+import ReactQuill from "react-quill"; // Importa React Quill
+import "react-quill/dist/quill.snow.css";
 
 import API from "../../../config/apiConfig";
 
-
 const modules = {
   toolbar: [
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['bold', 'italic', 'underline'],
-    [{ 'color': [] }, { 'background': [] }],
-    ['blockquote'],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
-    [{ 'direction': 'rtl' }],
-    ['clean'] 
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["bold", "italic", "underline"],
+    [{ color: [] }, { background: [] }],
+    ["blockquote"],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["clean"],
+    ["link"],
   ],
 };
 
@@ -33,14 +33,17 @@ function NewsForm() {
   const [status, setStatus] = useState(0); // Estado inicial en 0
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [publicationDate, setPublicationDate] = useState("");
-  const [unpublicationDate, setUnpublicationDate] = useState("");
+  //const [publicationDate, setPublicationDate] = useState("");
+  // const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
   const [showNewsList, setShowNewsList] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
+
+  // Extraer miniatura del reel de instagram
+  const [videoUrl, setVideoUrl] = useState("");
 
   //const navigate = useNavigate();
 
@@ -57,13 +60,8 @@ function NewsForm() {
 
   const handleEditorChange = (value) => {
     setEditorValue(value);
-    setDescription(value);  // Guarda el valor del editor
+    setDescription(value); // Guarda el valor del editor
   };
-
-
-
-
-  
 
   /*   // Mapea los mensajes de error genéricos a mensajes personalizados
   const errorMessages = {
@@ -87,7 +85,9 @@ function NewsForm() {
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+    }
 
     // Generar vista previa de la imagen
     {
@@ -108,8 +108,16 @@ function NewsForm() {
     e.preventDefault();
 
     // Validación simple para asegurarnos que se ingresan todos los datos
-    if (!selectedFile || !unpublicationDate) {
+    if (!status || !title || !description) {
       setToastMessage("Por favor, completa todos los campos.");
+      setShowWarningToast(true);
+      return;
+    }
+
+    if (!selectedFile && !videoUrl) {
+      setToastMessage(
+        "Por favor, ingresa el link de Instagram o selecciona una imagen."
+      );
       setShowWarningToast(true);
       return;
     }
@@ -119,10 +127,11 @@ function NewsForm() {
     formData.append("image", selectedFile);
     formData.append("status", status); // Enviar el estado como 0 o 1
     formData.append("title", title);
+    formData.append("video_url", videoUrl);
     formData.append("description", description);
-    formData.append("publication_date", publicationDate); // Formato de fecha
-    formData.append("unpublication_date", unpublicationDate);
-    formData.append("type", "new"); //
+    //formData.append("publication_date", publicationDate); // Formato de fecha
+    //formData.append("unpublication_date", unpublicationDate);
+    formData.append("type", "new");
 
     try {
       const response = await axios.post(API.CREATE_NEWS, formData, {
@@ -138,7 +147,7 @@ function NewsForm() {
         setToastMessage("Noticia subido exitosamente");
         setShowSuccessToast(true);
         setTimeout(() => {
-          setShowNewsList(true);  
+          setShowNewsList(true);
         }, 3000); // Tiempo de espera de 3 segundos
       }
     } catch (error) {
@@ -168,60 +177,71 @@ function NewsForm() {
   }
 
   return (
-    <div className="container">
-      <div className="news-form">
-        <Container>
-          <Row>
-            <Col>
-              <h1 className="text-center title-text">Cargar Noticia</h1>
-              <div className="form-news">
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group controlId="formFile">
-                    <Form.Label>Seleccionar imagen</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                    />
-                  </Form.Group>
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Cargar Noticia</h1>
+        <div className="content-form">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>URL del Video (Reel de Instagram)</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa la URL"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+              />
+            </Form.Group>
 
-                  <Form.Group controlId="status" className="mb-3">
-                    <Form.Label>Estado</Form.Label>
-                    <Form.Select
-                      as="select"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value={0}>Inactivo</option>
-                      <option value={1}>Activo</option>
-                    </Form.Select>
-                  </Form.Group>
+            {/* {thumbnail && (
+                  <div className="text-center">
+                    <p>Miniatura generada:</p>
+                    <Image src={thumbnail} alt="Miniatura" fluid />
+                  </div>
+                )} */}
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Título</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                  </Form.Group>
+            <Form.Group controlId="formFile">
+              <Form.Label>Seleccionar imagen</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Descripción</Form.Label>
-                    <ReactQuill
-                    as="textarea"
-                      value={editorValue}
-                      onChange={handleEditorChange}
-                      rows={4}
-                      placeholder="Escribe la descripción aquí..."
-                      modules={modules}
-                     
-                    />
-                   
-      
-                  </Form.Group>
+            <Form.Group controlId="status" className="mb-3">
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                as="select"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value={0}>Inactivo</option>
+                <option value={1}>Activo</option>
+              </Form.Select>
+            </Form.Group>
 
-                  <Form.Group controlId="publicationDate" className="mb-3">
+            <Form.Group className="mb-3">
+              <Form.Label>Título</Form.Label>
+              <Form.Control
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Descripción</Form.Label>
+              <ReactQuill
+                as="textarea"
+                value={editorValue}
+                onChange={handleEditorChange}
+                rows={4}
+                placeholder="Escribe la descripción aquí..."
+                modules={modules}
+              />
+            </Form.Group>
+
+            {/* <Form.Group controlId="publicationDate" className="mb-3">
                     <Form.Label>Fecha de Publicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -230,9 +250,9 @@ function NewsForm() {
                       disabled={status === "1"}
                       required={status === "0"}
                     />
-                  </Form.Group>
+                  </Form.Group> */}
 
-                  <Form.Group controlId="unpublicationDate" className="mb-3">
+            {/* <Form.Group controlId="unpublicationDate" className="mb-3">
                     <Form.Label>Fecha de Despublicación</Form.Label>
                     <Form.Control
                       type="datetime-local"
@@ -240,69 +260,65 @@ function NewsForm() {
                       onChange={(e) => setUnpublicationDate(e.target.value)}
                       required={status === "1"}
                     />
-                  </Form.Group>
-                  <div className="btn-container">
-                    <Button className="btn-news" onClick={openModal}>
+                  </Form.Group> */}
+            <div className="btn-container">
+              {/* <Button className="btn-news" onClick={openModal}>
                       Vista Previa
-                    </Button>
-                    <Button className="btn-news" type="submit">
-                      Subir Noticia
-                    </Button>
-                  </div>
-                </Form>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <PreviewNews
-        isOpen={isOpen}
-        closeModal={closeModal}
-        file={selectedFile}
-        title={title}
-        description={description}
-        
-      />
+                    </Button> */}
+              <Button className="btn-news" type="submit">
+                Subir Noticia
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </div >
+    <PreviewNews
+      isOpen={isOpen}
+      closeModal={closeModal}
+      file={selectedFile}
+      title={title}
+      description={description}
+    />
 
-      {/* Toast error */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="danger"
-          onClose={() => setShowErrorToast(false)}
-          show={showErrorToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
+  {/* Toast error */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="danger"
+      onClose={() => setShowErrorToast(false)}
+      show={showErrorToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
 
-      {/* Toast exito */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="warning"
-          onClose={() => setShowWarningToast(false)}
-          show={showWarningToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
+  {/* Toast exito */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="warning"
+      onClose={() => setShowWarningToast(false)}
+      show={showWarningToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
 
-      {/* Toast exito */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg="success"
-          onClose={() => setShowSuccessToast(false)}
-          show={showSuccessToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-        </Toast>
-      </ToastContainer>
-    </div>
+  {/* Toast exito */ }
+  <ToastContainer position="top-end" className="p-3">
+    <Toast
+      bg="success"
+      onClose={() => setShowSuccessToast(false)}
+      show={showSuccessToast}
+      delay={3000}
+      autohide
+    >
+      <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+    </Toast>
+  </ToastContainer>
+    </div >
   );
 }
 

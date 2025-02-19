@@ -1,3 +1,9 @@
+/* Bootstrap */
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Global CSS */
+import './index.css';
+
 /* Home */
 import NavBar from "./navbar/Navbar";
 import Banner from "./banner/Banner";
@@ -18,19 +24,14 @@ import Logout from "./logout/Logout";
 
 /* AdminPage */
 import AdminPage from "./pages/AdminPage"
-import NavAdmin from "./adminPage/navAdmin/NavAdmin";
-import GetUsers from "./adminPage/getUsers/GetUsers"
+import ListUsers from "./adminPage/listUsers/ListUsers"
 
 /* CMPage */
 import CMPage from "./pages/CMPage"
 import BannerCM from "./cmPage/bannerCM/BannerCM";
 
-/* SecretarioConcejalPage */
-import SecretarioConcejalPage from "./pages/SecretarioConcejalPage"
-
-/* Bootstrap */
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+/* AsesorConcejalPage */
+import AsesorConcejalPage from "./pages/AsesorConcejalPage";
 
 export{
     Home,
@@ -47,8 +48,7 @@ export{
     Logout,
     AdminPage,
     CMPage,
-    SecretarioConcejalPage,
-    NavAdmin,
-    GetUsers,
+    AsesorConcejalPage,
+    ListUsers,
     BannerCM
 }

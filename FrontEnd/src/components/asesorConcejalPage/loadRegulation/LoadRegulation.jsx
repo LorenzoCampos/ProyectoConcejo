@@ -3,9 +3,9 @@ import axios from "axios";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 
 import API from "../../../config/apiConfig";
-import "./normativas.css";
+import "./loadRegulation.css";
 
-function CargarNormativa() {
+function LoadRegulation() {
   const [userRole, setUserRole] = useState("");
 
   const [word, setWord] = useState("");
@@ -123,6 +123,12 @@ function CargarNormativa() {
 
   const handleSubjectChange = (e) => {
     setSubject(e.target.value);
+  };
+
+  const adjustTextareaHeight = (e) => {
+    // poner que sea una linea al principio
+    e.target.style.height = "1px";
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   const addWord = () => {
@@ -357,124 +363,194 @@ function CargarNormativa() {
   };
 
   return (
-    <div className="container cont-norm">
-      
-            <h1 className="text-center title-text">Registrar Normativa</h1>
-            {message && (
-              <Alert variant={messageType} className="text-center">
-                {message}
-              </Alert>
-            )}
-            <div className="form-banner">
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="type" className="mb-3">
-                  <Form.Label>Tipo de normativa:</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    value={type}
-                    onChange={handleTypeChange}
-                  >
-                    <option>--- seleccionar tipo ---</option>
-                    {userRole !== "concejal" && (
-                      <option value="correspondence">Correspondencia</option>
+    <div className="page-form">
+      <div className="content-page-container">
+        <h1 className="internal-title">Registrar Normativa</h1>
+        {message && (
+          <Alert variant={messageType} className="text-center">
+            {message}
+          </Alert>
+        )}
+        <div className="content-form">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="type" className="mb-3">
+              <Form.Label>Tipo de normativa:</Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                value={type}
+                onChange={handleTypeChange}
+              >
+                <option>--- seleccionar tipo ---</option>
+                {userRole !== "concejal" && (
+                  <option value="correspondence">Correspondencia</option>
+                )}
+                <option value="declaration">Declaracion</option>
+                <option value="decree">Decreto</option>
+                <option value="minute">Minuta</option>
+                <option value="ordinance">Ordenanza</option>
+                <option value="resolution">Resolucion</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group controlId="typeAuthor" className="mb-3">
+              <Form.Label>Tipo de Autor:</Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                value={typeAuthor}
+                onChange={handleTypeAuthorChange}
+              >
+                <option>--- seleccionar autor ---</option>
+                {getAuthorOptions()}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group controlId="authors" className="mb-3">
+              <Form.Label>Autores:</Form.Label>
+              <div className="input-keywords">
+                <Form.Control
+                  type="text"
+                  placeholder="Agregar..."
+                  value={authors}
+                  onChange={handleAuthorsChange}
+                  disabled={typeAuthor === "DEM"}
+                />
+                <Button
+                  variant="primary"
+                  onClick={addAuthors}
+                  disabled={typeAuthor === "DEM"}
+                  title="Agregar"
+                >
+                  +
+                </Button>
+              </div>
+
+              <div className="word-list">
+                {authorsList.map((a, index) => (
+                  <div key={index} className="list">
+                    {a}
+                    {typeAuthor !== "DEM" && (
+                      <Button
+                        className="btn-delete"
+                        variant="danger"
+                        size="sm"
+                        onClick={() => removeAuthors(index)}
+                      >
+                        -
+                      </Button>
                     )}
-                    <option value="declaration">Declaracion</option>
-                    <option value="decree">Decreto</option>
-                    <option value="minute">Minuta</option>
-                    <option value="ordinance">Ordenanza</option>
-                    <option value="resolution">Resolucion</option>
-                  </Form.Select>
-                </Form.Group>
+                  </div>
+                ))}
+              </div>
+            </Form.Group>
 
-                <Form.Group controlId="typeAuthor" className="mb-3">
-                  <Form.Label>Tipo de Autor:</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    value={typeAuthor}
-                    onChange={handleTypeAuthorChange}
-                  >
-                    <option>--- seleccionar autor ---</option>
-                    {getAuthorOptions()}
-                  </Form.Select>
-                </Form.Group>
+            <Form.Group controlId="status" className="mb-3">
+              <Form.Label>Estado:</Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                value={status}
+                onChange={handleStatusChange}
+                disabled={userRole === "concejal"}
+              >
+                <option value="process">En proceso</option>
+                {userRole !== "concejal" && (
+                  <option value="approved">Aprobado</option>
+                )}
+              </Form.Select>
+            </Form.Group>
 
-                <Form.Group controlId="authors" className="mb-3">
-                  <Form.Label>Autores:</Form.Label>
-                  <div className="input-keywords">
-                    <Form.Control
-                      type="text"
-                      placeholder="Agregar..."
-                      value={authors}
-                      onChange={handleAuthorsChange}
-                      disabled={typeAuthor === "DEM"}
-                    />
+            <Form.Group controlId="keywords" className="mb-3">
+              <Form.Label>Palabras claves:</Form.Label>
+              <div className="input-keywords">
+                <Form.Control
+                  type="text"
+                  placeholder="Agregar..."
+                  value={word}
+                  onChange={handleWordChange}
+                />
+                <Button title="Agregar" variant="primary" onClick={addWord}>
+                  +
+                </Button>
+              </div>
+
+              <div className="word-list">
+                {wordList.map((w, index) => (
+                  <div key={index} className="list">
+                    {w}
+
                     <Button
-                      variant="primary"
-                      onClick={addAuthors}
-                      disabled={typeAuthor === "DEM"}
+                      className="btn-delete"
+                      variant="danger"
+                      size="sm"
+                      onClick={() => removeWord(index)}
                     >
-                      +
+                      -
                     </Button>
                   </div>
+                ))}
+              </div>
+            </Form.Group>
 
-                  <div className="word-list">
-                    {authorsList.map((a, index) => (
-                      <div key={index} className="list">
-                        {a}
-                        {typeAuthor !== "DEM" && (
-                          <Button
-                            className="btn-delete"
-                            variant="danger"
-                            size="sm"
-                            onClick={() => removeAuthors(index)}
-                          >
-                            -
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+            <Form.Group controlId="description" className="mb-3">
+              <Form.Label>Tema: </Form.Label>
+              <Form.Control
+                className="input-subject"
+                onInput={adjustTextareaHeight}
+                as="textarea"
+                placeholder="breve descripcion..."
+                onChange={handleSubjectChange}
+              />
+            </Form.Group>
+
+            {type !== "correspondence" && (
+              <>
+                <Form.Group controlId="pdfProcess" className="mb-3">
+                  <Form.Label>PDF de la normativa en proceso:</Form.Label>
+                  <Form.Control type="file" onChange={handlePdfProcessChange} />
                 </Form.Group>
 
-                <Form.Group controlId="status" className="mb-3">
-                  <Form.Label>Estado:</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    value={status}
-                    onChange={handleStatusChange}
-                    disabled={userRole === "concejal"}
-                  >
-                    <option value="process">En proceso</option>
-                    {userRole !== "concejal" && (
-                      <option value="approved">Aprobado</option>
-                    )}
-                  </Form.Select>
+                <Form.Group controlId="pdfApproved" className="mb-3">
+                  <Form.Label>PDF de la normativa aprobada:</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={handlePdfApprovedChange}
+                  />
                 </Form.Group>
 
-                <Form.Group controlId="keywords" className="mb-3">
-                  <Form.Label>Palabras claves:</Form.Label>
-                  <div className="input-keywords">
+                <Form.Group controlId="normToModif" className="mb-3">
+                  <Form.Label>Norma/s a la que modifica:</Form.Label>
+                  <div className="position-relative" ref={searchResultsRef}>
                     <Form.Control
                       type="text"
-                      placeholder="Agregar..."
-                      value={word}
-                      onChange={handleWordChange}
+                      placeholder="Buscar..."
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      className="mb-2"
                     />
-                    <Button variant="primary" onClick={addWord}>
-                      +
-                    </Button>
+                    {searchResults.length > 0 && (
+                      <ul className="list-group position-absolute w-100">
+                        {searchResults.map((result, index) => (
+                          <li
+                            key={result.id}
+                            className="list-group-item"
+                            onClick={() => handleSelectItem(result)}
+                          >
+                            {result.subject}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-
                   <div className="word-list">
-                    {wordList.map((w, index) => (
+                    {selectedItems.map((item, index) => (
                       <div key={index} className="list">
-                        {w}
-
+                        <span className="flex-grow-1">
+                          {item.type} N° {item.number}
+                        </span>
                         <Button
                           className="btn-delete"
                           variant="danger"
                           size="sm"
-                          onClick={() => removeWord(index)}
+                          onClick={() => handleRemoveItem(index)}
                         >
                           -
                         </Button>
@@ -483,132 +559,64 @@ function CargarNormativa() {
                   </div>
                 </Form.Group>
 
-                <Form.Group controlId="description" className="mb-3">
-                  <Form.Label>Tema: </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="breve descripcion..."
-                    onChange={handleSubjectChange}
-                  />
+                <Form.Group controlId="normModifiedBy" className="mb-3">
+                  <Form.Label>Norma/s que la modifican:</Form.Label>
+                  <div
+                    className="position-relative"
+                    ref={searchResultsModifiedByRef}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Buscar..."
+                      value={searchTermModifiedBy}
+                      onChange={handleSearchChangeModifiedBy}
+                      className="mb-2"
+                    />
+                    {searchResultsModifiedBy.length > 0 && (
+                      <ul className="list-group position-absolute w-100">
+                        {searchResultsModifiedBy.map((result, index) => (
+                          <li
+                            key={result.id}
+                            className="list-group-item"
+                            onClick={() => handleSelectItemModifiedBy(result)}
+                          >
+                            {result.subject}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div className="word-list">
+                    {selectedItemsModifiedBy.map((item, index) => (
+                      <div key={index} className="list">
+                        <span className="flex-grow-1">
+                          {item.type} N° {item.number}
+                        </span>
+                        <Button
+                          className="btn-delete"
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleRemoveItemModifiedBy(index)}
+                        >
+                          -
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 </Form.Group>
+              </>
+            )}
 
-                {type !== "correspondence" && (
-                  <>
-                    <Form.Group controlId="pdfProcess" className="mb-3">
-                      <Form.Label>PDF de la normativa en proceso:</Form.Label>
-                      <Form.Control
-                        type="file"
-                        onChange={handlePdfProcessChange}
-                      />
-                    </Form.Group>
-
-                    <Form.Group controlId="pdfApproved" className="mb-3">
-                      <Form.Label>PDF de la normativa aprobada:</Form.Label>
-                      <Form.Control
-                        type="file"
-                        onChange={handlePdfApprovedChange}
-                      />
-                    </Form.Group>
-
-                    <Form.Group controlId="normToModif" className="mb-3">
-                      <Form.Label>Norma/s a la que modifica:</Form.Label>
-                      <div className="position-relative" ref={searchResultsRef}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Buscar..."
-                          value={searchTerm}
-                          onChange={handleSearchChange}
-                          className="mb-2"
-                        />
-                        {searchResults.length > 0 && (
-                          <ul className="list-group position-absolute w-100">
-                            {searchResults.map((result, index) => (
-                              <li
-                                key={result.id}
-                                className="list-group-item"
-                                onClick={() => handleSelectItem(result)}
-                              >
-                                {result.subject}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                      <div className="word-list">
-                        {selectedItems.map((item, index) => (
-                          <div key={index} className="list">
-                            <span className="flex-grow-1">
-                              {item.type} N° {item.number}
-                            </span>
-                            <Button
-                              className="btn-delete"
-                              variant="danger"
-                              size="sm"
-                              onClick={() => handleRemoveItem(index)}
-                            >
-                              -
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </Form.Group>
-
-                    <Form.Group controlId="normModifiedBy" className="mb-3">
-                      <Form.Label>Norma/s que la modifican:</Form.Label>
-                      <div className="position-relative" ref={searchResultsModifiedByRef}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Buscar..."
-                          value={searchTermModifiedBy}
-                          onChange={handleSearchChangeModifiedBy}
-                          className="mb-2"
-                        />
-                        {searchResultsModifiedBy.length > 0 && (
-                          <ul className="list-group position-absolute w-100">
-                            {searchResultsModifiedBy.map((result, index) => (
-                              <li
-                                key={result.id}
-                                className="list-group-item"
-                                onClick={() =>
-                                  handleSelectItemModifiedBy(result)
-                                }
-                              >
-                                {result.subject}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                      <div className="word-list">
-                        {selectedItemsModifiedBy.map((item, index) => (
-                          <div key={index} className="list">
-                            <span className="flex-grow-1">
-                              {item.type} N° {item.number}
-                            </span>
-                            <Button
-                              className="btn-delete"
-                              variant="danger"
-                              size="sm"
-                              onClick={() => handleRemoveItemModifiedBy(index)}
-                            >
-                              -
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </Form.Group>
-                  </>
-                )}
-
-                <div className="btn-container">
-                  <Button className="btn-banner" type="submit">
-                    Cargar Normativa
-                  </Button>
-                </div>
-              </Form>
+            <div className="btn-container">
+              <Button className="btn-banner" type="submit">
+                Cargar Normativa
+              </Button>
             </div>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default CargarNormativa;
+export default LoadRegulation;

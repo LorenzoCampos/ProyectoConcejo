@@ -15,7 +15,6 @@ function SearchFilter() {
             <Form.Select aria-label="Default select example">
               <option>---selecciona una---</option>
               <option value="Ordenanza">Ordenanza</option>
-              <option value="Minuta">Minuta</option>
               <option value="Declaracion">Declaración</option>
               <option value="Resolucion">Resolución</option>
               <option value="Decreto">Decreto</option>

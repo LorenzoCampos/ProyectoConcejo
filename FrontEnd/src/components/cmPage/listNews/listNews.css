@@ -1,113 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+.desc {
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Nunito Sans", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 30vw;
 }
 
-:root {
-  --background-color: #ffffff;
-  --primary-color: #102550;
-  --secondary-color: #e4e1e163;
-  --third-color: #BE9A60;
-  --form-color: #3058a6b3;
-  --light-color: #859fd320;
+.quill {
+  background-color: #fff;
 }
 
-.news-container {
-  margin-top: 1em;
-  padding: 1.5em;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-  width: 100%; /* Asegura que el contenedor use el 100% del ancho */
-  overflow: auto; /* Agrega scroll si el contenido es más ancho que el contenedor */
-}
-
-.table {
-  width: 100%; /* Asegura que la tabla ocupe el 100% del contenedor */
-  --bs-table-bg: var(--light-color) !important;
-}
-
-.table-responsive {
-  width: 100%; /* Asegura que el contenedor de la tabla sea 100% del ancho */
-  overflow-x: auto; /* Agrega scroll horizontal si es necesario */
-}
-
-.table td {
-  vertical-align: middle;
-  text-align: center;
-}
-
-.table th {
-  text-align: center;
-  font-size: 1rem;
-  vertical-align: middle;
-}
-
-th {
-  background-color: var(--form-color) !important;
-  color: var(--primary-color) !important;
-  font-weight: 800;
-}
-
-.title-text{
-  color: var(--form-color) !important;
-  font-size: 1.7rem !important;
-  font-weight: 900 !important;
-  text-shadow: 5px 5px 5px rgba(0, 34, 255, 0.24);
-  -webkit-text-stroke: 1px rgba(7, 19, 182, 0.249);
-}
-
-.modal-header {
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal-title.h4 {
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
-div button.btn.btn-primary {
-  margin: 15px;
-}
-
-.btn-savechange {
-  display: flex;
-  justify-content: center;
-}
-
-
-td.desc{
-  white-space: nowrap;        
-  overflow: hidden;           
-  text-overflow: ellipsis;    
-  max-width: 150px;           
-}
-
-
-button.btn-news {
-  color: var(--background-color);
-  background-color: var(--primary-color);
-  border-radius: 10px;
-  text-decoration: none;
-  border: none;
-}
-
-button.btn-news:hover {
-  background-color: var(--background-color);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color)
-}
-td.title-new-td{
-  white-space: nowrap;        
-  overflow: hidden;           
-  text-overflow: ellipsis;    
-  max-width: 150px;           
-
+@media (max-width: 930px) {
+  .desc {
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 }

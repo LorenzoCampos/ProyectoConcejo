@@ -7,11 +7,9 @@
 div button.btn.btn-primary {
   margin: 0px !important;
   margin-left: 5px !important;
+  margin: 15px;
 }
 
-.form-banner {
-  min-width: 60vw !important;
-}
 .list-group-item {
   cursor: pointer;
   transition: background-color 140ms;
@@ -22,11 +20,34 @@ div button.btn.btn-primary {
   background-color: #d8daff;
 }
 
+.input-subject {
+  resize: none;
+  overflow: hidden;
+}
+
 .word-list {
   display: flex;
   margin: 10px;
   flex-wrap: wrap;
-  width: 50em;
+  width: 40vw;
+}
+
+@media (max-width: 1366px) {
+  .word-list {
+    width: 50vw;
+  }
+}
+
+@media (max-width: 930px) {
+  .word-list {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .word-list {
+    width: 80vw;
+  }
 }
 
 .list {
@@ -61,7 +82,7 @@ div button.btn.btn-primary {
   width: 100%;
 }
 
-.container.cont-norm{
+.container.cont-norm {
   display: flex;
   flex-direction: column;
 }
