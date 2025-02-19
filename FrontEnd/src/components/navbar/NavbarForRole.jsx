@@ -18,8 +18,6 @@ function NavbarForRole() {
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     const userRole = localStorage.getItem("role");
-    console.log("Stored Name:", storedName);
-    console.log("User Role:", userRole);
     setUserRole(userRole);
 
     if (storedName) {

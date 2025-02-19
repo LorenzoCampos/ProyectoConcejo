@@ -1,13 +1,23 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import "./navbar.css";
+
+import { Link, useNavigate } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
+import { NavDropdown } from "react-bootstrap";
+import Logout from "../logout/Logout";
 
 function NavBar(onHomeClick) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
+
+  const [userRole, setUserRole] = useState("");
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -19,7 +29,31 @@ function NavBar(onHomeClick) {
     }
   }, []);
 
-  
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    const userRole = localStorage.getItem("role");
+    setUserRole(userRole);
+
+    if (storedName) {
+      setName(storedName);
+      const formattedName = storedName.split(" ").join("+");
+
+      console.log("Formatted Name for Avatar:", formattedName);
+
+      const avatarUrl = `https://ui-avatars.com/api/?name=${formattedName}&background=BE9A60&color=ffffff&size=50&rounded=true`;
+      console.log("Avatar URL:", avatarUrl);
+
+      setAvatar(avatarUrl);
+    } else {
+      setAvatar("");
+      setName("Usuario");
+    }
+  }, []);
+
+  const handleLinkClick = (path) => {
+    navigate(path);
+    setShowOffcanvas(false);
+  };
 
   return (
     <div className="nav-cont">
@@ -38,6 +72,37 @@ function NavBar(onHomeClick) {
                   {role === "mesa de entrada" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Mesa de Entrada Panel</Nav.Link>}
                   {role === "concejal" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Concejal Panel</Nav.Link>}
                   {role === "cm" && <Nav.Link as={Link} to="/cm" className='link-nav'>CM Panel</Nav.Link>}
+                  {role === "user" &&
+                    <div className="d-none d-sm-block">
+                      <NavDropdown
+                        title={
+                          <div className="user-info">
+                            {avatar ? (
+                              <img
+                                src={avatar}
+                                alt="User Avatar"
+                                className="avatar"
+                              />
+                            ) : (
+                              <>
+                                <FaRegUserCircle className="default-avatar" />
+                                <span className="user-name">{name}</span>
+                              </>
+                            )}
+                          </div>
+                        }
+                        id="user-dropdown"
+                        align="end"
+                      >
+                        <NavDropdown.Item as={Link} to="/profile">
+                          Perfil
+                        </NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item>
+                          <Logout />
+                        </NavDropdown.Item>
+                      </NavDropdown>
+                    </div>}
                 </>
               ) : (
                 <Nav.Link as={Link} to="/login" className='link-nav'>Acceso a funcionarios</Nav.Link>

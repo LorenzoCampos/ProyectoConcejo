@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 import API from "../../../config/apiConfig";
 import "./loadRegulation.css";
@@ -521,10 +521,7 @@ function LoadRegulation() {
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
-                  <Form.Control
-                    type="file"
-                    onChange={handlePdfApprovedChange}
-                  />
+                  <Form.Control type="file" onChange={handlePdfApprovedChange} />
                 </Form.Group>
 
                 <Form.Group controlId="normToModif" className="mb-3">
