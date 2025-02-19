@@ -270,7 +270,6 @@ function ModificarNormativa() {
         console.log("Respuesta de la API:", response.data);
 
         if (response.status === 200) {
-          console.log(response.data);
           const normativa = response.data;
           setType(normativa.type);
           setTypeAuthor(normativa.author_type);
@@ -436,7 +435,7 @@ function ModificarNormativa() {
               <Form.Select
                 aria-label="Default select example"
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={handleTypeChange}
                 disabled
               >
                 <option>--- seleccionar tipo ---</option>
@@ -456,7 +455,7 @@ function ModificarNormativa() {
               <Form.Select
                 aria-label="Default select example"
                 value={typeAuthor}
-                onChange={(e) => setTypeAuthor(e.target.value)}
+                onChange={handleTypeAuthorChange}
               >
                 <option>--- seleccionar autor ---</option>
                 {getAuthorOptions()}
@@ -506,7 +505,7 @@ function ModificarNormativa() {
               <Form.Select
                 aria-label="Default select example"
                 value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                onChange={handleStatusChange}
                 disabled={userRole === "concejal"}
               >
                 <option value="process">En proceso</option>
@@ -523,7 +522,7 @@ function ModificarNormativa() {
                   type="text"
                   placeholder="Agregar..."
                   value={word}
-                  onChange={(e) => setWordList(e.target.value)}
+                  onChange={handleWordChange}
                 />
                 <Button variant="primary" onClick={addWord}>
                   +

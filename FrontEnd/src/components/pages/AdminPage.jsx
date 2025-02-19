@@ -6,6 +6,7 @@ import LoadRegulation from "../asesorConcejalPage/loadRegulation/LoadRegulation"
 import ModificarNormativa from "../asesorConcejalPage/modificarNormativa/ModificarNormativa";
 
 import VerNormativas from "../asesorConcejalPage/listRegulations/ListRegulations";
+import Details from "../asesorConcejalPage/regulationDetails/Details";
 
 function AdminPage() {
   return (
@@ -15,6 +16,7 @@ function AdminPage() {
         <Route path="" element={<VerNormativas />} />
         <Route path="cargar-normativa" element={<LoadRegulation />} />
         <Route path="modificar-normativa/:id" element={<ModificarNormativa />} />
+        <Route path="detalles/:id" element={<Details />} />
         <Route path="gestionar-usuarios" element={<ListUsers />} />
         <Route path="registrar-usuario" element={<Register />} />
       </Routes>

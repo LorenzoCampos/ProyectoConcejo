@@ -1,0 +1,22 @@
+.container-details{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    
+  background-color:#f5f5f5;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+
+.container-details p{
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.details-text-container{
+    display: flex;
+    gap: 10px;
+}

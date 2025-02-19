@@ -45,6 +45,10 @@ function ListRegulations() {
     navigate(`/admin/modificar-normativa/${id}`);
   };
 
+  const handleDetailsClick = (id) => {
+    navigate(`/admin/detalles/${id}`);
+  };
+
   const getRegulations = async (page = 1, s = {}) => {
     console.log("s:", s);
     setLoading(true);
@@ -306,7 +310,7 @@ function ListRegulations() {
                             )}
                           </div>
                           <div>
-                            {regulation.pdf_approved && (
+                            {regulation.type !=="correspondence" && regulation.pdf_approved &&(
                               <a target="_blank" href={regulation.pdf_approved}>
                                 <Button
                                   variant="primary"
@@ -355,11 +359,13 @@ function ListRegulations() {
                             </Button>
                           </div>
                         )}
+
                         <div>
                           <Button
                             variant="info"
                             className="detail-btn"
                             title="Detalles"
+                            onClick={() => handleDetailsClick(regulation.id)}
                           >
                             <TbListDetails />
                           </Button>
