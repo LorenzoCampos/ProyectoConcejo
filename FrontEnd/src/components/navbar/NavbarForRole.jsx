@@ -7,6 +7,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { NavDropdown } from "react-bootstrap";
 import Logout from "../logout/Logout";
+import "./navbar.css";
+
 
 function NavbarForRole() {
   const [userRole, setUserRole] = useState("");

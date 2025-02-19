@@ -188,7 +188,7 @@ function ListUsers() {
                   <td data-title="Nombre">{user.name}</td>
                   <td data-title="Rol">{user.role ? user.role : "Sin rol"}</td>
                   <td data-title="Cambiar rol">
-                    <div className="accion-buttons">
+                    <div className="accion-buttons ">
                       <div>
                         <Form.Group>
                           <Form.Control

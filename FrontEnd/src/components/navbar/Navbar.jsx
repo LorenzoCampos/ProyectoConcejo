@@ -13,7 +13,7 @@ function NavBar(onHomeClick) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
 
-  const [userRole, setUserRole] = useState("");
+ 
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -32,7 +32,7 @@ function NavBar(onHomeClick) {
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     const userRole = localStorage.getItem("role");
-    setUserRole(userRole);
+    setRole(userRole);
 
     if (storedName) {
       setName(storedName);

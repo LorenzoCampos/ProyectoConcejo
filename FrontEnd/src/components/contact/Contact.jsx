@@ -4,8 +4,9 @@ import "./contact.css";
 function Contact() {
   return (
     <>
-      <div className="title-news">
-        <p>Atención & Contacto</p>
+    <div className="news-container">
+    <div className="title-news">
+        <p>Contacto</p>
       </div>
       <div className="container-forms">
         <div className="form">
@@ -15,6 +16,9 @@ function Contact() {
           <img src="/assets/contacto.png" alt="" />
         </div>
       </div>
+
+    </div>
+      
     </>
   );
 }
