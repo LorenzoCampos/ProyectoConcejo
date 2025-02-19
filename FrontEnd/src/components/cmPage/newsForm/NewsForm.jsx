@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col, Image } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -141,7 +141,7 @@ function NewsForm() {
         },
       });
 
-      console.log(response.data);
+     /*  console.log(response.data); */
 
       if (response.status === 201) {
         setToastMessage("Noticia subido exitosamente");

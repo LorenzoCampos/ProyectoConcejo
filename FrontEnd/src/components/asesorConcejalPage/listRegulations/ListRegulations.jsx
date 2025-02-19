@@ -272,108 +272,101 @@ function ListRegulations() {
                 </tr>
               </thead>
               <tbody>
-                {data.map((regulation) => (
-                  <tr key={regulation.id}>
-                    <td data-title="Tipo">{translateType(regulation.type)}</td>
-                    <td data-title="N°">{regulation.number}</td>
-                    <td data-title="Palabras Clave">
-                      {regulation.keywords && regulation.keywords.length > 0 ? (
-                        regulation.keywords.map((keyword, index) => (
-                          <span key={index}>
-                            {keyword.word.charAt(0).toUpperCase() +
-                              keyword.word.slice(1)}
-                            {index < regulation.keywords.length - 1
-                              ? " - "
-                              : ""}
-                          </span>
-                        ))
-                      ) : (
-                        <span>No keywords available</span>
-                      )}
-                    </td>
-                    <td data-title="Fecha de creación">
-                      {formatDate(regulation.created_at)}
-                    </td>
-                    <td data-title="Estado">
-                      {translateState(regulation.state)}
-                    </td>
-                    <td data-title="Tipo de Autor">
-                      {capitalizeFirstLetter(regulation.author_type)}
-                    </td>
-                    <td data-title="Acciones">
-                      <div className="accion-buttons">
-                        <div>
-                        <div>
-                            {type === "correspondence" && (
-                              <div>
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            {regulation.type !=="correspondence" && regulation.pdf_approved &&(
-                              <a target="_blank" href={regulation.pdf_approved}>
-                                <Button
-                                  variant="primary"
-                                  className="pdf-btn"
-                                  title="PDF Aprobado"
-                                >
-                                  <FaRegFilePdf style={{ color: "white" }} />
-                                </Button>
-                              </a>
-                            )}
-                          </div>
-                          {regulation.pdf_process ? (
-                            <a target="_blank" href={regulation.pdf_process}>
-                              <Button
-                                variant="primary"
-                                className="pdf-btn"
-                                title="PDF En Proceso"
-                              >
-                                <FaRegFilePdf style={{ color: "white" }} />
-                              </Button>
-                            </a>
-                          ) : (
-                            // button inactivo para las normativas que no tengan pdf
-                            <a target="_blank" disabled>
-                              <Button
-                                title="PDF no disponible"
-                                variant="secondary"
-                                className="pdf-btn "
-                                disabled
-                              >
-                                <FaRegFilePdf style={{ color: "white" }} />
-                              </Button>
-                            </a>
-                          )}
-                        </div>
+              {data.map((regulation) => (
+  <tr key={regulation.id}>
+    <td data-title="Tipo">{translateType(regulation.type)}</td>
+    <td data-title="N°">{regulation.number}</td>
+    <td data-title="Palabras Clave">
+      {regulation.keywords && regulation.keywords.length > 0 ? (
+        regulation.keywords.map((keyword, index) => (
+          <span key={index}>
+            {keyword.word.charAt(0).toUpperCase() + keyword.word.slice(1)}
+            {index < regulation.keywords.length - 1 ? " - " : ""}
+          </span>
+        ))
+      ) : (
+        <span>No keywords available</span>
+      )}
+    </td>
+    <td data-title="Fecha de creación">
+      {formatDate(regulation.created_at)}
+    </td>
+    <td data-title="Estado">
+      {translateState(regulation.state)}
+    </td>
+    <td data-title="Tipo de Autor">
+      {capitalizeFirstLetter(regulation.author_type)}
+    </td>
+    <td data-title="Acciones">
+      <div className="accion-buttons">
+        {/* Solo se renderizan los botones de PDF si el tipo NO es "correspondence" */}
+        {regulation.type !== "correspondence" && (
+          <div>
+            {regulation.pdf_approved && (
+              <a target="_blank" href={regulation.pdf_approved}>
+                <Button
+                  variant="primary"
+                  className="pdf-btn"
+                  title="PDF Aprobado"
+                >
+                  <FaRegFilePdf style={{ color: "white" }} />
+                </Button>
+              </a>
+            )}
+            {regulation.pdf_process ? (
+              <a target="_blank" href={regulation.pdf_process}>
+                <Button
+                  variant="primary"
+                  className="pdf-btn"
+                  title="PDF En Proceso"
+                >
+                  <FaRegFilePdf style={{ color: "white" }} />
+                </Button>
+              </a>
+            ) : (
+              // Botón inactivo para normativas que no tengan PDF
+              <a target="_blank" disabled>
+                <Button
+                  title="PDF no disponible"
+                  variant="secondary"
+                  className="pdf-btn"
+                  disabled
+                >
+                  <FaRegFilePdf style={{ color: "white" }} />
+                </Button>
+              </a>
+            )}
+          </div>
+        )}
 
-                        {(userRole === "admin" || userRole === "asesor") && (
-                          <div>
-                            <Button
-                              title="Editar"
-                              variant="warning"
-                              className="edit-btn"
-                              onClick={() => handleEditClick(regulation.id)} // Usa la función de redirección
-                            >
-                              <CiEdit />
-                            </Button>
-                          </div>
-                        )}
+        {(userRole === "admin" || userRole === "asesor") && (
+          <div>
+            <Button
+              title="Editar"
+              variant="warning"
+              className="edit-btn"
+              onClick={() => handleEditClick(regulation.id)}
+            >
+              <CiEdit />
+            </Button>
+          </div>
+        )}
 
-                        <div>
-                          <Button
-                            variant="info"
-                            className="detail-btn"
-                            title="Detalles"
-                            onClick={() => handleDetailsClick(regulation.id)}
-                          >
-                            <TbListDetails />
-                          </Button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+        <div>
+          <Button
+            variant="info"
+            className="detail-btn"
+            title="Detalles"
+            onClick={() => handleDetailsClick(regulation.id)}
+          >
+            <TbListDetails />
+          </Button>
+        </div>
+      </div>
+    </td>
+  </tr>
+))}
+
               </tbody>
             </table>
           )}
