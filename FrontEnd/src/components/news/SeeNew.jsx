@@ -1,3 +1,4 @@
+import { Button } from "react-bootstrap";
 import "./news.css"
 
 function SeeNew({ news }) {
@@ -11,7 +12,16 @@ function SeeNew({ news }) {
         <h2 className="title-new">{news.title}</h2>
         <p className="text-new" dangerouslySetInnerHTML={{ __html: news.description }} />
       </div>
+      <div className="btn">
+        <Button
+          className="btn-back-new"
+          href="/"
+        >
+          Volver
+        </Button>
+      </div>
     </div>
+    
   )
 }
 
