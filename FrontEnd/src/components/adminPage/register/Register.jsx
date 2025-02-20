@@ -147,7 +147,6 @@ function Register() {
                 placeholder="Nombre/s"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                required
                 autoFocus
               />
             </Form.Group>
@@ -159,7 +158,6 @@ function Register() {
                 placeholder="Apellido/s"
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
-                required
                 autoFocus
               />
             </Form.Group>
