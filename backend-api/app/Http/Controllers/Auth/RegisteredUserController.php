@@ -33,12 +33,12 @@ class RegisteredUserController extends Controller
             ]);
 
             // Validar que el rol no sea 'admin'
-            // if ($validatedData['role'] === 'admin') {
-            //     return response()->json([
-            //         'message' => 'No se puede registrar un usuario administrador.',
-            //         'errors' => ['role' => ['El rol admin está restringido para este registro.']]
-            //     ], 403);
-            // }
+            if ($validatedData['role'] === 'admin') {
+                return response()->json([
+                    'message' => 'No se puede registrar un usuario administrador.',
+                    'errors' => ['role' => ['El rol admin está restringido para este registro.']]
+                ], 403);
+            }
 
             // Crear el usuario
             $user = User::create([
