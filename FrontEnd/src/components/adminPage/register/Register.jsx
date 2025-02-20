@@ -219,7 +219,7 @@ function Register() {
               >
                 <option value="">---Seleccionar un rol---</option>
                 <option value="asesor">Asesor</option>
-                <option value="mesa de entrada">Mesa de Entrada</option>
+                <option value="mesa">Mesa de Entrada</option>
                 <option value="concejal">Concejal</option>
                 <option value="cm">CM</option>
                 <option value="user">Usuario</option>
