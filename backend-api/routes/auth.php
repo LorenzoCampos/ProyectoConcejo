@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    Route::middleware('auth:sanctum', 'role:admin')->group(function () {
+    // Route::middleware('auth:sanctum', 'role:admin')->group(function () {
         Route::post('/register', [RegisteredUserController::class, 'store'])
             ->name('register');
-    });
+    // });
 
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('guest')
