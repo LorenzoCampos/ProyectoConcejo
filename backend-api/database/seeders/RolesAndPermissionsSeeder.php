@@ -38,7 +38,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Crear roles
         $adminRole = Role::create(['name' => 'admin']);
         $asesorRole = Role::create(['name' => 'asesor']);
-        $mesaDeEntradaRole = Role::create(['name' => 'mesa de entrada']);
+        $mesaDeEntradaRole = Role::create(['name' => 'mesa']);
         $concejalRole = Role::create(['name' => 'concejal']);
         $cmRole = Role::create(['name' => 'cm']);
         $userRole = Role::create(['name' => 'user']);
