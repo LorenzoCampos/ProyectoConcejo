@@ -88,15 +88,38 @@ function Register() {
             setToastMessage(message);
             setShowErrorToast(true);
           }
+
+          if (error.response.data.errors.name) {
+            // Error de name
+            let message = error.response.data.errors.name;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
+          if (error.response.data.errors.last_name) {
+            // Error de last_name
+            let message = error.response.data.errors.last_name;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
           if (error.response.data.errors.email_confirmation) {
             // Error de email_confirmation
             let message = error.response.data.errors.email_confirmation;
             setToastMessage(message);
             setShowErrorToast(true);
           }
+
           if (error.response.data.errors.password) {
             // Error de password
             let message = error.response.data.errors.password;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
+          if (error.response.data.errors.role) {
+            // Error de role
+            let message = error.response.data.errors.role;
             setToastMessage(message);
             setShowErrorToast(true);
           }
@@ -196,7 +219,7 @@ function Register() {
               >
                 <option value="">---Seleccionar un rol---</option>
                 <option value="asesor">Asesor</option>
-                <option value="mesa de entrada">Mesa de Entrada</option>
+                <option value="mesa">Mesa de Entrada</option>
                 <option value="concejal">Concejal</option>
                 <option value="cm">CM</option>
                 <option value="user">Usuario</option>
