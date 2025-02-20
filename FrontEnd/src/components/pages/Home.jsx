@@ -10,37 +10,34 @@ import Sessions from "../sessions/Sessions";
 import "./home.css";
 
 function Home() {
-
-  const [currentView, setCurrentView] = useState('home');
+  const [currentView, setCurrentView] = useState("home");
   const [selectedNews, setSelectedNews] = useState(null);
 
   const handleShowSeeNew = (newsItem) => {
-    setSelectedNews(newsItem)
-    setCurrentView('seeNew');
+    setSelectedNews(newsItem);
+    setCurrentView("seeNew");
   };
   const handleSHowHome = () => {
-    setCurrentView('home')
+    setCurrentView("home");
   };
+
   return (
     <>
       <Navbar onHomeClick={handleSHowHome} />
-      {currentView === 'home' && (
-        <>
-          <div className="page-home">
+      <div className="page-home">
+        {currentView === "home" && (
+          <>
             <GetBannersPublic />
             <Sessions />
             <GetNewsPublic onSeeNew={handleShowSeeNew} />
             <Contact />
             <Social />
-          </div>
-        </>
-      )}
-
-
-
-      {currentView === 'seeNew' && <SeeNew news={selectedNews} />}
-      <Footer />
+          </>
+        )}
+        {currentView === "seeNew" && <SeeNew news={selectedNews} />}
+        <Footer />
+      </div>
     </>
-  )
+  );
 }
 export default Home;

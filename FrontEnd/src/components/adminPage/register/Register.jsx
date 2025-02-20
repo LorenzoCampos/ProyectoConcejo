@@ -12,6 +12,7 @@ import API from "../../../config/apiConfig";
 
 function Register() {
   const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [emailConfirmation, setEmailConfirmation] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +34,7 @@ function Register() {
 
       let bodyContent = JSON.stringify({
         name: name,
+        last_name: lastName,
         email: email,
         email_confirmation: emailConfirmation,
         password: password,
@@ -50,9 +52,16 @@ function Register() {
       const response = await axios.request(reqOptions);
 
       if (response.status === 201) {
-        let message = "Usuario registrado correctamente.";
-        setToastMessage(message);
+        // Registro exitoso
+        setToastMessage("Usuario registrado correctamente.");
         setShowSuccessToast(true);
+        window.scrollTo(0, 0);
+        setName("");
+        setEmail("");
+        setEmailConfirmation("");
+        setPassword("");
+        setPasswordConfirmation("");
+        setRole("");
       }
     } catch (error) {
       if (error.response) {
@@ -109,12 +118,24 @@ function Register() {
         <div className="content-form">
           <Form onSubmit={registerData}>
             <Form.Group controlId="formName" className="mb-3">
-              <Form.Label>Nombre y apellido</Form.Label>
+              <Form.Label>Nombre/s</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Nombre y apellido"
+                placeholder="Nombre/s"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                required
+                autoFocus
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formName" className="mb-3">
+              <Form.Label>Apellido/s</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Apellido/s"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
                 required
                 autoFocus
               />
