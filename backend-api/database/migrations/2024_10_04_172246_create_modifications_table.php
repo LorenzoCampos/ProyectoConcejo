@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('fk_regulation')->constrained('regulations'); // Relación con regulations
             $table->string('name_cell');
-            $table->string('old_cell');
-            $table->string('new_cell');
+            $table->string('old_cell')->nullable();
+            $table->string('new_cell')->nullable();
             $table->foreignId('fk_user')->constrained('users');
             $table->timestamps();
         });
