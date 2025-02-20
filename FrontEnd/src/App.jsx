@@ -3,6 +3,7 @@ import Home from "./components/pages/Home";
 import PrivateRoute from "./PrivateRoute";
 import Normativas from "./components/pages/Normativas";
 import Access from "./components/pages/Access";
+import Profile from "./components/pages/Profile";
 import EmailVerified from "./components/pages/EmailVerified";
 import { AdminPage, AsesorConcejalPage, CMPage } from "./components";
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/normativas" element={<Normativas />} />
           <Route path="/login" element={<Access />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/verified/:status" element={<EmailVerified />} />
 
           <Route path="/admin/*" element={<PrivateRoute roles="admin"><AdminPage /></PrivateRoute>} />
