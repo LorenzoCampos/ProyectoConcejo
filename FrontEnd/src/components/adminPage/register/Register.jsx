@@ -88,15 +88,38 @@ function Register() {
             setToastMessage(message);
             setShowErrorToast(true);
           }
+
+          if (error.response.data.errors.name) {
+            // Error de name
+            let message = error.response.data.errors.name;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
+          if (error.response.data.errors.last_name) {
+            // Error de last_name
+            let message = error.response.data.errors.last_name;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
           if (error.response.data.errors.email_confirmation) {
             // Error de email_confirmation
             let message = error.response.data.errors.email_confirmation;
             setToastMessage(message);
             setShowErrorToast(true);
           }
+
           if (error.response.data.errors.password) {
             // Error de password
             let message = error.response.data.errors.password;
+            setToastMessage(message);
+            setShowErrorToast(true);
+          }
+
+          if (error.response.data.errors.role) {
+            // Error de role
+            let message = error.response.data.errors.role;
             setToastMessage(message);
             setShowErrorToast(true);
           }
