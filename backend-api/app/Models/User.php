@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'password',
     ];
@@ -54,14 +55,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail());
-    }
-
-    public function changeName() 
-    {
-        //Roles perimitidos
-        $rolesPermited = ['admin', 'cm', 'community', 'secretario'];
-        
-        //Definir cuales son aquellos usuarios con sus roles que pueden cambiar el nombre
-        return $this->hasAnyRole($rolesPermited);
     }
 }
