@@ -116,12 +116,15 @@ function ModificarNormativa() {
   };
 
   const handlePdfProcessChange = (e) => {
-    setPdfProcess(e.target.files[0]);
+    const file = e.target.files[0] || null; 
+    setPdfProcess(file);
   };
-
+  
   const handlePdfApprovedChange = (e) => {
-    setPdfApproved(e.target.files[0]);
+    const file = e.target.files[0] || null;
+    setPdfApproved(file);
   };
+  
 
   const handleTypeChange = (e) => {
     setType(e.target.value);
@@ -306,6 +309,7 @@ function ModificarNormativa() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     
 
     // Verificar si el tipo no es "correspondence" y el estado es "approved" sin PDF aprobado
     if (type !== "correspondence" && status === "approved" && !pdfApproved) {
@@ -337,17 +341,34 @@ function ModificarNormativa() {
     });
     formData.append("subject", subject);
 
-    if (pdfProcess === null) {
+    {/*if (pdfProcess === null) {
       formData.append("pdf_process", undefined);
     } else if (pdfProcess !== originalPdfProcess) {
       formData.append("pdf_process", pdfProcess);
     }
-
+    
     if (pdfApproved === null) {
       formData.append("pdf_approved", undefined);
     } else if (pdfApproved !== originalPdfApproved) {
       formData.append("pdf_approved", pdfApproved);
+    }*/}
+    if (
+      pdfApproved !== null &&
+      pdfApproved !== undefined &&
+      pdfApproved !== originalPdfApproved
+    ) {
+      formData.append("pdf_approved", pdfApproved);
     }
+    
+    if (
+      pdfProcess !== null &&
+      pdfProcess !== undefined &&
+      pdfProcess !== originalPdfProcess
+    ) {
+      formData.append("pdf_process", pdfProcess);
+    }
+    
+   
 
     selectedItems.forEach((item, index) => {
       formData.append(`modifies[${index}]`, item.id);
@@ -419,6 +440,7 @@ function ModificarNormativa() {
     }
   };
 
+  
   return (
     <div className="page-form">
       <div className="content-page-container">
@@ -563,7 +585,7 @@ function ModificarNormativa() {
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
                   <Form.Control
                     type="file"
-                    onChange={(e) => setPdfProcess(e.target.files[0])}
+                    onChange={handlePdfProcessChange}
                   />
                   {pdfProcess && pdfProcess !== "delete" && (
                     <>
@@ -598,7 +620,7 @@ function ModificarNormativa() {
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
                   <Form.Control
                     type="file"
-                    onChange={(e) => setPdfApproved(e.target.files[0])}
+                    onChange={handlePdfApprovedChange}
                   />
                   {pdfApproved && (
                     <div className="container-pdf-modify">
