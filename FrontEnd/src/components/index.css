@@ -58,6 +58,15 @@ body {
   border: 1px solid #9fa1a5;
 }
 
+.page-home {
+  padding-top: 10vh;
+  min-height: 90vh;
+  max-height: 1000vh;
+  display: flex;
+  
+}
+
+
 /* Settings Paginas con formularios */
 
 .page-form {
