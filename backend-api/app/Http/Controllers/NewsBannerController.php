@@ -91,7 +91,7 @@ class NewsBannerController extends Controller
         // Validar con contexto de creación
         $validationErrors = $bannerService->validate(true); // true para creación
         if ($validationErrors) {
-            return response()->json($validationErrors, 422);
+            return response()->json(['message' => 'Error de validación', 'errors' => $validationErrors], 422);
         }
 
         // Subir imagen
