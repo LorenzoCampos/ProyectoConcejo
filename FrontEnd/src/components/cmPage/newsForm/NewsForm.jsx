@@ -148,7 +148,7 @@ function NewsForm() {
         setShowSuccessToast(true);
         setTimeout(() => {
           setShowNewsList(true);
-        }, 3000); // Tiempo de espera de 3 segundos
+        }, 1000); // Tiempo de espera de 1 segundo
       }
     } catch (error) {
       if (error.response) {

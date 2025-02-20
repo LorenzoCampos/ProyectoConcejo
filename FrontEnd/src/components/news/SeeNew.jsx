@@ -3,7 +3,7 @@ import "./news.css"
 function SeeNew({ news }) {
 
   return (
-    <div className="container-seeNew">
+    <div className="container-seeNew page-container">
       <div className="container-photo">
         <img src={news.image} alt="" width={"80%"} objectFit={"cover"}/>
       </div>

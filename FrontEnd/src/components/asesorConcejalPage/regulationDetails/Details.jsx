@@ -46,6 +46,8 @@ function Details() {
 
   const {
     type,
+    number,
+    created_at,
     author_type,
     authors,
     state,
@@ -81,6 +83,35 @@ function Details() {
         return "Tipo no definido"; 
     }
   };
+
+  const formatState = (state) => {
+    switch (state) {
+      case "process":
+        return "En proceso";
+
+      case "approved":
+        return "Aprobada";
+
+
+      default:
+        return "Estado no definido";
+    }
+  };
+
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+  
+
+  
   
 
   return (
@@ -94,6 +125,14 @@ function Details() {
             {formatType(type)}
         </div>
         <div className="details-text-container">
+            <p>Normativa N°: </p>
+            {number}
+        </div>
+        <div className="details-text-container">
+            <p>Fecha de creación: </p>  
+            {formatDateTime(created_at)}
+        </div>
+        <div className="details-text-container">
             <p>Tipo de autor: </p>
             {author_type}
         </div>
@@ -105,7 +144,7 @@ function Details() {
         </div>
         <div className="details-text-container">
             <p>Estado: </p>
-            {state}
+            {formatState(state)}
         </div>
         <div className="details-text-container">
             <p>Palabras claves: </p>
@@ -117,7 +156,9 @@ function Details() {
             <p>Tema: </p>
             {subject || "Sin Asunto"}
         </div>
-        <div className="details-text-container">
+        {type !== "correspondence" &&(
+            <>
+            <div className="details-text-container">
             <p>PDF de la normativa en proceso: </p>
             {pdf_process ? (
                 <a href={pdf_process} target="_blank" rel="noopener noreferrer">
@@ -140,15 +181,18 @@ function Details() {
         <div className="details-text-container">
             <p>Norma/s a la que modifica: </p>
             {regulations_modified && regulations_modified.length > 0
-            ? regulations_modified.join(", ")
+            ? regulations_modified.map((reg) => reg.number).join(", ")
             : "No aplica"}
         </div>
         <div className="details-text-container">
             <p>Norma/s que la modifican: </p>
             {regulations_that_modify && regulations_that_modify.length > 0
-            ? regulations_that_modify.join(", ")
-            : "No aplica"}
+                ? regulations_that_modify.map((reg) => reg.number).join(", ")
+                : "No aplica"}
         </div>
+        </>
+    )}
+        
         </div>
 
      

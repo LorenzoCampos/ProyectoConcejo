@@ -50,9 +50,16 @@ function Register() {
       const response = await axios.request(reqOptions);
 
       if (response.status === 201) {
-        let message = "Usuario registrado correctamente.";
-        setToastMessage(message);
+        // Registro exitoso
+        setToastMessage("Usuario registrado correctamente.");
         setShowSuccessToast(true);
+        window.scrollTo(0, 0);
+        setName("");
+        setEmail("");
+        setEmailConfirmation("");
+        setPassword("");
+        setPasswordConfirmation("");
+        setRole("");
       }
     } catch (error) {
       if (error.response) {
