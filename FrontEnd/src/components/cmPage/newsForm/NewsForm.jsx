@@ -151,25 +151,22 @@ function NewsForm() {
         }, 1000); // Tiempo de espera de 1 segundo
       }
     } catch (error) {
-      if (error.response) {
-        console.error(
-          "Estado de la respuesta de error:",
-          error.response.status
+      // Manejo de errores
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        const errorMessages = Object.values(errors).flat().join(" ");
+        setToastMessage(`Error en la solicitud: ${errorMessages}`);
+      } else if (error.response) {
+        setToastMessage(
+          `Error al enviar la solicitud: ${error.response.data.message}`
         );
-
-        console.error(
-          "Encabezados de la respuesta de error:",
-          error.response.headers
-        );
-
-        /*  if(error.response.status === 422) {
-          Especificar errores
-        } */
-
-        setToastMessage(error.response.data.message);
-        setShowErrorToast(true);
-        console.log("Detalles del error:", error.response.data);
+        console.log(error.response.data);
+      } else {
+        setToastMessage(`Error al enviar la solicitud: ${error.message}`);
       }
+      setMessageType("danger");
+      window.scrollTo(0, 0); // Desplazar hacia arriba
+      setShowErrorToast(true);
     }
   };
   if (showNewsList) {
