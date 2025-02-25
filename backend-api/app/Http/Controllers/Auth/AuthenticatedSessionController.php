@@ -49,12 +49,20 @@ class AuthenticatedSessionController extends Controller
             // Obtener el rol del usuario como un string
             $role = $user->roles->first()->name;
 
+            if ($user->email_verified_at === null) {
+                $verified_email = false;
+            } else {
+                $verified_email = true;
+            }
+
+
             // Devolver la respuesta
             return response()->json([
                 "user" => [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'email_verified' => $verified_email,
                 ],
                 "token" => $token->plainTextToken,
                 "role" => $role
@@ -76,6 +84,7 @@ class AuthenticatedSessionController extends Controller
         try {
             // Eliminar el token específico que se está utilizando para esta solicitud
             $request->user()->currentAccessToken()->delete();
+
             // Devolver el token
             return response()->json([
                 'message' => 'Successfully logged out'

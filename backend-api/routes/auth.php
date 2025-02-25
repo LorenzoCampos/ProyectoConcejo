@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    Route::middleware('auth:sanctum', 'role:admin')->group(function () {
+    Route::middleware('auth:sanctum', 'role:admin', 'verified')->group(function () {
         Route::post('/register', [RegisteredUserController::class, 'store'])
             ->name('register');
     });
@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function () {
         ->name('verification.verify');
 
     Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware(['auth:sanctum'])
+        ->middleware(['auth:sanctum', 'throttle:6,1'])
         ->name('verification.send');
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
