@@ -126,3 +126,7 @@ p.limited-text.card-text {
 .text-new {
   overflow-wrap: break-word;
 }
+
+.btn-back-new {
+  background-color: var(--primary-color) !important;
+}

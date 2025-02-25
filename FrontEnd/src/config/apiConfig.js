@@ -1,8 +1,18 @@
 // apiConfig.js
 
+// Servidor
 const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
+// Local
+/* const URL = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1"; */
+
 const API = {
+  // Email Verification
+  EMAIL_VERIFICATION: `${URL}/email/verification-notification`,
+
+  // User Data
+  USER_DATA: `${URL}/user`,
+
   // Banners Public
   BANNERS_PUBLIC: `${URL}/banners/published`,
 

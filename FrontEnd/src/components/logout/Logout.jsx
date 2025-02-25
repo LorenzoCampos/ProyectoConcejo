@@ -1,18 +1,16 @@
-import Button from 'react-bootstrap/Button';
-import "./logout.css"
+import Button from "react-bootstrap/Button";
+import "./logout.css";
 
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import API from "../../config/apiConfig";
 function Logout() {
-
   const navigate = useNavigate();
   const closeSession = async () => {
     try {
-      
       let headersList = {
-        "Authorization": "Bearer " + localStorage.getItem("authToken"),
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
         "Content-Type": "application/json",
       };
 
@@ -28,21 +26,21 @@ function Logout() {
         localStorage.removeItem("authToken");
         navigate("/login");
       }
-
     } catch (error) {
-      if (response.status === 404) {
+      if (error.response && error.response.status === 401) {
         localStorage.removeItem("authToken");
-      } 
-
-      console.error(error);
+        navigate("/login");
+      } else {
+        console.error(error);
+      }
     }
-
   };
 
   return (
     <>
-      <Button className='form-btn' variant="primary" 
-      onClick={closeSession}>Cerrar Sesión</Button>{' '}
+      <Button className="form-btn" variant="primary" onClick={closeSession}>
+        Cerrar Sesión
+      </Button>{" "}
     </>
   );
 }

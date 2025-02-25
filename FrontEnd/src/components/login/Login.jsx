@@ -57,6 +57,7 @@ function Login() {
       const token = response.data.token;
       const role = response.data.role;
       const name = response.data.user.name;
+      const email_verified = response.data.user.email_verified;
 
       console.log(name);
 
@@ -64,6 +65,9 @@ function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userName", name);
+      localStorage.setItem("email_verified", email_verified);
+
+      console.log(localStorage.getItem("email_verified"));
 
       if (response.status === 200) {
         switch (role) {
@@ -88,6 +92,7 @@ function Login() {
         }
       }
     } catch (error) {
+      console.log(error);
       let message = "Error desconocido.";
       if (error.response) {
         if (error.response.status === 401) {

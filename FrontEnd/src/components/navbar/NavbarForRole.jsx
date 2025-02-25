@@ -6,9 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { NavDropdown } from "react-bootstrap";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import Logout from "../logout/Logout";
 import "./navbar.css";
-
+import axios from "axios";
+import API from "../../config/apiConfig";
 
 function NavbarForRole() {
   const [userRole, setUserRole] = useState("");
@@ -16,6 +19,11 @@ function NavbarForRole() {
   const [avatar, setAvatar] = useState("");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const navigate = useNavigate();
+
+  const [status, setStatus] = useState("");
+
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
@@ -43,6 +51,24 @@ function NavbarForRole() {
     setShowOffcanvas(false);
   };
 
+  const handleEmailVerified = async () => {
+    try {
+      const response = await axios.post(API.EMAIL_VERIFICATION, status, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        }
+      });
+
+      if (response.data.status === "verification-link-sent") {
+        setToastMessage("Email de verificación enviado correctamente.");
+        setShowSuccessToast(true);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <>
       <div className="nav-cont">
@@ -56,7 +82,10 @@ function NavbarForRole() {
               <img className="logo" src="/assets/logo1.png" alt="Logo" />
             </Navbar.Brand>
 
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} onClick={() => setShowOffcanvas(true)} />
+            <Navbar.Toggle
+              aria-controls={`offcanvasNavbar-expand-sm`}
+              onClick={() => setShowOffcanvas(true)}
+            />
 
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-sm`}
@@ -80,71 +109,70 @@ function NavbarForRole() {
 
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                <div className="container-nav-link d-flex flex-column flex-sm-row">
-                  {(userRole === "concejal" ||
-                    userRole === "asesor" ||
-                    userRole === "mesa de entrada" ||
-                    userRole === "admin") && (
-                    <>
-                      <Nav.Link
-                        as={Link}
-                        to=""
-                        className="link-nav"
-                        style={{ fontSize: "1rem" }}
-                        onClick={() => handleLinkClick("/normativas")}
-                      >
-                        Ver Normativas
-                      </Nav.Link>
-                      <Nav.Link
-                        as={Link}
-                        to="cargar-normativa"
-                        className="link-nav"
-                        style={{ fontSize: "1rem" }}
-                        onClick={() => handleLinkClick("/cargar-normativa")}
-                      >
-                        Cargar normativa
-                      </Nav.Link>
-                    </>
-                  )}
+                  <div className="container-nav-link d-flex flex-column flex-sm-row">
+                    {(userRole === "concejal" ||
+                      userRole === "asesor" ||
+                      userRole === "mesa de entrada" ||
+                      userRole === "admin") && (
+                      <>
+                        <Nav.Link
+                          as={Link}
+                          to=""
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                          onClick={() => handleLinkClick("/normativas")}
+                        >
+                          Ver Normativas
+                        </Nav.Link>
+                        <Nav.Link
+                          as={Link}
+                          to="cargar-normativa"
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                          onClick={() => handleLinkClick("/cargar-normativa")}
+                        >
+                          Cargar normativa
+                        </Nav.Link>
+                      </>
+                    )}
 
-                  {userRole === "admin" && (
-                    <>
-                      <Nav.Link
-                        as={Link}
-                        to="gestionar-usuarios"
-                        className="link-nav"
-                        style={{ fontSize: "1rem" }}
-                        onClick={() => handleLinkClick("/gestionar-usuarios")}
-                      >
-                        Gestionar Usuarios
-                      </Nav.Link>
-                    </>
-                  )}
+                    {userRole === "admin" && (
+                      <>
+                        <Nav.Link
+                          as={Link}
+                          to="gestionar-usuarios"
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                          onClick={() => handleLinkClick("/gestionar-usuarios")}
+                        >
+                          Gestionar Usuarios
+                        </Nav.Link>
+                      </>
+                    )}
 
-                  {userRole === "cm" && (
-                    <>
-                      <Nav.Link
-                        as={Link}
-                        to=""
-                        className="link-nav"
-                        style={{ fontSize: "1rem" }}
-                        onClick={() => handleLinkClick("/gestionar-banners")}
-                      >
-                        Gestionar Banners
-                      </Nav.Link>
-                      <Nav.Link
-                        as={Link}
-                        to="ver-noticias"
-                        className="link-nav"
-                        style={{ fontSize: "1rem" }}
-                        onClick={() => handleLinkClick("/ver-noticias")}
-                      >
-                        Gestionar Noticias
-                      </Nav.Link>
-                     
-                    </>
-                  )}
- </div>
+                    {userRole === "cm" && (
+                      <>
+                        <Nav.Link
+                          as={Link}
+                          to=""
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                          onClick={() => handleLinkClick("/gestionar-banners")}
+                        >
+                          Gestionar Banners
+                        </Nav.Link>
+                        <Nav.Link
+                          as={Link}
+                          to="ver-noticias"
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                          onClick={() => handleLinkClick("/ver-noticias")}
+                        >
+                          Gestionar Noticias
+                        </Nav.Link>
+                      </>
+                    )}
+                  </div>
                   <div className="d-none d-sm-block">
                     <NavDropdown
                       title={
@@ -166,7 +194,25 @@ function NavbarForRole() {
                       id="user-dropdown"
                       align="end"
                     >
-                      <NavDropdown.Item as={Link} to="/" onClick={() => handleLinkClick("/")}>
+                      {/* {verifiedEmail && } */}
+                      <NavDropdown.Item
+                        onClick={handleEmailVerified}
+                      >
+                        Verificar Email
+                      </NavDropdown.Item>
+
+                      <NavDropdown.Item
+                        as={Link}
+                        to="/profile"
+                        >
+                        Ver Perfil
+                      </NavDropdown.Item>
+
+                      <NavDropdown.Item
+                        as={Link}
+                        to="/"
+                        onClick={() => handleLinkClick("/")}
+                      >
                         Volver al Home
                       </NavDropdown.Item>
                       <NavDropdown.Divider />
@@ -176,20 +222,34 @@ function NavbarForRole() {
                     </NavDropdown>
                   </div>
                   <div className="d-block d-sm-none align-self-center">
-                    <Nav.Link as={Link} to="/" onClick={() => handleLinkClick("/")}>
+                    <Nav.Link
+                      as={Link}
+                      to="/"
+                      onClick={() => handleLinkClick("/")}
+                    >
                       Volver al Home
                     </Nav.Link>
                     <Nav.Link>
                       <Logout />
                     </Nav.Link>
                   </div>
-                
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
           </Container>
         </Navbar>
       </div>
+      <ToastContainer position="top-end" className="p-3">
+        <Toast
+          bg="success"
+          onClose={() => setShowSuccessToast(false)}
+          show={showSuccessToast}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </>
   );
 }

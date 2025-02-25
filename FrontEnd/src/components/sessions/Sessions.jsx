@@ -36,7 +36,7 @@ function Sessions() {
 
       try {
         const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=6&order=date&type=video&key=${apiKey}`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=3&order=date&type=video&key=${apiKey}`
         );
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -72,8 +72,8 @@ function Sessions() {
         {videos.map((video) => (
           <div key={video.id} className="video-item">
             <iframe
-              width="300"
-              height="200"
+              width="325"
+              height="183"
               src={`https://www.youtube.com/embed/${video.id}`}
               title={video.title}
               frameBorder="0"

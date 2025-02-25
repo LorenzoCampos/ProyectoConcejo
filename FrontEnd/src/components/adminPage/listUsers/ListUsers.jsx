@@ -177,7 +177,8 @@ function ListUsers() {
           <table className="content-table__table">
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th>Nombre y Apellido</th>
+                <th>Email</th>
                 <th>Rol</th>
                 <th>Cambiar rol</th>
               </tr>
@@ -185,7 +186,10 @@ function ListUsers() {
             <tbody>
               {filteredData.map((user) => (
                 <tr key={user.id}>
-                  <td data-title="Nombre">{user.name}</td>
+                  <td data-title="Nombre">
+                    {(user.name ? user.name : "-") + " " + (user.last_name ? user.last_name : "-")}
+                  </td>
+                  <td data-title="Email">{user.email}</td>
                   <td data-title="Rol">{user.role ? user.role : "Sin rol"}</td>
                   <td data-title="Cambiar rol">
                     <div className="accion-buttons ">

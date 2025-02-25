@@ -13,6 +13,10 @@ import Contact from "./contact/Contact";
 import Footer from "./footer/Footer";
 import Home from "./pages/Home";
 
+/* Profile */
+import Profile from "./pages/Profile";
+import EmailVerified from "./pages/EmailVerified";
+
 /* Busqueda de Normativas */
 import Normativas from "./pages/Normativas";
 import SearchFilter from "./searchFilter/SearchFilter";
@@ -37,6 +41,8 @@ export{
     Home,
     Normativas,
     Access,
+    Profile,
+    EmailVerified,
     NavBar,
     Banner,
     News,
