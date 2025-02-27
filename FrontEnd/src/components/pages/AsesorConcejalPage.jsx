@@ -16,6 +16,7 @@ function AsesorConcejalPage() {
         <Route path="cargar-normativa" element={<LoadRegulations />} />
         <Route path="modificar-normativa/:id" element={<ModificarNormativa/>} />
         <Route path="detalles/:id" element={<Details/>} />
+        <Route path="profile" element={<Profile />} />
       </Routes>
     </>
   );

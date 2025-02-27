@@ -18,7 +18,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/normativas" element={<Normativas />} />
           <Route path="/login" element={<Access />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/verified/:status" element={<EmailVerified />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />

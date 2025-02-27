@@ -206,13 +206,14 @@ function NavbarForRole() {
                         </NavDropdown.Item>
                       )}
 
-                      <NavDropdown.Item as={Link} to="/profile">
+                      <NavDropdown.Item
+                        as={Link}
+                        to=""
+                        onClick={() => handleLinkClick("/profile")}>
                         Ver Perfil
                       </NavDropdown.Item>
 
                       <NavDropdown.Item
-                        as={Link}
-                        to="/"
                         onClick={() => handleLinkClick("/")}
                       >
                         Volver al Home

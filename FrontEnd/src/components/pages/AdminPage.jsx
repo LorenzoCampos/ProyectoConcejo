@@ -4,6 +4,7 @@ import NavbarForRole from "../navbar/NavbarForRole";
 import { Routes, Route } from "react-router-dom";
 import LoadRegulation from "../asesorConcejalPage/loadRegulation/LoadRegulation";
 import ModificarNormativa from "../asesorConcejalPage/modificarNormativa/ModificarNormativa";
+import Profile from "../profile/Profile";
 
 import VerNormativas from "../asesorConcejalPage/listRegulations/ListRegulations";
 import Details from "../asesorConcejalPage/regulationDetails/Details";
@@ -19,6 +20,7 @@ function AdminPage() {
         <Route path="detalles/:id" element={<Details />} />
         <Route path="gestionar-usuarios" element={<ListUsers />} />
         <Route path="registrar-usuario" element={<Register />} />
+        <Route path="profile" element={<Profile />} />
       </Routes>
     </>
   );

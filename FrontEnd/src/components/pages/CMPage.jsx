@@ -16,6 +16,7 @@ function CMPage() {
         <Route path="cargar-banner" element={<BannerForm />} />
         <Route path="ver-noticias" element={<ListNews />} />
         <Route path="cargar-noticia" element={<NewsForm />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
