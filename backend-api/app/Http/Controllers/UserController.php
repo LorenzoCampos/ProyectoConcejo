@@ -11,7 +11,6 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    // funcin para mostrar todos los datos de un usuario junto al role, si el email esta verificado
     public function show(): JsonResponse
     {
         try {
@@ -34,6 +33,45 @@ class UserController extends Controller
                 'role' => $role,
                 'email_verified' => $verified_email
             ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    public function update(Request $request): JsonResponse
+    {
+        try {
+            // Validar la solicitud
+            $validated = $request->validate([
+                'name' => 'string|max:255',
+                'last_name' => 'string|max:255',
+            ]);
+
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            // Actualizar el nombre y/o apellido del usuario
+            if (isset($validated['name'])) {
+                $user->name = $validated['name'];
+            }
+            if (isset($validated['last_name'])) {
+                $user->last_name = $validated['last_name'];
+            }
+
+            // Guardar los cambios en la base de datos
+            $user->save();
+
+            // Devolver una respuesta exitosa
+            return response()->json([
+                'message' => 'Usuario actualizado exitosamente.'
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación.',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
