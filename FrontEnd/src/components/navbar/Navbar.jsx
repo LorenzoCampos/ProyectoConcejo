@@ -10,6 +10,7 @@ import { NavDropdown } from "react-bootstrap";
 import Logout from "../logout/Logout";
 
 function NavBar(onHomeClick) {
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
 
@@ -38,10 +39,10 @@ function NavBar(onHomeClick) {
       setName(storedName);
       const formattedName = storedName.split(" ").join("+");
 
-      console.log("Formatted Name for Avatar:", formattedName);
+      // console.log("Formatted Name for Avatar:", formattedName);
 
       const avatarUrl = `https://ui-avatars.com/api/?name=${formattedName}&background=BE9A60&color=ffffff&size=50&rounded=true`;
-      console.log("Avatar URL:", avatarUrl);
+      // console.log("Avatar URL:", avatarUrl);
 
       setAvatar(avatarUrl);
     } else {
