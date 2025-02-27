@@ -3,7 +3,9 @@ import Home from "./components/pages/Home";
 import PrivateRoute from "./PrivateRoute";
 import Normativas from "./components/pages/Normativas";
 import Access from "./components/pages/Access";
-import Profile from "./components/pages/Profile";
+import Profile from "./components/profile/Profile";
+import ForgotPassword from "./components/login/forgotPassword/ForgotPassword";
+import ResetPassword from "./components/login/resetPassword/ResetPassword";
 import EmailVerified from "./components/pages/EmailVerified";
 import { AdminPage, AsesorConcejalPage, CMPage } from "./components";
 
@@ -18,6 +20,8 @@ function App() {
           <Route path="/login" element={<Access />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/verified/:status" element={<EmailVerified />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/password-reset/:token" element={<ResetPassword />} />
 
           <Route path="/admin/*" element={<PrivateRoute roles="admin"><AdminPage /></PrivateRoute>} />
           <Route path="/cm/*" element={<PrivateRoute roles="cm"><CMPage /></PrivateRoute>} />
