@@ -177,6 +177,7 @@ function Login() {
             </div>
           </Form>
         </div>
+        <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
       </div>
 
       <ToastContainer position="top-end" className="p-3">
