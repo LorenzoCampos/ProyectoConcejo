@@ -16,6 +16,7 @@ import API from "../../config/apiConfig";
 function NavbarForRole() {
   const [userRole, setUserRole] = useState("");
   const [name, setName] = useState("");
+  const [verifiedEmail, setVerifiedEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ function NavbarForRole() {
     const storedName = localStorage.getItem("userName");
     const userRole = localStorage.getItem("role");
     setUserRole(userRole);
+    const verifiedEmail = localStorage.getItem("email_verified");
+    setVerifiedEmail(verifiedEmail);
 
     if (storedName) {
       setName(storedName);
@@ -57,7 +60,7 @@ function NavbarForRole() {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("authToken"),
-        }
+        },
       });
 
       if (response.data.status === "verification-link-sent") {
@@ -67,7 +70,7 @@ function NavbarForRole() {
     } catch (error) {
       console.error("Error:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -194,17 +197,13 @@ function NavbarForRole() {
                       id="user-dropdown"
                       align="end"
                     >
-                      {/* {verifiedEmail && } */}
-                      <NavDropdown.Item
-                        onClick={handleEmailVerified}
-                      >
-                        Verificar Email
-                      </NavDropdown.Item>
+                      {verifiedEmail === false && (
+                        <NavDropdown.Item onClick={handleEmailVerified}>
+                          Verificar Email
+                        </NavDropdown.Item>
+                      )}
 
-                      <NavDropdown.Item
-                        as={Link}
-                        to="/profile"
-                        >
+                      <NavDropdown.Item as={Link} to="/profile">
                         Ver Perfil
                       </NavDropdown.Item>
 
