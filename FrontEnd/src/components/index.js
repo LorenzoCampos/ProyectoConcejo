@@ -14,7 +14,7 @@ import Footer from "./footer/Footer";
 import Home from "./pages/Home";
 
 /* Profile */
-import Profile from "./pages/Profile";
+import Profile from "./profile/Profile";
 import EmailVerified from "./pages/EmailVerified";
 
 /* Busqueda de Normativas */
@@ -25,6 +25,10 @@ import SearchFilter from "./searchFilter/SearchFilter";
 import Access from "./pages/Access";
 import Login from "./login/Login";
 import Logout from "./logout/Logout";
+import ForgotPassword from "./login/forgotPassword/ForgotPassword";
+
+/* Reset Password */
+import ResetPassword from "./login/resetPassword/ResetPassword";
 
 /* AdminPage */
 import AdminPage from "./pages/AdminPage"
@@ -50,6 +54,8 @@ export{
     Contact,
     SearchFilter,
     Login,
+    ForgotPassword,
+    ResetPassword,
     Footer,
     Logout,
     AdminPage,
