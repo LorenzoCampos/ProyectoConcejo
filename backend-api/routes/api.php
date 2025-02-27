@@ -16,6 +16,8 @@ Route::prefix('v1')->group(function () {
 
         Route::get('user', [UserController::class, 'show']);
 
+        Route::post('user', [UserController::class, 'update']);
+
         Route::middleware(['permission:ver usuarios'])->get('users/non-admin', [UserController::class, 'getNonAdminUsers']);
         Route::middleware(['permission:modificar roles de usuarios', 'verified'])->patch('users/{user}/role', [UserController::class, 'changeUserRole']);
         Route::middleware(['permission:ver todos los roles'])->get('roles', [UserController::class, 'getAllRoles']);
