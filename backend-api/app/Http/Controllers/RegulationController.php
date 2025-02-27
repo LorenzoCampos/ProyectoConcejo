@@ -44,7 +44,12 @@ class RegulationController extends Controller
         });
 
         $query->when($search, function ($q) use ($search) {
-            $q->where('subject', 'like', '%' . $search . '%');
+            $q->where(function ($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                    ->orWhereHas('keywords', function ($q) use ($search) {
+                        $q->where('word', 'like', '%' . $search . '%');
+                    });
+            });
         });
 
         $query->when($request->has('keywords'), function ($q) use ($request) {

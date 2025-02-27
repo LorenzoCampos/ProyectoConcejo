@@ -11,6 +11,36 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
+    // funcin para mostrar todos los datos de un usuario junto al role, si el email esta verificado
+    public function show(): JsonResponse
+    {
+        try {
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            // Obtener el rol del usuario como un string
+            $role = $user->roles->pluck('name')->first();
+
+            // Verificar si el correo electrónico está verificado
+            if ($user->email_verified_at === null) {
+                $verified_email = false;
+            } else {
+                $verified_email = true;
+            }
+
+            // Devolver la respuesta
+            return response()->json([
+                'user' => $user,
+                'role' => $role,
+                'email_verified' => $verified_email
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
     public function getNonAdminUsers(): JsonResponse
     {
         try {
@@ -26,6 +56,7 @@ class UserController extends Controller
                 $usersResponse[] = [
                     'id' => $user->id,
                     'name' => $user->name,
+                    'last_name' => $user->last_name,
                     'email' => $user->email,
                     'role' => $role
                 ];
