@@ -24,6 +24,7 @@ function NavbarForRole() {
   const [status, setStatus] = useState("");
 
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
@@ -37,10 +38,10 @@ function NavbarForRole() {
       setName(storedName);
       const formattedName = storedName.split(" ").join("+");
 
-      console.log("Formatted Name for Avatar:", formattedName);
+      /* console.log("Formatted Name for Avatar:", formattedName); */
 
       const avatarUrl = `https://ui-avatars.com/api/?name=${formattedName}&background=BE9A60&color=ffffff&size=50&rounded=true`;
-      console.log("Avatar URL:", avatarUrl);
+      /* console.log("Avatar URL:", avatarUrl); */
 
       setAvatar(avatarUrl);
     } else {
@@ -69,6 +70,8 @@ function NavbarForRole() {
       }
     } catch (error) {
       console.error("Error:", error);
+      setToastMessage("Error al enviar el email de verificación.");
+      setShowErrorToast(true);
     }
   };
 
@@ -197,7 +200,7 @@ function NavbarForRole() {
                       id="user-dropdown"
                       align="end"
                     >
-                      {verifiedEmail === false && (
+                      {(verifiedEmail === "false") && (
                         <NavDropdown.Item onClick={handleEmailVerified}>
                           Verificar Email
                         </NavDropdown.Item>
@@ -243,6 +246,16 @@ function NavbarForRole() {
           bg="success"
           onClose={() => setShowSuccessToast(false)}
           show={showSuccessToast}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+
+        <Toast
+          bg="danger"
+          onClose={() => setShowErrorToast(false)}
+          show={showErrorToast}
           delay={3000}
           autohide
         >
