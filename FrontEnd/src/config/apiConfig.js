@@ -10,6 +10,11 @@ const API = {
   // Email Verification
   EMAIL_VERIFICATION: `${URL}/email/verification-notification`,
 
+  // Profile
+  EDIT_PROFILE: `${URL}/user`,
+  FORGOT_PASSWORD: `${URL}/forgot-password`,
+  RESET_PASSWORD: `${URL}/reset-password`,
+
   // User Data
   USER_DATA: `${URL}/user`,
 
