@@ -6,6 +6,7 @@ import NewsForm from "../cmPage/newsForm/NewsForm";
 //import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavbarForRole from "../navbar/NavbarForRole";
+import Profile from "../profile/Profile";
 
 function CMPage() {
   return (
@@ -13,8 +14,8 @@ function CMPage() {
       <NavbarForRole/>
       <Routes>
         <Route path="" element={<ListBanners />} />
-        <Route path="cargar-banner" element={<BannerForm />} />
-        <Route path="ver-noticias" element={<ListNews />} />
+        <Route path="gestionar-banners" element={<BannerForm />} />
+        <Route path="gestionar-noticias" element={<ListNews />} />
         <Route path="cargar-noticia" element={<NewsForm />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

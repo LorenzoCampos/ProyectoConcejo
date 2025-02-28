@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import NavbarForRole from "../navbar/NavbarForRole";
 import ModificarNormativa from "../asesorConcejalPage/modificarNormativa/ModificarNormativa";
 import Details from "../asesorConcejalPage/regulationDetails/Details";
+import Profile from "../profile/Profile";
 
 function AsesorConcejalPage() {
   return (

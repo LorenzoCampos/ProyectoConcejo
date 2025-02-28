@@ -75,6 +75,19 @@ function NavbarForRole() {
     }
   };
 
+  const getBasePath = (userRole) => {
+    const rolePaths = {
+      "concejal": "/asesor-concejal",
+      "asesor": "/asesor-concejal",
+      "admin": "/admin",
+      "mesa de entrada": "/mesa-entrada",
+      "cm": "/cm",
+    };
+  
+    return rolePaths[userRole] || "/";  // Fallback a "/" si el rol no existe
+  };
+  
+
   return (
     <>
       <div className="nav-cont">
@@ -123,19 +136,18 @@ function NavbarForRole() {
                       <>
                         <Nav.Link
                           as={Link}
-                          to=""
+                          to={`${getBasePath(userRole)}`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          onClick={() => handleLinkClick("/normativas")}
                         >
                           Ver Normativas
                         </Nav.Link>
                         <Nav.Link
                           as={Link}
-                          to="cargar-normativa"
+                          to={`${getBasePath(userRole)}/cargar-normativa`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          onClick={() => handleLinkClick("/cargar-normativa")}
+                          
                         >
                           Cargar normativa
                         </Nav.Link>
@@ -146,10 +158,10 @@ function NavbarForRole() {
                       <>
                         <Nav.Link
                           as={Link}
-                          to="gestionar-usuarios"
+                          to={`${getBasePath(userRole)}/gestionar-usuarios`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          onClick={() => handleLinkClick("/gestionar-usuarios")}
+                          
                         >
                           Gestionar Usuarios
                         </Nav.Link>
@@ -160,19 +172,17 @@ function NavbarForRole() {
                       <>
                         <Nav.Link
                           as={Link}
-                          to=""
+                          to={`${getBasePath(userRole)}/gestionar-banners`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          onClick={() => handleLinkClick("/gestionar-banners")}
                         >
                           Gestionar Banners
                         </Nav.Link>
                         <Nav.Link
                           as={Link}
-                          to="ver-noticias"
+                          to={`${getBasePath(userRole)}/gestionar-noticias`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          onClick={() => handleLinkClick("/ver-noticias")}
                         >
                           Gestionar Noticias
                         </Nav.Link>
@@ -208,8 +218,7 @@ function NavbarForRole() {
 
                       <NavDropdown.Item
                         as={Link}
-                        to=""
-                        onClick={() => handleLinkClick("/profile")}>
+                        to={`${getBasePath(userRole)}/profile`}>
                         Ver Perfil
                       </NavDropdown.Item>
 

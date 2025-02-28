@@ -3,7 +3,6 @@ import Home from "./components/pages/Home";
 import PrivateRoute from "./PrivateRoute";
 import Normativas from "./components/pages/Normativas";
 import Access from "./components/pages/Access";
-import Profile from "./components/profile/Profile";
 import ForgotPassword from "./components/login/forgotPassword/ForgotPassword";
 import ResetPassword from "./components/login/resetPassword/ResetPassword";
 import EmailVerified from "./components/pages/EmailVerified";
