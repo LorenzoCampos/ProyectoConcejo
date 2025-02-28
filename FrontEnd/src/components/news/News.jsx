@@ -25,11 +25,7 @@ function News({ news, onSeeNew }) {
         <div className="cards">
           {news.slice().reverse().slice(0, visibleCards).map((item) => (
             <Card key={item.id} className="shadow rounded">
-              <div className="img-container">
-              <Card.Img variant="top" src={item.image} className="fixed-img"/>
-
-              </div>
-              
+              <Card.Img variant="top" src={item.image} />
 
               <Card.Body>
                 <Card.Title>{item.title}</Card.Title>
