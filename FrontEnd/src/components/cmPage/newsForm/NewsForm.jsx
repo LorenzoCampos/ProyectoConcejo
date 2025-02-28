@@ -228,14 +228,15 @@ function NewsForm() {
 
             <Form.Group className="mb-3">
               <Form.Label>Descripción</Form.Label>
+              <div className="editor-container">
               <ReactQuill
                 as="textarea"
                 value={editorValue}
                 onChange={handleEditorChange}
-                rows={4}
                 placeholder="Escribe la descripción aquí..."
                 modules={modules}
               />
+              </div>
             </Form.Group>
 
             {/* <Form.Group controlId="publicationDate" className="mb-3">
@@ -320,3 +321,4 @@ function NewsForm() {
 }
 
 export default NewsForm;
+
