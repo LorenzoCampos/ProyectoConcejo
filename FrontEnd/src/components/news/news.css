@@ -12,7 +12,7 @@
 }
 .cards {
   gap: 4rem;
-  width: 70%;
+  width: 80%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 20px;
@@ -53,7 +53,6 @@ button.btn-see-more {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   background-color: var(--light-color);
 }
 
@@ -69,7 +68,19 @@ p.limited-text.card-text {
 .card-title.h5 {
   color: var(--primary-color);
   font-weight: 700;
-  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+
+.img-container {
+  height: 200px; /* Espacio fijo para la imagen */
+  overflow: hidden; /* Evita que la imagen sobresalga */
+}
+
+.fixed-img {
+  width: 100%; /* Para que cubra todo el contenedor */
+  height: 100%; /* Se adapta al contenedor */
+  object-fit: cover; /* Recorta la imagen sin deformarla */
 }
 
 @media (max-width: 1024px) {
@@ -130,3 +141,5 @@ p.limited-text.card-text {
 .btn-back-new {
   background-color: var(--primary-color) !important;
 }
+
+
