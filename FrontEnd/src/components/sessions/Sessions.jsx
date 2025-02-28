@@ -86,6 +86,7 @@ function Sessions() {
           </div>
         ))}
       </div>
+      <p className="session-p">Visitá nuestro canal de <a href="https://www.youtube.com/@ConcejoArroyoSeco">YouTube</a> para ver más!</p>
     </div>
   );
 }
