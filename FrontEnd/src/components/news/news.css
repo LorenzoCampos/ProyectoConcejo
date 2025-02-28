@@ -83,6 +83,7 @@ p.limited-text.card-text {
   object-fit: cover; /* Recorta la imagen sin deformarla */
 }
 
+
 @media (max-width: 1024px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);
