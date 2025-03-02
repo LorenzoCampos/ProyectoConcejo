@@ -56,8 +56,10 @@ function Details() {
     pdf_process,
     pdf_approved,
     regulations_modified,
+    modifications,
     regulations_that_modify,
   } = normativa;
+
 
   const formatType = (type) => {
     switch (type) {
@@ -109,15 +111,19 @@ function Details() {
       hour12: false,
     });
   };
-  
+
 
   
+  // Ordenar por fecha ascendente (de más antiguo a más reciente)
+  modifications.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
   
-
   return (
-    <div className="page-form ">
-      <div className="content-page-container">
-      <h2 className="internal-title">Detalle de la Normativa</h2>
+    <div className="page-form flex-column">
+      <h2 className="internal-title">Normativa N° {normativa.number}</h2>
+      <div className="cont-details-modifications">
+        
+        <div className="content-page-container">
+      <h2 className="internal-title">Detalle</h2>
 
       <div className="container-details">
         <div className="details-text-container">
@@ -146,7 +152,7 @@ function Details() {
             <p>Estado: </p>
             {formatState(state)}
         </div>
-        <div className="details-text-container">
+        <div className="details-text-container keywords">
             <p>Palabras claves: </p>
             {keywords && keywords.length > 0
                 ? keywords.map((k) => k.word).join(" - ")
@@ -192,11 +198,39 @@ function Details() {
         </div>
         </>
     )}
-        
         </div>
-
-     
     </div>
+
+    <div className="content-page-container">
+      <h2 className="internal-title">Modificaciones</h2>
+      {modifications
+  .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+  .map((mod, index) => (
+    <div key={index} className="container-details">
+      <div className="details-text-container">
+      <p>Autor: </p>{mod.name}
+      </div>
+      <div className="details-text-container">
+      <p>Fecha de modificación: </p>{new Date(mod.updated_at).toLocaleString()}
+      </div>
+      <div className="details-text-container">
+      <p>Campo que se modificó: </p>{mod.name_cell}
+      </div>
+      <div className="details-text-container">
+      <p>Antes: </p>{mod.old_cell || "N/A"}
+      </div>
+      <div className="details-text-container">
+      <p>Después:</p> {mod.new_cell || "N/A"}
+      </div>
+      <hr />
+    </div>
+  ))}
+
+
+    </div>
+
+      </div>
+      
     </div>
   );
 }
