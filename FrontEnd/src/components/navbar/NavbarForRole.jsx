@@ -97,7 +97,13 @@ function NavbarForRole() {
           className="bg-body-tertiary mb-3 fixed-top"
         >
           <Container fluid>
-            <Navbar.Brand as={Link} to="/">
+            <Navbar.Brand as="a"
+      href="/"
+      onClick={(e) => {
+        e.preventDefault(); // Evita la navegación por defecto
+        navigate("/", { replace: true });
+        window.location.reload(); // Recarga la página
+      }}>
               <img className="logo" src="/assets/logo1.png" alt="Logo" />
             </Navbar.Brand>
 

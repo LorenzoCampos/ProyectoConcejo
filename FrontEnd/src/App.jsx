@@ -7,6 +7,7 @@ import ForgotPassword from "./components/login/forgotPassword/ForgotPassword";
 import ResetPassword from "./components/login/resetPassword/ResetPassword";
 import EmailVerified from "./components/pages/EmailVerified";
 import { AdminPage, AsesorConcejalPage, CMPage } from "./components";
+import SeeNew from "./components/news/SeeNew";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           <Route path="/verified/:status" element={<EmailVerified />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
+
+           {/* 🔹 Nueva ruta para la noticia individual */}
+          <Route path="/news/:id" element={<SeeNew />} />
 
           <Route path="/admin/*" element={<PrivateRoute roles="admin"><AdminPage /></PrivateRoute>} />
           <Route path="/cm/*" element={<PrivateRoute roles="cm"><CMPage /></PrivateRoute>} />

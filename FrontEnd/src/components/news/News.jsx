@@ -3,9 +3,11 @@ import Card from "react-bootstrap/Card";
 import { useState } from "react";
 
 import "./news.css";
+import SeeNew from "./SeeNew";
 
 function News({ news, onSeeNew }) {
   const [visibleCards, setVisibleCards] = useState(6);
+  const [newsSelected, setNewsSelected] = useState(null);
 
   const handleShowMoreCards = () => {
     setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
@@ -17,10 +19,12 @@ function News({ news, onSeeNew }) {
 
   const handleSeeNew = (item) => {
     onSeeNew(item);
+    setNewsSelected(item);
   };
 
   return (
     <>
+    
       <div className="cards-container">
         <div className="cards">
           {news.slice().reverse().slice(0, visibleCards).map((item) => (
@@ -30,7 +34,7 @@ function News({ news, onSeeNew }) {
               </div>
               <Card.Body>
                 <Card.Title>{item.title}</Card.Title>
-                {/* Renderizar el HTML de la descripción */}
+               
                 <Card.Text className="limited-text" dangerouslySetInnerHTML={{ __html: item.description }} />
                 <div className="button-container">
                   <Button className="btn-banner" onClick={() => handleSeeNew(item)}>Ver más</Button>
@@ -54,6 +58,8 @@ function News({ news, onSeeNew }) {
           </Button>
         )}
       </div>
+      {newsSelected && <SeeNew news={newsSelected} newsList={Array.isArray(news) ? news : []} />}
+
     </>
   );
 }

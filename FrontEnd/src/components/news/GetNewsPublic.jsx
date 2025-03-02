@@ -9,7 +9,7 @@ import News from "./News";
 
 import API from "../../config/apiConfig";
 
-function GetNewsPublic({ onSeeNew }) {
+function GetNewsPublic({ onSeeNew, setNewsList }) {
   const [news, setNews] = useState([]);
 
   const [toastMessage, setToastMessage] = useState("");
@@ -34,6 +34,7 @@ function GetNewsPublic({ onSeeNew }) {
       
       
       setNews(response.data);
+      setNewsList(response.data);
 
     } catch (error) {
       if(error.response){

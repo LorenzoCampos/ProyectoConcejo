@@ -12,6 +12,7 @@ import "./home.css";
 function Home() {
   const [currentView, setCurrentView] = useState("home");
   const [selectedNews, setSelectedNews] = useState(null);
+  const [newsList, setNewsList] = useState([]);
 
   const handleShowSeeNew = (newsItem) => {
     setSelectedNews(newsItem);
@@ -29,12 +30,12 @@ function Home() {
           <>
             <GetBannersPublic />
             <Sessions />
-            <GetNewsPublic onSeeNew={handleShowSeeNew} />
+            <GetNewsPublic onSeeNew={handleShowSeeNew}  setNewsList={setNewsList}/>
             <Contact />
             <Social />
           </>
         )}
-        {currentView === "seeNew" && <SeeNew news={selectedNews} />}
+        {currentView === "seeNew" && <SeeNew news={selectedNews} newsList={newsList} />}
         <Footer />
       </div>
     </>
