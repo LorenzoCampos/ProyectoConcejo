@@ -6,6 +6,9 @@ import { Button, Modal, Form, Toast, ToastContainer } from "react-bootstrap";
 
 import axios from "axios";
 import API from "../../config/apiConfig";
+import { CgProfile } from "react-icons/cg";
+import "./profile.css";
+
 
 function Profile() {
   const [userName, setUserName] = useState("");
@@ -107,15 +110,28 @@ function Profile() {
       <NavbarForRole />
       <div className="page-home">
         <div className="content-page-container">
-          <h1 className="internal-title">Perfil</h1>
-          <div className="content-form">
-            <div>
-              <p>Nombre: {userName}</p>
-              <p>Apellido: {userLastName ? userLastName : "-"} </p>
-              <p>Email: {userEmail}</p>
-              <p>Rol: {userRole}</p>
-              <p>Email verificado: {emailVerified ? "Sí" : "No"}</p>
-            </div>
+          <div className="title-profile">
+            <CgProfile size={40} style={{ marginBottom: "10px", color: "#102550" }}/>
+            <h1 className="internal-title">Perfil</h1>
+          </div>
+        
+          <div className=" profile-form">
+            
+              <div className="profile-details">
+                <p>Nombre: </p>{userName}
+              </div>
+              <div className="profile-details">
+                <p>Apellido: </p>{userLastName ? userLastName : "-"}
+              </div>
+              <div className="profile-details">
+                <p>Email: </p>{userEmail}
+              </div>
+              <div className="profile-details">
+                <p>Rol:</p>{userRole}
+              </div>
+              <div className="profile-details">
+                <p>Email verificado:</p>{emailVerified ? "Sí" : "No"}
+              </div>      
           </div>
           <div>
             <Button onClick={() => setShowModal(true)}>Editar perfil</Button>

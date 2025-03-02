@@ -171,3 +171,14 @@ h2.title-new-detail{
 .news-link{
   cursor: pointer;
 }
+.container-date{
+  display: flex;
+ color: var(--form-color);
+ margin-bottom: 20px;
+ gap: 5px;
+}
+.container-date span {
+  display: flex
+;
+  align-items: flex-end;
+}
