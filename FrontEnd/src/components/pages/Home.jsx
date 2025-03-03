@@ -8,6 +8,7 @@ import { useState } from "react";
 import SeeNew from "../news/SeeNew"
 import Sessions from "../sessions/Sessions";
 import "./home.css";
+import Weather from "../weather/Weather";
 
 function Home() {
   const [currentView, setCurrentView] = useState("home");
@@ -25,14 +26,18 @@ function Home() {
   return (
     <>
       <Navbar onHomeClick={handleSHowHome} />
+      
       <div className="page-home">
+      
         {currentView === "home" && (
           <>
             <GetBannersPublic />
+            <Weather />
             <Sessions />
             <GetNewsPublic onSeeNew={handleShowSeeNew}  setNewsList={setNewsList}/>
             <Contact />
             <Social />
+          
           </>
         )}
         {currentView === "seeNew" && <SeeNew news={selectedNews} newsList={newsList} />}
