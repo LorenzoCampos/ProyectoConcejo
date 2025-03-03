@@ -119,7 +119,7 @@ function Details() {
   
   return (
     <div className="page-form flex-column">
-      <h2 className="internal-title">Normativa N° {normativa.number}</h2>
+      <h2 className="internal-title">{formatType(type)} N°{normativa.number}</h2>
       <div className="cont-details-modifications">
         
         <div className="content-page-container">
