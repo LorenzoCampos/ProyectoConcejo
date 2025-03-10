@@ -165,7 +165,7 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -462,7 +462,7 @@ function LoadRegulation() {
                 onChange={handleStateChange}
                 disabled={userRole === "concejal"}
               >
-                <option value="process">En proceso</option>
+                <option value="process">En proceso</option>  // Nota: Dejo de funcionar de la nada, no tocamos nada y funciona nuevamente xd.
                 {userRole !== "concejal" && (
                   <option value="approved">Aprobado</option>
                 )}

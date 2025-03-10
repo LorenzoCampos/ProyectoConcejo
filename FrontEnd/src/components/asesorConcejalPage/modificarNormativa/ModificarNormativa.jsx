@@ -173,7 +173,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -209,7 +209,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
