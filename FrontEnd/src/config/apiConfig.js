@@ -1,10 +1,10 @@
 // apiConfig.js
 
 // Servidor
-const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
+/* const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1"; */
 
 // Local
-/* const URL = "https://lkfc51ph-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1"; */
+const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
 
 const API = {
   // Email Verification
