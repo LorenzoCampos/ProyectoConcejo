@@ -70,7 +70,7 @@ function NavBar(onHomeClick) {
                 <>
                   {role === "admin" && <Nav.Link as={Link} to="/admin" className='link-nav'>Admin Panel</Nav.Link>}
                   {role === "asesor" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Asesor Panel</Nav.Link>}
-                  {role === "mesa de entrada" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Mesa de Entrada Panel</Nav.Link>}
+                  {role === "mesa" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Mesa de Entrada Panel</Nav.Link>}
                   {role === "concejal" && <Nav.Link as={Link} to="/asesor-concejal" className='link-nav'>Concejal Panel</Nav.Link>}
                   {role === "cm" && <Nav.Link as={Link} to="/cm" className='link-nav'>CM Panel</Nav.Link>}
                   {role === "user" &&
