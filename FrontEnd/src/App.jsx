@@ -27,7 +27,7 @@ function App() {
 
           <Route path="/admin/*" element={<PrivateRoute roles="admin"><AdminPage /></PrivateRoute>} />
           <Route path="/cm/*" element={<PrivateRoute roles="cm"><CMPage /></PrivateRoute>} />
-          <Route path="/asesor-concejal/*" element={<PrivateRoute roles={['concejal', 'asesor']}><AsesorConcejalPage /></PrivateRoute>} />
+          <Route path="/asesor-concejal/*" element={<PrivateRoute roles={['concejal', 'asesor', 'mesa']}><AsesorConcejalPage /></PrivateRoute>} />
 
         </Routes>
       </BrowserRouter>
