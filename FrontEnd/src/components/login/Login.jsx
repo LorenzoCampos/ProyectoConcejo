@@ -57,6 +57,7 @@ function Login() {
       const token = response.data.token;
       const role = response.data.role;
       const name = response.data.user.name;
+      const last_name = response.data.user.last_name;
       const email_verified = response.data.user.email_verified;
 
       console.log(name);
@@ -65,6 +66,7 @@ function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userName", name);
+      localStorage.setItem("userLastName", last_name);
       localStorage.setItem("email_verified", email_verified);
 
       console.log(localStorage.getItem("email_verified"));
@@ -80,7 +82,7 @@ function Login() {
           case "asesor":
             navigate("/asesor-concejal");
             break;
-          case "mesa de entrada":
+          case "mesa":
             navigate("/asesor-concejal");
             break;
           case "cm":
