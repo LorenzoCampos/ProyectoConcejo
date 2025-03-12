@@ -116,15 +116,14 @@ function ModificarNormativa() {
   };
 
   const handlePdfProcessChange = (e) => {
-    const file = e.target.files[0] || null; 
+    const file = e.target.files[0] || null;
     setPdfProcess(file);
   };
-  
+
   const handlePdfApprovedChange = (e) => {
     const file = e.target.files[0] || null;
     setPdfApproved(file);
   };
-  
 
   const handleTypeChange = (e) => {
     setType(e.target.value);
@@ -173,7 +172,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
+          url: API.LIST_REGULATIONS_MODIFIED + `?search=${term}&type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -209,7 +208,9 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
+          url:
+            API.LIST_REGULATIONS_MODIFIED +
+            `?search=${term}&type=${type}&rule=modified-by`,
           method: "GET",
           headers: headersList,
         };
@@ -270,7 +271,7 @@ function ModificarNormativa() {
             "Content-Type": "application/json",
           },
         });
-        console.log("Respuesta de la API:", response.data);
+        /* console.log("Respuesta de la API:", response.data); */
 
         if (response.status === 200) {
           const normativa = response.data;
@@ -285,22 +286,14 @@ function ModificarNormativa() {
           setSelectedItems(normativa.regulations_modified || []);
           setSelectedItemsModifiedBy(normativa.regulations_that_modify || []);
 
-          // setInitialData({
-          //   typeAuthor: normativa.author_type,
-          //   status: normativa.state,
-          //   subject: normativa.subject,
-          //   pdfProcess: normativa.pdf_process,
-          //   pdfApproved: normativa.pdf_approved,
-          //   selectedItems: normativa.regulations_modified,
-          //   selectedItemsModifiedBy: normativa.regulations_that_modify,
-          // });
-
           // Guardar los valores originales de los PDFs
           setOriginalPdfProcess(normativa.pdf_process);
           setOriginalPdfApproved(normativa.pdf_approved);
         }
       } catch (error) {
         console.error("Error al obtener la normativa:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -309,7 +302,6 @@ function ModificarNormativa() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     
 
     // Verificar si el tipo no es "correspondence" y el estado es "approved" sin PDF aprobado
     if (type !== "correspondence" && status === "approved" && !pdfApproved) {
@@ -340,18 +332,6 @@ function ModificarNormativa() {
       formData.append(`keywords[${index}]`, keyword);
     });
     formData.append("subject", subject);
-
-    {/*if (pdfProcess === null) {
-      formData.append("pdf_process", undefined);
-    } else if (pdfProcess !== originalPdfProcess) {
-      formData.append("pdf_process", pdfProcess);
-    }
-    
-    if (pdfApproved === null) {
-      formData.append("pdf_approved", undefined);
-    } else if (pdfApproved !== originalPdfApproved) {
-      formData.append("pdf_approved", pdfApproved);
-    }*/}
     if (
       pdfApproved !== null &&
       pdfApproved !== undefined &&
@@ -359,7 +339,7 @@ function ModificarNormativa() {
     ) {
       formData.append("pdf_approved", pdfApproved);
     }
-    
+
     if (
       pdfProcess !== null &&
       pdfProcess !== undefined &&
@@ -367,8 +347,6 @@ function ModificarNormativa() {
     ) {
       formData.append("pdf_process", pdfProcess);
     }
-    
-   
 
     selectedItems.forEach((item, index) => {
       formData.append(`modifies[${index}]`, item.id);
@@ -397,7 +375,7 @@ function ModificarNormativa() {
         setMessageType("success");
         window.scrollTo(0, 0); // Desplazar hacia arriba
 
-/*         setTimeout(() => {
+        /*         setTimeout(() => {
           window.location.reload();
         }, 1000); */
       }
@@ -440,7 +418,6 @@ function ModificarNormativa() {
     }
   };
 
-  
   return (
     <div className="page-form">
       <div className="content-page-container">
@@ -486,6 +463,7 @@ function ModificarNormativa() {
 
             <Form.Group controlId="authors" className="mb-3">
               <Form.Label>Autores:</Form.Label>
+
               <div className="input-keywords">
                 <Form.Control
                   type="text"
@@ -507,7 +485,7 @@ function ModificarNormativa() {
                 {authorsList.map((a, index) => (
                   <div key={index} className="list">
                     {a}
-                    {typeAuthor !== "DEM" && (
+                    {index !== 0 && (
                       <Button
                         className="btn-delete"
                         variant="danger"
@@ -583,10 +561,7 @@ function ModificarNormativa() {
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
-                  <Form.Control
-                    type="file"
-                    onChange={handlePdfProcessChange}
-                  />
+                  <Form.Control type="file" onChange={handlePdfProcessChange} />
                   {pdfProcess && pdfProcess !== "delete" && (
                     <>
                       <div className="container-pdf-modify">
@@ -648,100 +623,104 @@ function ModificarNormativa() {
                   )}
                 </Form.Group>
 
-                {(type === "ordinance" || type === "resolution" || type === "decree") && (
+                {(type === "ordinance" ||
+                  type === "resolution" ||
+                  type === "decree") && (
                   <>
-                <Form.Group controlId="normToModif" className="mb-3">
-                  <Form.Label>Norma/s a la que modifica:</Form.Label>
-                  <div className="position-relative" ref={searchResultsRef}>
-                    <Form.Control
-                      type="text"
-                      placeholder="Buscar..."
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      className="mb-2"
-                    />
-                    {searchResults.length > 0 && (
-                      <ul className="list-group position-absolute w-100">
-                        {searchResults.map((result, index) => (
-                          <li
-                            key={result.id}
-                            className="list-group-item"
-                            onClick={() => handleSelectItem(result)}
-                          >
-                            {result.subject}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div className="word-list">
-                    {selectedItems.map((item, index) => (
-                      <div key={index} className="list">
-                        {/*<span>{normativas.modifies}</span>*/}
-                        <span className="flex-grow-1">
-                          {item.type} N° {item.number}
-                        </span>
-                        <Button
-                          className="btn-delete"
-                          variant="danger"
-                          size="sm"
-                          onClick={() => handleRemoveItem(index)}
-                        >
-                          -
-                        </Button>
+                    <Form.Group controlId="normToModif" className="mb-3">
+                      <Form.Label>Norma/s a la que modifica:</Form.Label>
+                      <div className="position-relative" ref={searchResultsRef}>
+                        <Form.Control
+                          type="text"
+                          placeholder="Buscar..."
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                          className="mb-2"
+                        />
+                        {searchResults.length > 0 && (
+                          <ul className="list-group position-absolute w-100">
+                            {searchResults.map((result, index) => (
+                              <li
+                                key={result.id}
+                                className="list-group-item"
+                                onClick={() => handleSelectItem(result)}
+                              >
+                                {result.subject}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </Form.Group>
+                      <div className="word-list">
+                        {selectedItems.map((item, index) => (
+                          <div key={index} className="list">
+                            {/*<span>{normativas.modifies}</span>*/}
+                            <span className="flex-grow-1">
+                              {item.type} N° {item.number}
+                            </span>
+                            <Button
+                              className="btn-delete"
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleRemoveItem(index)}
+                            >
+                              -
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </Form.Group>
 
-                <Form.Group controlId="normModifiedBy" className="mb-3">
-                  <Form.Label>Norma/s que la modifican:</Form.Label>
-                  <div
-                    className="position-relative"
-                    ref={searchResultsModifiedByRef}
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Buscar..."
-                      value={searchTermModifiedBy}
-                      onChange={handleSearchChangeModifiedBy}
-                      className="mb-2"
-                    />
-                    {searchResultsModifiedBy.length > 0 && (
-                      <ul className="list-group position-absolute w-100">
-                        {searchResultsModifiedBy.map((result, index) => (
-                          <li
-                            key={result.id}
-                            className="list-group-item"
-                            onClick={() => handleSelectItemModifiedBy(result)}
-                          >
-                            {result.subject}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div className="word-list">
-                    {selectedItemsModifiedBy.map((item, index) => (
-                      <div key={index} className="list">
-                        {/* <span>{normativas.modified_by}</span>*/}
-                        <span className="flex-grow-1">
-                          {item.type} N° {item.number}
-                        </span>
-                        <Button
-                          className="btn-delete"
-                          variant="danger"
-                          size="sm"
-                          onClick={() => handleRemoveItemModifiedBy(index)}
-                        >
-                          -
-                        </Button>
+                    <Form.Group controlId="normModifiedBy" className="mb-3">
+                      <Form.Label>Norma/s que la modifican:</Form.Label>
+                      <div
+                        className="position-relative"
+                        ref={searchResultsModifiedByRef}
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder="Buscar..."
+                          value={searchTermModifiedBy}
+                          onChange={handleSearchChangeModifiedBy}
+                          className="mb-2"
+                        />
+                        {searchResultsModifiedBy.length > 0 && (
+                          <ul className="list-group position-absolute w-100">
+                            {searchResultsModifiedBy.map((result, index) => (
+                              <li
+                                key={result.id}
+                                className="list-group-item"
+                                onClick={() =>
+                                  handleSelectItemModifiedBy(result)
+                                }
+                              >
+                                {result.subject}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </Form.Group>
-                </>
-              )}
+                      <div className="word-list">
+                        {selectedItemsModifiedBy.map((item, index) => (
+                          <div key={index} className="list">
+                            {/* <span>{normativas.modified_by}</span>*/}
+                            <span className="flex-grow-1">
+                              {item.type} N° {item.number}
+                            </span>
+                            <Button
+                              className="btn-delete"
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleRemoveItemModifiedBy(index)}
+                            >
+                              -
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </Form.Group>
+                  </>
+                )}
               </>
             )}
 
