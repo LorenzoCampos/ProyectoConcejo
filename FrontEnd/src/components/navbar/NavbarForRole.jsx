@@ -170,7 +170,7 @@ function NavbarForRole() {
                       <>
                         <Nav.Link
                           as={Link}
-                          to={`${getBasePath(userRole)}/gestionar-banners`}
+                          to={`${getBasePath(userRole)}`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
