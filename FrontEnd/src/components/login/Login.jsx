@@ -94,29 +94,25 @@ function Login() {
         }
       }
     } catch (error) {
-      console.log(error);
-      let message = "Error desconocido.";
+      /* console.log(error); */
       if (error.response) {
         if (error.response.status === 401) {
           // Credenciales incorrectas
-          let message = "Email o contraseña incorrectos.";
-          setToastMessage(message);
+          setToastMessage("Email o contraseña incorrectos.");
           setShowWarningToast(true); // Mostrar toast de advertencia
         } else {
           // Otro tipo de error
-          message = `Error ${error.response.status}: ${
+          let message = `Error ${error.response.status}: ${
             error.response.data.message || "Datos inválidos"
           }`;
           setToastMessage(message);
           setShowErrorToast(true); // Mostrar toast de error general
         }
       } else if (error.request) {
-        message = "No se recibió respuesta del servidor.";
-        setToastMessage(message);
+        setToastMessage("No se recibió respuesta del servidor.");
         setShowErrorToast(true);
       } else {
-        message = "Error al realizar la solicitud.";
-        setToastMessage(message);
+        setToastMessage("Error al realizar la solicitud.");
         setShowErrorToast(true);
       }
     }
