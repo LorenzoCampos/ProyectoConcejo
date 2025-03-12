@@ -15,20 +15,12 @@ return [
     |
     */
 
-    // 'paths' => ['*'],
-
-    // 'allowed_methods' => ['*'],
-
-    // 'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000', 'http://localhost:5173')],
-
-    // 'allowed_origins_patterns' => [],
-
-    // 'allowed_headers' => ['*'],
-
+    // 'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Asegúrate de incluir todos los endpoints necesarios
+    // 'allowed_methods' => ['*'], // Permite todos los métodos (GET, POST, PUT, DELETE, etc.)
+    // 'allowed_origins' => ['*'], // Permite el origen de tu frontend
+    // 'allowed_headers' => ['*'],  // Permite todos los encabezados
     // 'exposed_headers' => [],
-
     // 'max_age' => 0,
-
     // 'supports_credentials' => true,
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Asegúrate de incluir todos los endpoints necesarios

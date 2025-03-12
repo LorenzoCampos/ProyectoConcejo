@@ -14,7 +14,8 @@ For roles and permissions:
 # USUARIOS DE PRUEBA
 
 {
-    "name": "nameUser",
+    "name": "User",
+    "last_name": "Concejo",
     "email": "user@email.com",
     "email_confirmation": "user@email.com",
     "password": "user1234",
@@ -23,7 +24,8 @@ For roles and permissions:
 }
 
 {
-    "name": "nameRedes",
+    "name": "Redes",
+    "last_name": "Concejo",
     "email": "redes@email.com",
     "email_confirmation": "redes@email.com",
     "password": "redes1234",
@@ -32,7 +34,18 @@ For roles and permissions:
 }
 
 {
-    "name": "nameConcejal",
+    "name": "Mesa",
+    "last_name": "Concejo",
+    "email": "mesa@email.com",
+    "email_confirmation": "mesa@email.com",
+    "password": "mesa1234",
+    "password_confirmation": "mesa1234",
+    "role": "mesa"
+}
+
+{
+    "name": "Concejal",
+    "last_name": "Concejo",
     "email": "concejal@email.com",
     "email_confirmation": "concejal@email.com",
     "password": "concejal1234",
@@ -41,16 +54,18 @@ For roles and permissions:
 }
 
 {
-    "name": "nameSecretario",
-    "email": "secretario@email.com",
-    "email_confirmation": "secretario@email.com",
-    "password": "secretario1234",
-    "password_confirmation": "secretario1234",
-    "role": "secretario"
+    "name": "Asesor",
+    "last_name": "Concejo",
+    "email": "asesor@email.com",
+    "email_confirmation": "asesor@email.com",
+    "password": "asesor1234",
+    "password_confirmation": "asesor1234",
+    "role": "asesor"
 }
 
 {
-    "name": "nameAdmin",
+    "name": "Admin",
+    "last_name": "Concejo",
     "email": "admin@email.com",
     "email_confirmation": "admin@email.com",
     "password": "admin1234",
