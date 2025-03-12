@@ -77,9 +77,17 @@ function LoadRegulation() {
   }, [type]);
 
   useEffect(() => {
+    if (userRole === "concejal") {
+      setTypeAuthor("concejal");
+    }
     // Automatically add DEM author if typeAuthor is DEM
     if (typeAuthor === "DEM") {
       setAuthorsList(["DEM"]);
+    } else if (typeAuthor === "concejal") {
+      const userName = localStorage.getItem("userName");
+      const userLastName = localStorage.getItem("userLastName");
+      const fullName = `${userName} ${userLastName}`.trim();
+      setAuthorsList([fullName]);
     } else {
       setAuthorsList([]);
     }
@@ -165,15 +173,17 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
+          url:
+            API.LIST_REGULATIONS_MODIFIED +
+            `?search=${term}&type=${type}`,
           method: "GET",
           headers: headersList,
         };
 
         const response = await axios.request(reqOptions);
-        setSearchResults(response.data.data);
+        setSearchResults(response.data);
         if (response.status === 200) {
-          console.log(response.data.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error en la búsqueda:", error.message);
@@ -201,15 +211,17 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
+          url:
+            API.LIST_REGULATIONS_MODIFIED +
+            `?search=${term}&type=${type}&rule=modified-by`,
           method: "GET",
           headers: headersList,
         };
 
         const response = await axios.request(reqOptions);
-        setSearchResultsModifiedBy(response.data.data);
+        setSearchResultsModifiedBy(response.data);
         if (response.status === 200) {
-          console.log(response.data.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error en la búsqueda:", error.message);
@@ -352,7 +364,6 @@ function LoadRegulation() {
     }
   };
 
-
   const getAuthorOptions = () => {
     if (type === "correspondence") {
       return (
@@ -439,7 +450,7 @@ function LoadRegulation() {
                 {authorsList.map((a, index) => (
                   <div key={index} className="list">
                     {a}
-                    {typeAuthor !== "DEM" && (
+                    {(index !== 0) && (
                       <Button
                         className="btn-delete"
                         variant="danger"
@@ -462,7 +473,8 @@ function LoadRegulation() {
                 onChange={handleStateChange}
                 disabled={userRole === "concejal"}
               >
-                <option value="process">En proceso</option>  // Nota: Dejo de funcionar de la nada, no tocamos nada y funciona nuevamente xd.
+                <option value="process">En proceso</option> // Nota: Dejo de
+                funcionar de la nada, no tocamos nada y funciona nuevamente xd.
                 {userRole !== "concejal" && (
                   <option value="approved">Aprobado</option>
                 )}
@@ -521,102 +533,108 @@ function LoadRegulation() {
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
-                  <Form.Control type="file" onChange={handlePdfApprovedChange} />
+                  <Form.Control
+                    type="file"
+                    onChange={handlePdfApprovedChange}
+                  />
                 </Form.Group>
 
-                {(type === "ordinance" || type === "resolution" || type === "decree") && (
+                {(type === "ordinance" ||
+                  type === "resolution" ||
+                  type === "decree") && (
                   <>
-
-                <Form.Group controlId="normToModif" className="mb-3">
-                  <Form.Label>Norma/s a la que modifica:</Form.Label>
-                  <div className="position-relative" ref={searchResultsRef}>
-                    <Form.Control
-                      type="text"
-                      placeholder="Buscar..."
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      className="mb-2"
-                    />
-                    {searchResults.length > 0 && (
-                      <ul className="list-group position-absolute w-100">
-                        {searchResults.map((result, index) => (
-                          <li
-                            key={result.id}
-                            className="list-group-item"
-                            onClick={() => handleSelectItem(result)}
-                          >
-                            {result.subject}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div className="word-list">
-                    {selectedItems.map((item, index) => (
-                      <div key={index} className="list">
-                        <span className="flex-grow-1">
-                          {item.type} N° {item.number}
-                        </span>
-                        <Button
-                          className="btn-delete"
-                          variant="danger"
-                          size="sm"
-                          onClick={() => handleRemoveItem(index)}
-                        >
-                          -
-                        </Button>
+                    <Form.Group controlId="normToModif" className="mb-3">
+                      <Form.Label>Norma/s a la que modifica:</Form.Label>
+                      <div className="position-relative" ref={searchResultsRef}>
+                        <Form.Control
+                          type="text"
+                          placeholder="Buscar..."
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                          className="mb-2"
+                        />
+                        {searchResults.length > 0 && (
+                          <ul className="list-group position-absolute w-100">
+                            {searchResults.map((result, index) => (
+                              <li
+                                key={result.id}
+                                className="list-group-item"
+                                onClick={() => handleSelectItem(result)}
+                              >
+                                {result.subject}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </Form.Group>
-
-                <Form.Group controlId="normModifiedBy" className="mb-3">
-                  <Form.Label>Norma/s que la modifican:</Form.Label>
-                  <div
-                    className="position-relative"
-                    ref={searchResultsModifiedByRef}
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Buscar..."
-                      value={searchTermModifiedBy}
-                      onChange={handleSearchChangeModifiedBy}
-                      className="mb-2"
-                    />
-                    {searchResultsModifiedBy.length > 0 && (
-                      <ul className="list-group position-absolute w-100">
-                        {searchResultsModifiedBy.map((result, index) => (
-                          <li
-                            key={result.id}
-                            className="list-group-item"
-                            onClick={() => handleSelectItemModifiedBy(result)}
-                          >
-                            {result.subject}
-                          </li>
+                      <div className="word-list">
+                        {selectedItems.map((item, index) => (
+                          <div key={index} className="list">
+                            <span className="flex-grow-1">
+                              {item.type} N° {item.number}
+                            </span>
+                            <Button
+                              className="btn-delete"
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleRemoveItem(index)}
+                            >
+                              -
+                            </Button>
+                          </div>
                         ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div className="word-list">
-                    {selectedItemsModifiedBy.map((item, index) => (
-                      <div key={index} className="list">
-                        <span className="flex-grow-1">
-                          {item.type} N° {item.number}
-                        </span>
-                        <Button
-                          className="btn-delete"
-                          variant="danger"
-                          size="sm"
-                          onClick={() => handleRemoveItemModifiedBy(index)}
-                        >
-                          -
-                        </Button>
                       </div>
-                    ))}
-                  </div>
-                </Form.Group>
-                </>
-              )}
+                    </Form.Group>
+
+                    <Form.Group controlId="normModifiedBy" className="mb-3">
+                      <Form.Label>Norma/s que la modifican:</Form.Label>
+                      <div
+                        className="position-relative"
+                        ref={searchResultsModifiedByRef}
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder="Buscar..."
+                          value={searchTermModifiedBy}
+                          onChange={handleSearchChangeModifiedBy}
+                          className="mb-2"
+                        />
+                        {searchResultsModifiedBy.length > 0 && (
+                          <ul className="list-group position-absolute w-100">
+                            {searchResultsModifiedBy.map((result, index) => (
+                              <li
+                                key={result.id}
+                                className="list-group-item"
+                                onClick={() =>
+                                  handleSelectItemModifiedBy(result)
+                                }
+                              >
+                                {result.subject}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      <div className="word-list">
+                        {selectedItemsModifiedBy.map((item, index) => (
+                          <div key={index} className="list">
+                            <span className="flex-grow-1">
+                              {item.type} N° {item.number}
+                            </span>
+                            <Button
+                              className="btn-delete"
+                              variant="danger"
+                              size="sm"
+                              onClick={() => handleRemoveItemModifiedBy(index)}
+                            >
+                              -
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </Form.Group>
+                  </>
+                )}
               </>
             )}
 
