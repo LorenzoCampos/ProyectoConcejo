@@ -14,7 +14,7 @@ function CMPage() {
       <NavbarForRole/>
       <Routes>
         <Route path="" element={<ListBanners />} />
-        <Route path="gestionar-banners" element={<BannerForm />} />
+        <Route path="cargar-banner" element={<BannerForm />} />
         <Route path="gestionar-noticias" element={<ListNews />} />
         <Route path="cargar-noticia" element={<NewsForm />} />
         <Route path="/profile" element={<Profile />} />

@@ -57,6 +57,7 @@ function Login() {
       const token = response.data.token;
       const role = response.data.role;
       const name = response.data.user.name;
+      const last_name = response.data.user.last_name;
       const email_verified = response.data.user.email_verified;
 
       console.log(name);
@@ -65,6 +66,7 @@ function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userName", name);
+      localStorage.setItem("userLastName", last_name);
       localStorage.setItem("email_verified", email_verified);
 
       console.log(localStorage.getItem("email_verified"));
@@ -80,7 +82,7 @@ function Login() {
           case "asesor":
             navigate("/asesor-concejal");
             break;
-          case "mesa de entrada":
+          case "mesa":
             navigate("/asesor-concejal");
             break;
           case "cm":
@@ -92,29 +94,25 @@ function Login() {
         }
       }
     } catch (error) {
-      console.log(error);
-      let message = "Error desconocido.";
+      /* console.log(error); */
       if (error.response) {
         if (error.response.status === 401) {
           // Credenciales incorrectas
-          let message = "Email o contraseña incorrectos.";
-          setToastMessage(message);
+          setToastMessage("Email o contraseña incorrectos.");
           setShowWarningToast(true); // Mostrar toast de advertencia
         } else {
           // Otro tipo de error
-          message = `Error ${error.response.status}: ${
+          let message = `Error ${error.response.status}: ${
             error.response.data.message || "Datos inválidos"
           }`;
           setToastMessage(message);
           setShowErrorToast(true); // Mostrar toast de error general
         }
       } else if (error.request) {
-        message = "No se recibió respuesta del servidor.";
-        setToastMessage(message);
+        setToastMessage("No se recibió respuesta del servidor.");
         setShowErrorToast(true);
       } else {
-        message = "Error al realizar la solicitud.";
-        setToastMessage(message);
+        setToastMessage("Error al realizar la solicitud.");
         setShowErrorToast(true);
       }
     }

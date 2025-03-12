@@ -122,8 +122,8 @@ function ListUsers() {
       case "asesor":
         setFilteredData(data.filter((user) => user.role === "asesor"));
         break;
-      case "mesa de entrada":
-        setFilteredData(data.filter((user) => user.role === "mesa de entrada"));
+      case "mesa":
+        setFilteredData(data.filter((user) => user.role === "mesa"));
         break;
       case "concejal":
         setFilteredData(data.filter((user) => user.role === "concejal"));
@@ -156,7 +156,7 @@ function ListUsers() {
               >
                 <option value="">Filtrar por rol</option>
                 <option value="asesor">Asesor</option>
-                <option value="mesa de entrada">Mesa de Entrada</option>
+                <option value="mesa">Mesa de Entrada</option>
                 <option value="concejal">Concejal</option>
                 <option value="cm">CM</option>
                 <option value="user">Usuario</option>
@@ -203,7 +203,7 @@ function ListUsers() {
                           >
                             <option value="">---Seleccionar un rol---</option>
                             <option value="asesor">Asesor</option>
-                            <option value="mesa de entrada">
+                            <option value="mesa">
                               Mesa de Entrada
                             </option>
                             <option value="concejal">Concejal</option>

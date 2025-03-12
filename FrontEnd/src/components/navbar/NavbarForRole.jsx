@@ -19,6 +19,7 @@ function NavbarForRole() {
   const [verifiedEmail, setVerifiedEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  
   const navigate = useNavigate();
 
   const [status, setStatus] = useState("");
@@ -77,16 +78,15 @@ function NavbarForRole() {
 
   const getBasePath = (userRole) => {
     const rolePaths = {
-      "concejal": "/asesor-concejal",
-      "asesor": "/asesor-concejal",
-      "admin": "/admin",
-      "mesa de entrada": "/mesa-entrada",
-      "cm": "/cm",
+      concejal: "/asesor-concejal",
+      asesor: "/asesor-concejal",
+      admin: "/admin",
+      mesa: "/asesor-concejal",
+      cm: "/cm",
     };
-  
-    return rolePaths[userRole] || "/";  // Fallback a "/" si el rol no existe
+
+    return rolePaths[userRole] || "/"; // Fallback a "/" si el rol no existe
   };
-  
 
   return (
     <>
@@ -131,7 +131,7 @@ function NavbarForRole() {
                   <div className="container-nav-link d-flex flex-column flex-sm-row">
                     {(userRole === "concejal" ||
                       userRole === "asesor" ||
-                      userRole === "mesa de entrada" ||
+                      userRole === "mesa" ||
                       userRole === "admin") && (
                       <>
                         <Nav.Link
@@ -147,7 +147,6 @@ function NavbarForRole() {
                           to={`${getBasePath(userRole)}/cargar-normativa`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          
                         >
                           Cargar normativa
                         </Nav.Link>
@@ -161,7 +160,6 @@ function NavbarForRole() {
                           to={`${getBasePath(userRole)}/gestionar-usuarios`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
-                          
                         >
                           Gestionar Usuarios
                         </Nav.Link>
@@ -172,7 +170,7 @@ function NavbarForRole() {
                       <>
                         <Nav.Link
                           as={Link}
-                          to={`${getBasePath(userRole)}/gestionar-banners`}
+                          to={`${getBasePath(userRole)}`}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -210,7 +208,7 @@ function NavbarForRole() {
                       id="user-dropdown"
                       align="end"
                     >
-                      {(verifiedEmail === "false") && (
+                      {verifiedEmail === "false" && (
                         <NavDropdown.Item onClick={handleEmailVerified}>
                           Verificar Email
                         </NavDropdown.Item>
@@ -218,13 +216,12 @@ function NavbarForRole() {
 
                       <NavDropdown.Item
                         as={Link}
-                        to={`${getBasePath(userRole)}/profile`}>
+                        to={`${getBasePath(userRole)}/profile`}
+                      >
                         Ver Perfil
                       </NavDropdown.Item>
 
-                      <NavDropdown.Item
-                        onClick={() => handleLinkClick("/")}
-                      >
+                      <NavDropdown.Item onClick={() => handleLinkClick("/")}>
                         Volver al Home
                       </NavDropdown.Item>
                       <NavDropdown.Divider />

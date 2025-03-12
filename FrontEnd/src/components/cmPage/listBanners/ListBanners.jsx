@@ -1,9 +1,11 @@
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import DeleteModal from "../deleteModal/DeleteModal";
@@ -15,6 +17,11 @@ import "./listBanners.css";
 import API from "../../../config/apiConfig";
 
 function ListBanners() {
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [emailVerified, setEmailVerified] = useState("");
+  const [userRole, setUserRole] = useState("");
+
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterStatus, setFilterStatus] = useState("");
@@ -40,6 +47,8 @@ function ListBanners() {
   const [bannerIdToDelete, setBannerIdToDelete] = useState(null);
   const [itemType, setItemType] = useState("");
 
+  const navigate = useNavigate();
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -47,6 +56,12 @@ function ListBanners() {
 
   useEffect(() => {
     getAlldata();
+  }, []);
+
+  useEffect(() => {
+    // Obtener el rol del usuario desde el localStorage y establecerlo en el estado
+    const role = localStorage.getItem("role");
+    setUserRole(role);
   }, []);
 
   // Start Obtener Banners
@@ -189,9 +204,78 @@ function ListBanners() {
 
   // End Filtro de Banners
 
+  const handleClickLinktoProfile = () => {
+    if (userRole === "admin") {
+      navigate("/admin/profile"); // Redirige al CM si el rol es admin
+    } else if (userRole === "cm") {
+      navigate("/cm/profile");
+    } else {
+      navigate("/asesor-concejal/profile");
+    }
+  };
+
+  const handleClickLinktoEmail = async () => {
+    try {
+      const response = await axios.post(API.EMAIL_VERIFICATION, status, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        },
+      });
+
+      if (response.data.status === "verification-link-sent") {
+        setToastMessage("Email de verificación enviado correctamente.");
+        setShowSuccessToast(true);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setToastMessage("Error al enviar el email de verificación.");
+      setShowErrorToast(true);
+    }
+  };
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName");
+    setUserName(userName);
+    const userLastName = localStorage.getItem("userLastName");
+    setUserLastName(userLastName);
+    const emailVerified = localStorage.getItem("email_verified");
+    setEmailVerified(emailVerified);
+  }, []);
+
   return (
     <div className="page-table">
       <div className="content-page-container">
+        {(userLastName === "null" ||
+          !userName === "null" ||
+          emailVerified === "false") && (
+          <Alert variant="danger">
+            <h4>Necesitas completar tu perfil</h4>
+            <p>
+              Por favor, completa tu perfil para acceder a todas las
+              funcionalidades de la plataforma.
+            </p>
+            {(userLastName === "null" || !userName === "null") && (
+              <p>
+                - Completa tu perfil {"👉"}{" "}
+                <a
+                  onClick={handleClickLinktoProfile}
+                  className="link-to-profile"
+                >
+                  Ir a mi perfil
+                </a>
+              </p>
+            )}
+            {emailVerified === "false" && (
+              <p>
+                - Verifica tu email {"👉"}{" "}
+                <a onClick={handleClickLinktoEmail} className="link-to-profile">
+                  Verificar Mail
+                </a>
+              </p>
+            )}
+          </Alert>
+        )}
         <h1 className="internal-title">Lista de Banners</h1>
         <div className="filter-regulations">
           <div className="filter-inputs">
@@ -246,7 +330,7 @@ function ListBanners() {
                           variant="warning"
                           onClick={() => openModal(banner)} // Abre el modal con el banner seleccionado
                         >
-                          <CiEdit size={25}/>
+                          <CiEdit size={25} />
                         </Button>
                       </div>
                       <div>
@@ -255,7 +339,7 @@ function ListBanners() {
                           variant="danger"
                           onClick={() => deleteBanner(banner.id)}
                         >
-                          <MdDelete size={25}/>
+                          <MdDelete size={25} />
                         </Button>
                       </div>
                     </div>

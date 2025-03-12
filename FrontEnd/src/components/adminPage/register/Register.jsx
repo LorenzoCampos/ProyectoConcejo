@@ -4,6 +4,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import axios from "axios";
 import "./register.css";
@@ -22,6 +23,17 @@ function Register() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const passwordConfirmationVisibility = () => {
+    setShowPasswordConfirmation(!showPasswordConfirmation);
+  };
 
   const registerData = async (e) => {
     e.preventDefault();
@@ -186,26 +198,43 @@ function Register() {
 
             <Form.Group controlId="formPassword" className="mb-3">
               <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
+
+              <div className="password-container">
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Contraseña"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+                <span
+                  className="password-toggle-icon"
+                  onClick={passwordVisibility}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </Form.Group>
 
             <Form.Group controlId="formConfirmPassword" className="mb-3">
               <Form.Label>Confirmar Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Confirmar Contraseña"
-                value={passwordConfirmation}
-                onChange={(event) =>
-                  setPasswordConfirmation(event.target.value)
-                }
-                required
-              />
+              <div className="password-container">
+                <Form.Control
+                  type={showPasswordConfirmation ? "text" : "password"}
+                  placeholder="Confirmar Contraseña"
+                  value={passwordConfirmation}
+                  onChange={(event) =>
+                    setPasswordConfirmation(event.target.value)
+                  }
+                  required
+                />
+                <span
+                  className="password-toggle-icon"
+                  onClick={passwordConfirmationVisibility}
+                >
+                  {showPasswordConfirmation ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
             </Form.Group>
 
             <Form.Group controlId="formRol" className="mb-3">

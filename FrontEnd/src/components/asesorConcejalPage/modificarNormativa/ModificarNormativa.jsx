@@ -173,7 +173,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -209,7 +209,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -648,6 +648,8 @@ function ModificarNormativa() {
                   )}
                 </Form.Group>
 
+                {(type === "ordinance" || type === "resolution" || type === "decree") && (
+                  <>
                 <Form.Group controlId="normToModif" className="mb-3">
                   <Form.Label>Norma/s a la que modifica:</Form.Label>
                   <div className="position-relative" ref={searchResultsRef}>
@@ -738,6 +740,8 @@ function ModificarNormativa() {
                     ))}
                   </div>
                 </Form.Group>
+                </>
+              )}
               </>
             )}
 

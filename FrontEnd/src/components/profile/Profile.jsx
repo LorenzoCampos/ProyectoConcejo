@@ -91,6 +91,8 @@ function Profile() {
 
       if (response.status === 200) {
         /* console.log(response.data); */
+        localStorage.setItem("userName", editName);
+        localStorage.setItem("userLastName", editLastName);
         setUserName(editName);
         setUserLastName(editLastName);
         setShowModal(false);
@@ -118,7 +120,7 @@ function Profile() {
           <div className=" profile-form">
             
               <div className="profile-details">
-                <p>Nombre: </p>{userName}
+                <p>Nombre: </p>{userName ? userName : "-"}
               </div>
               <div className="profile-details">
                 <p>Apellido: </p>{userLastName ? userLastName : "-"}

@@ -165,7 +165,7 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -201,7 +201,7 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS + `?page=1&search=${term}`,
+          url: API.LIST_REGULATIONS + `?page=1&search=${term}+type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -462,7 +462,7 @@ function LoadRegulation() {
                 onChange={handleStateChange}
                 disabled={userRole === "concejal"}
               >
-                <option value="process">En proceso</option>
+                <option value="process">En proceso</option>  // Nota: Dejo de funcionar de la nada, no tocamos nada y funciona nuevamente xd.
                 {userRole !== "concejal" && (
                   <option value="approved">Aprobado</option>
                 )}
@@ -523,6 +523,9 @@ function LoadRegulation() {
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
                   <Form.Control type="file" onChange={handlePdfApprovedChange} />
                 </Form.Group>
+
+                {(type === "ordinance" || type === "resolution" || type === "decree") && (
+                  <>
 
                 <Form.Group controlId="normToModif" className="mb-3">
                   <Form.Label>Norma/s a la que modifica:</Form.Label>
@@ -612,6 +615,8 @@ function LoadRegulation() {
                     ))}
                   </div>
                 </Form.Group>
+                </>
+              )}
               </>
             )}
 
