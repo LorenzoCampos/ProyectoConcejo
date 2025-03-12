@@ -61,6 +61,7 @@ class AuthenticatedSessionController extends Controller
                 "user" => [
                     'id' => $user->id,
                     'name' => $user->name,
+                    'last_name' => $user->last_name,
                     'email' => $user->email,
                     'email_verified' => $verified_email,
                 ],

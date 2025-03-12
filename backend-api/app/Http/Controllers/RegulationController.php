@@ -14,6 +14,52 @@ use App\Services\Regulations\Decree;
 
 class RegulationController extends Controller
 {
+
+    public function modificationsRegulations(Request $request): JsonResponse
+    {
+        // quiero que me debuelva los parametros enviados en la request
+        // dd($request->all());
+
+        $type = $request->input('type');
+        $rule = $request->input('rule');
+        $search = $request->input('search');
+
+        $query = Regulation::query();
+
+        if ($type === 'ordinance') {
+            if ($rule === 'modified-by') {
+                $query->when($type, function ($q) use ($type) {
+                    $q->where('type', $type);
+                });
+            } else {
+                // Si es de tipo ordinance buscar todos los estos tipos decree, ordinance y resolution
+                $query->whereIn('type', ['decree', 'ordinance', 'resolution']);
+            }
+        } else {
+            $query->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            });
+        }
+
+        $query->when($search, function ($q) use ($search) {
+            $q->where(function ($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                    ->orWhereHas('keywords', function ($q) use ($search) {
+                        $q->where('word', 'like', '%' . $search . '%');
+                    });
+            });
+        });
+
+        // Si no se encontró ningún resultado
+        if ($query->count() == 0) {
+            return response()->json(['message' => 'No se encontraron resultados'], 404);
+        }
+
+        $regulations = $query->get();
+
+        return response()->json($regulations, 200);
+    }
+
     // filtros para las normativas
     public function index(Request $request): JsonResponse
     {

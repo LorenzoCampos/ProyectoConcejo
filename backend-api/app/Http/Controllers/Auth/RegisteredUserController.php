@@ -24,8 +24,8 @@ class RegisteredUserController extends Controller
         try {
             // Validar los datos de la petición
             $validatedData = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'last_name' => ['required', 'string', 'max:255'],
+                'name' => ['nullable', 'string', 'max:255'],
+                'last_name' => ['nullable', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'email_confirmation' => ['required', 'string', 'email', 'max:255', 'same:email'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],

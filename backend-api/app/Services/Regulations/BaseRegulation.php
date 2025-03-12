@@ -39,6 +39,7 @@ abstract class BaseRegulation
     {
         $path = $file->store('pdfs', 'public');
         $endPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $path;
+        // $endPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $path;
         return $endPath;
     }
 
@@ -150,6 +151,11 @@ abstract class BaseRegulation
      */
     public function canCreate(): bool
     {
+        // Verificar que el usuario tenga un name y last_name
+        if (empty($this->currentUser->name) || empty($this->currentUser->last_name)) {
+            return false;
+        }
+
         if ($this->currentUser->hasRole(['admin', 'secretario'])) {
             // relacionar id del usuario a la regulacion
             $this->data['fk_user_creator'] = $this->currentUser->id;
