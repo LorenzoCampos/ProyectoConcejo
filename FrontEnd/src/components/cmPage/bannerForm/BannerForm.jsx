@@ -3,22 +3,21 @@ import { Form, Button } from "react-bootstrap";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
-import ListBanners from "../listBanners/ListBanners";
 
 import "./bannerForm.css";
 import API from "../../../config/apiConfig";
+import { useNavigate } from "react-router-dom";
 
 function BannerForm() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [status, setStatus] = useState(0);
-  const [showBannerList, setShowBannerList] = useState(false);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-
+  const navigate = useNavigate();
 
   // Maneja el cambio de la imagen seleccionada
   const handleFileChange = (e) => {
@@ -59,19 +58,16 @@ function BannerForm() {
         setToastMessage("Banner subido exitosamente");
         setShowSuccessToast(true);
         setTimeout(() => {
-          setShowBannerList(true);
+          navigate("/cm");
         }, 3000);
       }
     } catch (error) {
       if (error.response) {
-        setToastMessage("Error al subir el Banner");
+        setToastMessage("Error al subir el Banner: Debes subir una imagen.");
         setShowWarningToast(true);
       }
     }
   };
-  if (showBannerList) {
-    return <ListBanners />;
-  }
 
   return (
     <div className="page-form">
