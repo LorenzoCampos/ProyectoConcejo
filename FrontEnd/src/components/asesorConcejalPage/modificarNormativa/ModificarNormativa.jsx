@@ -43,7 +43,7 @@ function ModificarNormativa() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // "success" o "danger"
 
-  // const [initialData, setInitialData] = useState({});
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   const searchResultsRef = useRef(null);
   const searchResultsModifiedByRef = useRef(null);
@@ -78,6 +78,19 @@ function ModificarNormativa() {
   };
 
   useEffect(() => {
+    if (type === "dem-message") {
+      setTypeAuthor("DEM");
+    }
+
+    if (type === "correspondence") {
+      setTypeAuthor("particular");
+    }
+
+    // Automatically set typeAuthor to "concejal" for specific types
+    if (["declaration", "minute", "resolution"].includes(type)) {
+      setTypeAuthor("concejal");
+    }
+
     // Reset fields based on type of normativa
     if (type === "correspondence") {
       setPdfProcess(null);
@@ -88,6 +101,9 @@ function ModificarNormativa() {
   }, [type]);
 
   useEffect(() => {
+    if (userRole === "concejal") {
+      setTypeAuthor("concejal");
+    }
     // Automatically add DEM author if typeAuthor is DEM
     if (typeAuthor === "DEM") {
       setAuthorsList(["DEM"]);
@@ -95,13 +111,6 @@ function ModificarNormativa() {
       setAuthorsList([]);
     }
   }, [typeAuthor]);
-
-  useEffect(() => {
-    // Automatically set typeAuthor to "concejal" for specific types
-    if (["declaration", "minute", "resolution", "decree"].includes(type)) {
-      setTypeAuthor("concejal");
-    }
-  }, [type]);
 
   const handleWordChange = (e) => {
     setWord(e.target.value);
@@ -271,7 +280,6 @@ function ModificarNormativa() {
             "Content-Type": "application/json",
           },
         });
-        /* console.log("Respuesta de la API:", response.data); */
 
         if (response.status === 200) {
           const normativa = response.data;
@@ -293,12 +301,14 @@ function ModificarNormativa() {
       } catch (error) {
         console.error("Error al obtener la normativa:", error);
       } finally {
-        setIsLoading(false);
+        // Forzar actualización del componente (NO TOCAR)
+        // Esto arregla el problema de la carga de la lista de autores
+        setForceUpdate(1);
       }
     };
 
     fetchNormativa();
-  }, [id]);
+  }, [id, forceUpdate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -402,17 +412,20 @@ function ModificarNormativa() {
     if (type === "correspondence") {
       return (
         <>
-          <option value="DEM">DEM</option>
           <option value="particular">Particular</option>
         </>
       );
-    } else if (type === "ordinance") {
+    } else if (type === "ordinance" || type === "decree") {
       return (
         <>
           <option value="DEM">DEM</option>
           <option value="concejal">Concejal</option>
         </>
       );
+    } else if (type === "dem-message") {
+      <>
+        <option value="DEM">DEM</option>
+      </>;
     } else {
       return <option value="concejal">Concejal</option>;
     }
@@ -446,6 +459,7 @@ function ModificarNormativa() {
                 <option value="minute">Minuta</option>
                 <option value="ordinance">Ordenanza</option>
                 <option value="resolution">Resolucion</option>
+                <option value="dem-message">Mensaje del DEM</option>
               </Form.Select>
             </Form.Group>
 
