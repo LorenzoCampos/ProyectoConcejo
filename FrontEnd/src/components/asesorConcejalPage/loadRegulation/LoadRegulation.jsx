@@ -67,6 +67,19 @@ function LoadRegulation() {
   };
 
   useEffect(() => {
+    if (type === "dem-message") {
+      setTypeAuthor("DEM");
+    }
+
+    if (type === "correspondence") {
+      setTypeAuthor("particular");
+    }
+
+    // Automatically set typeAuthor to "concejal" for specific types
+    if (["declaration", "minute", "resolution"].includes(type)) {
+      setTypeAuthor("concejal");
+    }
+
     // Reset fields based on type of normativa
     if (type === "correspondence") {
       setPdfProcess(null);
@@ -92,13 +105,6 @@ function LoadRegulation() {
       setAuthorsList([]);
     }
   }, [typeAuthor]);
-
-  useEffect(() => {
-    // Automatically set typeAuthor to "concejal" for specific types
-    if (["declaration", "minute", "resolution", "decree"].includes(type)) {
-      setTypeAuthor("concejal");
-    }
-  }, [type]);
 
   const handleWordChange = (e) => {
     setWord(e.target.value);
@@ -173,9 +179,7 @@ function LoadRegulation() {
         };
 
         let reqOptions = {
-          url:
-            API.LIST_REGULATIONS_MODIFIED +
-            `?search=${term}&type=${type}`,
+          url: API.LIST_REGULATIONS_MODIFIED + `?search=${term}&type=${type}`,
           method: "GET",
           headers: headersList,
         };
@@ -368,15 +372,21 @@ function LoadRegulation() {
     if (type === "correspondence") {
       return (
         <>
-          <option value="DEM">DEM</option>
           <option value="particular">Particular</option>
         </>
       );
-    } else if (type === "ordinance") {
+    } else if (type === "ordinance" || type === "decree") {
       return (
         <>
           <option value="DEM">DEM</option>
           <option value="concejal">Concejal</option>
+        </>
+      );
+    } else if (type === "dem-message") {
+      return (
+        <>
+
+          <option value="DEM">DEM</option>
         </>
       );
     } else {
@@ -411,6 +421,7 @@ function LoadRegulation() {
                 <option value="minute">Minuta</option>
                 <option value="ordinance">Ordenanza</option>
                 <option value="resolution">Resolucion</option>
+                <option value="dem-message">Mensaje del DEM</option>
               </Form.Select>
             </Form.Group>
 
@@ -450,7 +461,7 @@ function LoadRegulation() {
                 {authorsList.map((a, index) => (
                   <div key={index} className="list">
                     {a}
-                    {(index !== 0) && (
+                    {index !== 0 && (
                       <Button
                         className="btn-delete"
                         variant="danger"
@@ -524,7 +535,7 @@ function LoadRegulation() {
               />
             </Form.Group>
 
-            {type !== "correspondence" && (
+            {type !== "correspondence" && type !== "dem-message" && (
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
