@@ -64,6 +64,7 @@ div button.btn.btn-primary {
   padding: 4px;
   border-radius: 5px;
   background: #ece5e5;
+
 }
 
 .btn-delete {
@@ -83,9 +84,18 @@ div button.btn.btn-primary {
   background-color: white;
   border: 1px solid #ccc;
   width: 100%;
+
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .container.cont-norm {
   display: flex;
   flex-direction: column;
+}
+
+.list-group {
+  position: relative !important;
+  max-height: 13rem;
+  overflow-y: auto;
 }

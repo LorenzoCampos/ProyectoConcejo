@@ -120,10 +120,10 @@ function Profile() {
           <div className=" profile-form">
             
               <div className="profile-details">
-                <p>Nombre: </p>{userName ? userName : "-"}
+                <p>Nombre: </p>{userName ? userName : null}
               </div>
               <div className="profile-details">
-                <p>Apellido: </p>{userLastName ? userLastName : "-"}
+                <p>Apellido: </p>{userLastName ? userLastName : null}
               </div>
               <div className="profile-details">
                 <p>Email: </p>{userEmail}

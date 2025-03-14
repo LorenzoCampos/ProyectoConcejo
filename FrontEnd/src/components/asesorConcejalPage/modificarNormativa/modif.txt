@@ -43,7 +43,7 @@ function ModificarNormativa() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // "success" o "danger"
 
-  const [forceUpdate, setForceUpdate] = useState(0);
+  // const [initialData, setInitialData] = useState({});
 
   const searchResultsRef = useRef(null);
   const searchResultsModifiedByRef = useRef(null);
@@ -78,19 +78,6 @@ function ModificarNormativa() {
   };
 
   useEffect(() => {
-    if (type === "dem-message") {
-      setTypeAuthor("DEM");
-    }
-
-    if (type === "correspondence") {
-      setTypeAuthor("particular");
-    }
-
-    // Automatically set typeAuthor to "concejal" for specific types
-    if (["declaration", "minute", "resolution"].includes(type)) {
-      setTypeAuthor("concejal");
-    }
-
     // Reset fields based on type of normativa
     if (type === "correspondence") {
       setPdfProcess(null);
@@ -101,9 +88,6 @@ function ModificarNormativa() {
   }, [type]);
 
   useEffect(() => {
-    if (userRole === "concejal") {
-      setTypeAuthor("concejal");
-    }
     // Automatically add DEM author if typeAuthor is DEM
     if (typeAuthor === "DEM") {
       setAuthorsList(["DEM"]);
@@ -111,6 +95,13 @@ function ModificarNormativa() {
       setAuthorsList([]);
     }
   }, [typeAuthor]);
+
+  useEffect(() => {
+    // Automatically set typeAuthor to "concejal" for specific types
+    if (["declaration", "minute", "resolution", "decree"].includes(type)) {
+      setTypeAuthor("concejal");
+    }
+  }, [type]);
 
   const handleWordChange = (e) => {
     setWord(e.target.value);
@@ -280,6 +271,7 @@ function ModificarNormativa() {
             "Content-Type": "application/json",
           },
         });
+        /* console.log("Respuesta de la API:", response.data); */
 
         if (response.status === 200) {
           const normativa = response.data;
@@ -301,14 +293,12 @@ function ModificarNormativa() {
       } catch (error) {
         console.error("Error al obtener la normativa:", error);
       } finally {
-        // Forzar actualización del componente (NO TOCAR)
-        // Esto arregla el problema de la carga de la lista de autores
-        setForceUpdate(1);
+        setIsLoading(false);
       }
     };
 
     fetchNormativa();
-  }, [id, forceUpdate]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -333,9 +323,6 @@ function ModificarNormativa() {
 
     const formData = new FormData();
 
-    // enviar mismo type que se recibe
-    formData.append("type", type);
-
     formData.append("author_type", typeAuthor);
     authorsList.forEach((author, index) => {
       formData.append(`authors[${index}]`, author);
@@ -345,25 +332,20 @@ function ModificarNormativa() {
       formData.append(`keywords[${index}]`, keyword);
     });
     formData.append("subject", subject);
-
-    if (pdfProcess === null) {
-      formData.append("pdf_process", "null"); // No hace nada
-    } else if (pdfProcess === undefined) {
-      formData.append("pdf_process", undefined); // Borra el pdf
-    } else if (pdfProcess !== originalPdfProcess) {
-      formData.append("pdf_process", pdfProcess); // Carga el pdf
-    } else {
-      formData.append("pdf_process", originalPdfProcess); // Mantiene el pdf original
+    if (
+      pdfApproved !== null &&
+      pdfApproved !== undefined &&
+      pdfApproved !== originalPdfApproved
+    ) {
+      formData.append("pdf_approved", pdfApproved);
     }
 
-    if (pdfApproved === null) {
-      formData.append("pdf_approved", "null"); // No hace nada
-    } else if (pdfApproved === undefined) {
-      formData.append("pdf_approved", undefined); // Borra el pdf
-    } else if (pdfApproved !== originalPdfApproved) {
-      formData.append("pdf_approved", pdfApproved); // Carga el pdf
-    } else {
-      formData.append("pdf_approved", originalPdfApproved); // Mantiene el pdf original
+    if (
+      pdfProcess !== null &&
+      pdfProcess !== undefined &&
+      pdfProcess !== originalPdfProcess
+    ) {
+      formData.append("pdf_process", pdfProcess);
     }
 
     selectedItems.forEach((item, index) => {
@@ -399,21 +381,20 @@ function ModificarNormativa() {
       }
     } catch (error) {
       // Manejo de errores
-      if (error.response.status === 422) {
+      if (error.response && error.response.status === 422) {
         const errors = error.response.data.errors;
-        const errorMessages = Object.keys(errors).map((key) => {
-          if (Array.isArray(errors[key])) {
-            return errors[key].join(", ");
-          } else {
-            return errors[key];
-          }
-        });
-        setMessage(errorMessages.join(" "));
+        const errorMessages = Object.values(errors).flat().join(" ");
+        setMessage(`Error en la solicitud: ${errorMessages}`);
+      } else if (error.response) {
+        setMessage(
+          `Error al enviar la solicitud: ${error.response.data.message}`
+        );
+        console.log(error.response.data);
       } else {
-        setMessage(`Error en la solicitud: ${error.response.data.message}`);
+        setMessage(`Error al enviar la solicitud: ${error.message}`);
       }
       setMessageType("danger");
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0); // Desplazar hacia arriba
     }
   };
 
@@ -421,20 +402,17 @@ function ModificarNormativa() {
     if (type === "correspondence") {
       return (
         <>
+          <option value="DEM">DEM</option>
           <option value="particular">Particular</option>
         </>
       );
-    } else if (type === "ordinance" || type === "decree") {
+    } else if (type === "ordinance") {
       return (
         <>
           <option value="DEM">DEM</option>
           <option value="concejal">Concejal</option>
         </>
       );
-    } else if (type === "dem-message") {
-      <>
-        <option value="DEM">DEM</option>
-      </>;
     } else {
       return <option value="concejal">Concejal</option>;
     }
@@ -468,7 +446,6 @@ function ModificarNormativa() {
                 <option value="minute">Minuta</option>
                 <option value="ordinance">Ordenanza</option>
                 <option value="resolution">Resolucion</option>
-                <option value="dem-message">Mensaje del DEM</option>
               </Form.Select>
             </Form.Group>
 
@@ -580,17 +557,16 @@ function ModificarNormativa() {
               />
             </Form.Group>
 
-            {(type !== "correspondence" && type !== "dem-message") && (
+            {type !== "correspondence" && (
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
                   <Form.Control type="file" onChange={handlePdfProcessChange} />
-
-                  {pdfProcess && pdfProcess !== "undefined" && (
+                  {pdfProcess && pdfProcess !== "delete" && (
                     <>
                       <div className="container-pdf-modify">
                         <b className="container-pdf-modify__b">
-                          PDF cargado actualmente:
+                          Pdf cargado actualmente:
                         </b>
                         <Button
                           title="Ver PDF"
@@ -606,7 +582,7 @@ function ModificarNormativa() {
                           title="Eliminar PDF"
                           className="container-pdf-modify__delete"
                           variant="danger"
-                          onClick={() => setPdfProcess(undefined)}
+                          onClick={() => setPdfProcess(null)}
                         >
                           <MdDelete size={20} />
                         </Button>
@@ -621,11 +597,10 @@ function ModificarNormativa() {
                     type="file"
                     onChange={handlePdfApprovedChange}
                   />
-
-                  {pdfApproved && pdfApproved !== "undefined" && (
+                  {pdfApproved && (
                     <div className="container-pdf-modify">
                       <b className="container-pdf-modify__b">
-                        PDF cargado actualmente:
+                        Pdf cargado actualmente:
                       </b>
                       <Button
                         className="container-pdf-modify__pdf"
@@ -640,7 +615,7 @@ function ModificarNormativa() {
                         title="Eliminar PDF"
                         className="container-pdf-modify__delete"
                         variant="danger"
-                        onClick={() => setPdfApproved(undefined)}
+                        onClick={() => setPdfApproved(null)}
                       >
                         <MdDelete size={20} />
                       </Button>
@@ -749,7 +724,7 @@ function ModificarNormativa() {
               </>
             )}
 
-            <div className= "btn-container-form">
+            <div className="btn-container">
               <Button className="btn-banner" type="submit">
                 Modificar Normativa
               </Button>
