@@ -1,91 +1,92 @@
-.content {
-  flex: 1;
+/* Settings Filtrado de Normativas */
+
+.filter-regulations {
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  background-color: #ffff;
+  border-radius: .50rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: .50rem;
+  align-items: center; /* Alinea los elementos al final para que los botones estén alineados */
 }
 
-.filter-container {
+.filter-inputs {
   display: flex;
-  justify-content: center;
-  margin-top: 120px;
-  background-color: var(--background-color);
-  padding: 20px;
-  overflow: hidden;
-}
-
-.filter {
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
-  padding: 20px;
-  gap: 30px;
+  gap: 0.5rem; /* Espacio entre el label y el input/select */
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  background: linear-gradient(
-    0deg,
-    rgba(16, 37, 80, 1) 0%,
-    rgba(48, 88, 166, 1) 100%
-  );
-  height: auto;
-  width: 700px;
-  border-radius: 10px;
-  border: 2px solid var(--primary-color);
-  box-shadow: 0px 0px 30px 10px rgba(16, 37, 80, 0.29);
+  gap: 0.5rem; /* Espacio entre el label y el input/select */
 }
 
-.filter h1 {
-  color: var(--background-color);
-  font-weight: bold;
-  font-size: 2rem;
-  margin: 20px 0 0 0;
-}
-
-.inputs-filter {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.inputs-filter div {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.inputs-filter label {
-  flex: 1;
-  color: var(--background-color);
+.label-author {
   white-space: nowrap;
 }
 
-.form-label {
-  margin: 0.5rem;
+.filter-input-border {
+  border: 1px solid #9fa1a5;
 }
 
-button.btn-form {
-  cursor: pointer;
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  padding: 0 30px;
-  border-radius: 10px;
-  font-weight: 600;
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+/* End Settings Filtrado de Normativas */
+
+/* ---------------------------------------------------------------------------------------------- */
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-savechange {
+  display: flex;
+  justify-content: center;
+  margin: 15px;
+}
+
+button.btn.btn-primary {
   border: none;
 }
 
-.btn-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+button.pdf-btn.btn.btn-primary {
+  background-color: red;
 }
 
-.inputs-filter div input,
-.inputs-filter div select {
+
+/* .content-table__table {
+  border-collapse: collapse;
+  border: 1px solid #000;
+  margin: 0;
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
 
-.btn-form:hover {
-  color: var(--background-color);
-  background-color: var(--primary-color);
-  border: 1px solid var(--background-color);
+.content-table__table tbody tr td {
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+}
+
+.content-table__table thead tr th {
+  border-right: 1px solid #000;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+} */
+
+.link-to-profile {
+  cursor: pointer;
 }
