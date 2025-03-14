@@ -96,7 +96,7 @@ function LoadRegulation() {
     // Automatically add DEM author if typeAuthor is DEM
     if (typeAuthor === "DEM") {
       setAuthorsList(["DEM"]);
-    } else if (typeAuthor === "concejal") {
+    } else if (typeAuthor === "concejal" && userRole === "concejal") {
       const userName = localStorage.getItem("userName");
       const userLastName = localStorage.getItem("userLastName");
       const fullName = `${userName} ${userLastName}`.trim();
@@ -347,22 +347,19 @@ function LoadRegulation() {
         setSelectedItemsModifiedBy([]);
       }
     } catch (error) {
-      if (error.response) {
-        // Si el backend devuelve un error de validación
-        if (error.response.status === 422) {
-          const errors = error.response.data.errors;
-          let errorMessages = Object.values(errors)
-            .map((err) => err.join(" ")) // Unir mensajes de error por campo
-            .join(" | "); // Separar con barra
-
-          setMessage(`Errores de validación: ${errorMessages}`);
-        } else {
-          setMessage(`Error en la solicitud: ${error.response.data.message}`);
-        }
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        const errorMessages = Object.keys(errors).map((key) => {
+          if (Array.isArray(errors[key])) {
+            return errors[key].join(", ");
+          } else {
+            return errors[key];
+          }
+        });
+        setMessage(errorMessages.join(" "));
       } else {
-        setMessage(`Error al enviar la solicitud: ${error.message}`);
+        setMessage(`Error en la solicitud: ${error.response.data.message}`);
       }
-
       setMessageType("danger");
       window.scrollTo(0, 0);
     }
