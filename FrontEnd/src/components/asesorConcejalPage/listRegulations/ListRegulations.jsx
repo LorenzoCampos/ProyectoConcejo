@@ -76,7 +76,7 @@ function ListRegulations() {
   };
 
   const getRegulations = async (page = 1, s = {}) => {
-    console.log("s:", s);
+    /* console.log("s:", s); */
     setLoading(true);
     try {
       let headersList = {
@@ -170,6 +170,7 @@ function ListRegulations() {
     decree: "Decreto",
     declaration: "Declaración",
     correspondence: "Correspondencia",
+    'dem-message': "Mensaje del DEM",
   };
   function translateType(type) {
     return typeTranslations[type] || type; // Si no hay traducción, muestra el valor original
@@ -380,9 +381,9 @@ function ListRegulations() {
                     <td data-title="Acciones">
                       <div className="accion-buttons">
                         {/* Solo se renderizan los botones de PDF si el tipo NO es "correspondence" */}
-                        {regulation.type !== "correspondence" && (
+                        {(regulation.type !== "correspondence" && regulation.type !== "dem-message") && (
                           <div>
-                            {regulation.pdf_approved && (
+                            {regulation.pdf_approved && regulation.pdf_approved !== "undefined" ? (
                               <a target="_blank" href={regulation.pdf_approved}>
                                 <Button
                                   variant="primary"
@@ -392,8 +393,7 @@ function ListRegulations() {
                                   <FaRegFilePdf style={{ color: "white" }} />
                                 </Button>
                               </a>
-                            )}
-                            {regulation.pdf_process ? (
+                            ) : regulation.pdf_process && regulation.pdf_process !== "undefined" ? (
                               <a target="_blank" href={regulation.pdf_process}>
                                 <Button
                                   variant="primary"
