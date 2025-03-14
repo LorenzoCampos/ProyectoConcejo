@@ -333,6 +333,9 @@ function ModificarNormativa() {
 
     const formData = new FormData();
 
+    // enviar mismo type que se recibe
+    formData.append("type", type);
+
     formData.append("author_type", typeAuthor);
     authorsList.forEach((author, index) => {
       formData.append(`authors[${index}]`, author);
@@ -342,20 +345,25 @@ function ModificarNormativa() {
       formData.append(`keywords[${index}]`, keyword);
     });
     formData.append("subject", subject);
-    if (
-      pdfApproved !== null &&
-      pdfApproved !== undefined &&
-      pdfApproved !== originalPdfApproved
-    ) {
-      formData.append("pdf_approved", pdfApproved);
+
+    if (pdfProcess === null) {
+      formData.append("pdf_process", "null"); // No hace nada
+    } else if (pdfProcess === undefined) {
+      formData.append("pdf_process", undefined); // Borra el pdf
+    } else if (pdfProcess !== originalPdfProcess) {
+      formData.append("pdf_process", pdfProcess); // Carga el pdf
+    } else {
+      formData.append("pdf_process", originalPdfProcess); // Mantiene el pdf original
     }
 
-    if (
-      pdfProcess !== null &&
-      pdfProcess !== undefined &&
-      pdfProcess !== originalPdfProcess
-    ) {
-      formData.append("pdf_process", pdfProcess);
+    if (pdfApproved === null) {
+      formData.append("pdf_approved", "null"); // No hace nada
+    } else if (pdfApproved === undefined) {
+      formData.append("pdf_approved", undefined); // Borra el pdf
+    } else if (pdfApproved !== originalPdfApproved) {
+      formData.append("pdf_approved", pdfApproved); // Carga el pdf
+    } else {
+      formData.append("pdf_approved", originalPdfApproved); // Mantiene el pdf original
     }
 
     selectedItems.forEach((item, index) => {
@@ -391,20 +399,21 @@ function ModificarNormativa() {
       }
     } catch (error) {
       // Manejo de errores
-      if (error.response && error.response.status === 422) {
+      if (error.response.status === 422) {
         const errors = error.response.data.errors;
-        const errorMessages = Object.values(errors).flat().join(" ");
-        setMessage(`Error en la solicitud: ${errorMessages}`);
-      } else if (error.response) {
-        setMessage(
-          `Error al enviar la solicitud: ${error.response.data.message}`
-        );
-        console.log(error.response.data);
+        const errorMessages = Object.keys(errors).map((key) => {
+          if (Array.isArray(errors[key])) {
+            return errors[key].join(", ");
+          } else {
+            return errors[key];
+          }
+        });
+        setMessage(errorMessages.join(" "));
       } else {
-        setMessage(`Error al enviar la solicitud: ${error.message}`);
+        setMessage(`Error en la solicitud: ${error.response.data.message}`);
       }
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
     }
   };
 
@@ -571,16 +580,17 @@ function ModificarNormativa() {
               />
             </Form.Group>
 
-            {type !== "correspondence" && (
+            {(type !== "correspondence" && type !== "dem-message") && (
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
                   <Form.Control type="file" onChange={handlePdfProcessChange} />
-                  {pdfProcess && pdfProcess !== "delete" && (
+
+                  {pdfProcess && pdfProcess !== "undefined" && (
                     <>
                       <div className="container-pdf-modify">
                         <b className="container-pdf-modify__b">
-                          Pdf cargado actualmente:
+                          PDF cargado actualmente:
                         </b>
                         <Button
                           title="Ver PDF"
@@ -596,7 +606,7 @@ function ModificarNormativa() {
                           title="Eliminar PDF"
                           className="container-pdf-modify__delete"
                           variant="danger"
-                          onClick={() => setPdfProcess(null)}
+                          onClick={() => setPdfProcess(undefined)}
                         >
                           <MdDelete size={20} />
                         </Button>
@@ -611,10 +621,11 @@ function ModificarNormativa() {
                     type="file"
                     onChange={handlePdfApprovedChange}
                   />
-                  {pdfApproved && (
+
+                  {pdfApproved && pdfApproved !== "undefined" && (
                     <div className="container-pdf-modify">
                       <b className="container-pdf-modify__b">
-                        Pdf cargado actualmente:
+                        PDF cargado actualmente:
                       </b>
                       <Button
                         className="container-pdf-modify__pdf"
@@ -629,7 +640,7 @@ function ModificarNormativa() {
                         title="Eliminar PDF"
                         className="container-pdf-modify__delete"
                         variant="danger"
-                        onClick={() => setPdfApproved(null)}
+                        onClick={() => setPdfApproved(undefined)}
                       >
                         <MdDelete size={20} />
                       </Button>
@@ -738,7 +749,7 @@ function ModificarNormativa() {
               </>
             )}
 
-            <div className="btn-container">
+            <div className= "btn-container-form">
               <Button className="btn-banner" type="submit">
                 Modificar Normativa
               </Button>
