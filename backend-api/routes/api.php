@@ -11,6 +11,8 @@ Route::prefix('v1')->group(function () {
         return 'Viva La Libertad Carajo';
     });
 
+    // Ruta pública para regulaciones publicadas
+    Route::get('regulations/published', [RegulationController::class, 'indexPublished']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
 
