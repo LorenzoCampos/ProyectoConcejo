@@ -11,9 +11,80 @@ use App\Services\Regulations\Declaration;
 use App\Services\Regulations\Resolution;
 use App\Services\Regulations\Minute;
 use App\Services\Regulations\Decree;
+use App\Services\Regulations\DemMessage;
 
 class RegulationController extends Controller
 {
+    private $validTypes = ['ordinance', 'correspondence', 'minute', 'declaration', 'resolution', 'decree', 'dem-message'];
+
+    private $validTypesFormodifiesRefulations = ['ordinance', 'resolution', 'decree'];
+
+    public function indexPublished(Request $request): JsonResponse
+    {
+        // Obtener los posibles filtros de la request
+        $type = $request->input('type');
+        $from = $request->input('from'); // Fecha de inicio
+        $to = $request->input('to'); // Fecha de fin
+        $state = 'approved';
+        $search = $request->input('search'); // Búsqueda de texto en el título
+        $orderBy = $request->input('order_by', 'created_at'); // Ordenamiento, por defecto por fecha
+        $orderDirection = $request->input('order_direction', 'desc'); // Dirección del ordenamiento, por defecto descendente
+
+        // Construir la consulta base
+        $query = Regulation::query();
+
+        $query->when($state, function ($q) use ($state) {
+            $q->where('state', $state);
+        });
+
+        // Aplicar filtros condicionalmente
+        $query->when($type, function ($q) use ($type) {
+            $q->where('type', $type);
+        });
+
+
+
+        $query->when($search, function ($q) use ($search) {
+            $q->where(function ($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                    ->orWhereHas('keywords', function ($q) use ($search) {
+                        $q->where('word', 'like', '%' . $search . '%');
+                    });
+            });
+        });
+
+        $query->when($request->has('keywords'), function ($q) use ($request) {
+            $q->whereHas('keywords', function ($q) use ($request) {
+                $q->whereIn('word', $request->input('keywords'));
+            });
+        });
+
+        $query->when($from && $to, function ($q) use ($from, $to) {
+            $q->whereBetween('created_at', [$from, $to]);
+        });
+
+        $query->when($from && !$to, function ($q) use ($from) {
+            $q->where('created_at', '>=', $from);
+        });
+
+        $query->when(!$from && $to, function ($q) use ($to) {
+            $q->where('created_at', '<=', $to);
+        });
+
+        // si no se encontro ningun resultado.
+        if ($query->count() == 0) {
+            return response()->json(['message' => 'No se encontraron resultados'], 404);
+        }
+
+        // Ordenar resultados
+        $query->orderBy($orderBy, $orderDirection);
+
+        // Paginación de resultados
+        $regulations = $query->paginate(15);
+
+        // Retornar respuesta JSON
+        return response()->json($regulations, 200);
+    }
 
     public function modificationsRegulations(Request $request): JsonResponse
     {
@@ -23,6 +94,16 @@ class RegulationController extends Controller
         $type = $request->input('type');
         $rule = $request->input('rule');
         $search = $request->input('search');
+
+        // Validar el tipo
+        if (!in_array($type, $this->validTypesFormodifiesRefulations)) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => [
+                    'type' => 'Tipo de regulación no válido.'
+                ],
+            ], 422);
+        }
 
         $query = Regulation::query();
 
@@ -148,6 +229,17 @@ class RegulationController extends Controller
     public function store(Request $request)
     {
         $type = $request->input('type');
+
+        // Validar el tipo
+        if (!in_array($type, $this->validTypes)) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => [
+                    'type' => 'Tipo de regulación no válido.'
+                ],
+            ], 422);
+        }
+
         $regulationService = $this->getRegulationService($type, $request->all());
 
         // Validar los datos de entrada
@@ -218,6 +310,18 @@ class RegulationController extends Controller
         // Encontrar la regulación por su ID
         $regulation = Regulation::findOrFail($id);
 
+        $regulationAuxiliarService = $this->getRegulationService($regulation->type, $request->all());
+
+        $validationErrors = $regulationAuxiliarService->validate(true);
+        if ($validationErrors) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validationErrors,
+            ], 422);
+        }
+
+        $oldData = $regulationAuxiliarService->getData();
+
         // Fusionar los datos actuales con los nuevos datos enviados en la solicitud
         $mergedData = array_merge($regulation->toArray(), $request->all());
 
@@ -235,12 +339,35 @@ class RegulationController extends Controller
             return response()->json(['message' => 'Error de validación', 'errors' => $validationErrors], 422);
         }
 
+        // Manejar archivos PDF
+        $data = [];
+        if ($request->hasFile('pdf_process')) {
+            // Subir el archivo PDF y obtener la ruta
+            $pdfProcessPath = $regulationAuxiliarService->uploadPDF($request->file('pdf_process'));
+
+            // Actualizar el campo en la base de datos
+            $data['pdf_process'] = $pdfProcessPath;
+        }
+
+        if ($request->hasFile('pdf_approved')) {
+            // Subir el archivo PDF y obtener la ruta
+            $pdfApprovedPath = $regulationAuxiliarService->uploadPDF($request->file('pdf_approved'));
+
+            // Actualizar el campo en la base de datos
+            $data['pdf_approved'] = $pdfApprovedPath;
+        }
+
         // Detectar cambios en los datos simples
         $changes = $regulationService->handleUpdate($regulation->toArray());
 
         // Actualizar los datos simples si hay cambios
         if (!empty($changes)) {
             $regulation->update($regulationService->mergeData($regulation->toArray()));
+        }
+
+        // Actualizar los datos relacionados con los PDFs
+        if (!empty($data)) {
+            $regulation->update($data);
         }
 
         // Manejo de relaciones
@@ -308,6 +435,7 @@ class RegulationController extends Controller
             'declaration' => new Declaration($data),
             'resolution' => new Resolution($data),
             'decree' => new Decree($data),
+            'dem-message' => new DemMessage($data),
             default => null,
         };
     }
