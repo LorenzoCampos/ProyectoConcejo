@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.1 || 8.2",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel-lang/common": "^6.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
@@ -14,6 +15,9 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "laravel-lang/actions": "^1.10",
+        "laravel-lang/lang": "^14.8",
+        "laravel-lang/publisher": "^16.6",
         "laravel/breeze": "^1.29",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
