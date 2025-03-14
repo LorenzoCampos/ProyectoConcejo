@@ -212,14 +212,15 @@ abstract class BaseRegulation
         $authors = $this->data['authors'] ?? [];
 
         switch ($this->data['type']) {
-            case 'ordinance':
-                return in_array($authorType, ['DEM', 'concejal']);
+            case 'dem-message':
+                return $authorType === 'DEM';
+            case 'ordinance' || 'decree':
+                return in_array($authorType, ['DEM', 'concejal']) && count($authors) > 0;
             case 'correspondence':
-                return in_array($authorType, ['DEM', 'particular']);
+                return $authorType === 'particular' && count($authors) > 0;
             case 'minute':
             case 'declaration':
             case 'resolution':
-            case 'decree':
                 return $authorType === 'concejal' && count($authors) > 0;
             default:
                 return false;
