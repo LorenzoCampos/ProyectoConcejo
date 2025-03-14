@@ -18,6 +18,9 @@ const API = {
   // User Data
   USER_DATA: `${URL}/user`,
 
+  // Regulations Public
+  REGULATIONS_PUBLIC: `${URL}/regulations/published`,
+
   // Banners Public
   BANNERS_PUBLIC: `${URL}/banners/published`,
 
