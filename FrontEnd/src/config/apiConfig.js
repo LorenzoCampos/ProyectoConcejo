@@ -1,19 +1,18 @@
 // apiConfig.js
 
 // Servidor
-const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
+//const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
 // Local
-//const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
+const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
 
 const API = {
-  // Email Verification
-  EMAIL_VERIFICATION: `${URL}/email/verification-notification`,
-
   // Profile
   EDIT_PROFILE: `${URL}/user`,
   FORGOT_PASSWORD: `${URL}/forgot-password`,
   RESET_PASSWORD: `${URL}/reset-password`,
+  // Email Verification
+  EMAIL_VERIFICATION: `${URL}/email/verification-notification`,
 
   // User Data
   USER_DATA: `${URL}/user`,
@@ -54,8 +53,7 @@ const API = {
   LIST_REGULATIONS_MODIFIED: `${URL}/regulations/modified`, // Lista de Normativas
   SHOW_REGULATION: `${URL}/regulations/`, // Vista de una Sola Normativa
   CREATE_REGULATIONS: `${URL}/regulations`, // Crear Normativa
-  UPDATE_REGULATIONS: `${URL}/regulations/` // Modificar Normativa
-
+  UPDATE_REGULATIONS: `${URL}/regulations/`, // Modificar Normativa
 };
 
 export default API;
