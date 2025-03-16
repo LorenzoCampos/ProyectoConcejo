@@ -99,3 +99,8 @@ div button.btn.btn-primary {
   max-height: 13rem;
   overflow-y: auto;
 }
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}

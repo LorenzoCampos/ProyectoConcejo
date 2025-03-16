@@ -171,7 +171,7 @@ function LoadRegulation() {
     const term = e.target.value;
     setSearchTerm(term);
 
-    if (term.length > 2) {
+    if (term && term.length > 2) {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -207,7 +207,7 @@ function LoadRegulation() {
     const term = e.target.value;
     setSearchTermModifiedBy(term);
 
-    if (term.length > 2) {
+    if (term && term.length > 2) {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
