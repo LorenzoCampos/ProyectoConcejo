@@ -19,7 +19,7 @@ class Decree extends BaseRegulation
             'modifies.*' => 'nullable|integer|max:255',
             'modified_by' => 'nullable|array',
             'modified_by.*' => 'nullable|integer|max:255',
-            'author_type' => $isCreation ? 'required|string|in:concejal' : 'sometimes|string|in:concejal',
+            'author_type' => $isCreation ? 'required|string|in:concejal,DEM' : 'sometimes|string|in:concejal,DEM',
             'authors' => $isCreation ? 'required|array|min:1' : 'sometimes|array|min:1',
             'authors.*' => 'required|string|max:255',
             'keywords' => 'nullable|array',
