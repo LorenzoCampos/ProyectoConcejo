@@ -332,47 +332,80 @@ function ModificarNormativa() {
     fetchNormativa();
   }, [id, forceUpdate]);
 
+  const handleUploadPdf = async (type, pdfFile) => {
+    // if (!pdfFile) return; // Si no hay archivo, no hacer nada (por lógica agregada no funciona)
+
+    const formData = new FormData();
+    formData.append(type, pdfFile);
+
+    try {
+      const response = await axios.post(API.UPDATE_REGULATIONS + id, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log(`PDF (${type}) subido correctamente:`, response.data);
+      }
+    } catch (error) {
+      console.error(`Error al subir ${type}`, error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar si el tipo no es "correspondence" y el estado es "approved" sin PDF aprobado
     if (type !== "correspondence" && status === "approved" && !pdfApproved) {
       setMessage("Debe subir el PDF de la normativa aprobada.");
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
-    // Verificar si el usuario es "concejal" y el tipo de autor no es "concejal"
     if (userRole === "concejal" && typeAuthor !== "concejal") {
       setMessage(
         "Como concejal, solo puede crear regulaciones con el tipo de autor 'concejal'."
       );
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
+    // Subir los PDFs solo si han cambiado
+    // if (pdfProcess !== originalPdfProcess && pdfProcess !== null) {
+    //   await handleUploadPdf("pdf_process", pdfProcess);
+    //   if (pdfProcess === undefined) {
+    //     await handleUploadPdf("pdf_process", undefined);
+    //   }
+    // }
+
+    // if (pdfApproved !== originalPdfApproved) {
+    //   await handleUploadPdf("pdf_approved", pdfApproved);
+    // }
+
     if (pdfProcess !== originalPdfProcess) {
       if (pdfProcess === null) {
-        formData.append("pdf_process", null); // No hace nada
+        await handleUploadPdf("pdf_process", ""); // No hace nada
       } else if (pdfProcess === undefined) {
-        formData.append("pdf_process", undefined); // Borra el pdf
+        await handleUploadPdf("pdf_process", undefined); // Borra el pdf
       } else {
-        formData.append("pdf_process", pdfProcess); // Carga el pdf
+        await handleUploadPdf("pdf_process", pdfProcess); // Carga el pdf
       }
     }
 
     if (pdfApproved !== originalPdfApproved) {
       if (pdfApproved === null) {
-        formData.append("pdf_approved", null); // No hace nada
+        await handleUploadPdf("pdf_approved", ""); // No hace nada
       } else if (pdfApproved === undefined) {
-        formData.append("pdf_approved", undefined); // Borra el pdf
+        await handleUploadPdf("pdf_approved", undefined); // Borra el pdf
       } else {
-        formData.append("pdf_approved", pdfApproved); // Carga el pdf
+        await handleUploadPdf("pdf_approved", pdfApproved); // Carga el pdf
       }
     }
 
+    // Crear el payload con solo los valores modificados
     const payload = {
       type: type !== originalType ? type : undefined,
       author_type: typeAuthor !== originalTypeAuthor ? typeAuthor : undefined,
@@ -413,9 +446,9 @@ function ModificarNormativa() {
         console.log(response.data);
         setMessageType("success");
         window.scrollTo(0, 0); // Desplazar hacia arriba
-        /*         setTimeout(() => {
+        setTimeout(() => {
           window.location.reload(); // Recargar la página
-        }, 1500); */
+        }, 1500);
       }
     } catch (error) {
       // Manejo de errores
