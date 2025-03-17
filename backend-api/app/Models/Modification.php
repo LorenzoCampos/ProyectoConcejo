@@ -31,4 +31,9 @@ class Modification extends Model
     {
         return $this->belongsTo(User::class, 'fk_new_user');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'fk_user');
+    }
 }
