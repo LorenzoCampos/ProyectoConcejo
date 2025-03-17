@@ -8,6 +8,7 @@ use App\Services\NewsBanners\Banner;
 use App\Services\NewsBanners\News;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NewsBannerController extends Controller
 {
@@ -150,5 +151,28 @@ class NewsBannerController extends Controller
 
         $newsBanner->delete();
         return response()->json(['message' => 'Banner eliminado con éxito'], 204);
+    }
+
+    public function contactCreate(Request $request): JsonResponse
+    {
+        // validar name y image recibidos en la petición
+        $newsBanner = NewsBanner::findOrFail($request->news_id);
+
+        
+
+        $newsBanner = NewsBanner::create($request->all());
+
+
+        return response()->json(['message'=> ''],201);
+    }
+
+    public function contactUpdate(Request $request): JsonResponse
+    {
+        return response()->json(['message'=> ''],200);
+    }
+
+    public function contact(Request $request): JsonResponse
+    {
+        return response()->json(['message'=> ''],200);
     }
 }

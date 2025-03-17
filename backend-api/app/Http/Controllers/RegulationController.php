@@ -307,12 +307,15 @@ class RegulationController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        // return response()->json($request->all(), 200);
+
         // Encontrar la regulación por su ID
         $regulation = Regulation::findOrFail($id);
 
         $regulationAuxiliarService = $this->getRegulationService($regulation->type, $request->all());
 
-        $validationErrors = $regulationAuxiliarService->validate(true);
+        $validationErrors = $regulationAuxiliarService->validate(false);
         if ($validationErrors) {
             return response()->json([
                 'message' => 'Error de validación',
