@@ -172,6 +172,7 @@ function ListRegulations() {
     correspondence: "Correspondencia",
     'dem-message': "Mensaje del DEM",
   };
+
   function translateType(type) {
     return typeTranslations[type] || type; // Si no hay traducción, muestra el valor original
   }
