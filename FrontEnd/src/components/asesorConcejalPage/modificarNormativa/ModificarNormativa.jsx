@@ -192,7 +192,7 @@ function ModificarNormativa() {
         };
 
         let reqOptions = {
-          url: API.LIST_REGULATIONS_MODIFIED + `?search=${term}&type=${type}`,
+          url: API.LIST_REGULATIONS_MODIFIED + `?search=${term}&type=${type}&id=${id}`,
           method: "GET",
           headers: headersList,
         };
@@ -230,7 +230,7 @@ function ModificarNormativa() {
         let reqOptions = {
           url:
             API.LIST_REGULATIONS_MODIFIED +
-            `?search=${term}&type=${type}&rule=modified-by`,
+            `?search=${term}&type=${type}&rule=modified-by&id=${id}`,
           method: "GET",
           headers: headersList,
         };
@@ -493,6 +493,20 @@ function ModificarNormativa() {
     }
   };
 
+  const typeTranslations = {
+    ordinance: "Ordenanza",
+    resolution: "Resolución",
+    minutes: "Minutas",
+    decree: "Decreto",
+    declaration: "Declaración",
+    correspondence: "Correspondencia",
+    'dem-message': "Mensaje del DEM",
+  };
+
+  function translateType(type) {
+    return typeTranslations[type] || type; // Si no hay traducción, muestra el valor original
+  }
+
   return (
     <div className="page-form">
       <div className="content-page-container">
@@ -739,7 +753,7 @@ function ModificarNormativa() {
                           <div key={index} className="list">
                             {/*<span>{normativas.modifies}</span>*/}
                             <span className="flex-grow-1">
-                              {item.type} N° {item.number}
+                              {translateType(item.type)} N° {item.number}
                             </span>
                             <Button
                               className="btn-delete"
@@ -789,7 +803,7 @@ function ModificarNormativa() {
                           <div key={index} className="list">
                             {/* <span>{normativas.modified_by}</span>*/}
                             <span className="flex-grow-1">
-                              {item.type} N° {item.number}
+                              {translateType(item.type)} N° {item.number}
                             </span>
                             <Button
                               className="btn-delete"
