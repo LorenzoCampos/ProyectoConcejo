@@ -48,6 +48,17 @@ function ModificarNormativa() {
   const searchResultsRef = useRef(null);
   const searchResultsModifiedByRef = useRef(null);
 
+  // Definir variables originales
+  const [originalType, setOriginalType] = useState("");
+  const [originalTypeAuthor, setOriginalTypeAuthor] = useState("");
+  const [originalStatus, setOriginalStatus] = useState("");
+  const [originalSubject, setOriginalSubject] = useState("");
+  const [originalAuthorsList, setOriginalAuthorsList] = useState([]);
+  const [originalWordList, setOriginalWordList] = useState([]);
+  const [originalSelectedItems, setOriginalSelectedItems] = useState([]);
+  const [originalSelectedItemsModifiedBy, setOriginalSelectedItemsModifiedBy] =
+    useState([]);
+
   useEffect(() => {
     // Obtener el rol del usuario desde el localStorage y establecerlo en el estado
     const role = localStorage.getItem("role");
@@ -173,7 +184,7 @@ function ModificarNormativa() {
     const term = e.target.value;
     setSearchTerm(term);
 
-    if (term.length > 2) {
+    if (term && term.length > 2) {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -187,10 +198,10 @@ function ModificarNormativa() {
         };
 
         const response = await axios.request(reqOptions);
-        setSearchResults(response.data.data);
-        if (response.status === 200) {
-          console.log(response.data.data);
-        }
+        setSearchResults(response.data || []);
+        /*         if (response.status === 200) {
+          console.log(response.data);
+        } */
       } catch (error) {
         console.error("Error en la búsqueda:", error.message);
         // Manejo de errores
@@ -209,7 +220,7 @@ function ModificarNormativa() {
     const term = e.target.value;
     setSearchTermModifiedBy(term);
 
-    if (term.length > 2) {
+    if (term && term.length > 2) {
       try {
         let headersList = {
           Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -225,10 +236,10 @@ function ModificarNormativa() {
         };
 
         const response = await axios.request(reqOptions);
-        setSearchResultsModifiedBy(response.data.data);
-        if (response.status === 200) {
-          console.log(response.data.data);
-        }
+        setSearchResultsModifiedBy(response.data || []);
+        /*         if (response.status === 200) {
+          console.log(response.data);
+        } */
       } catch (error) {
         console.error("Error en la búsqueda:", error.message);
         // Manejo de errores
@@ -283,6 +294,7 @@ function ModificarNormativa() {
 
         if (response.status === 200) {
           const normativa = response.data;
+          /* console.log(normativa); */
           setType(normativa.type);
           setTypeAuthor(normativa.author_type);
           setAuthorsList(normativa.authors.map((a) => a.name)); // Convertir a array de nombres
@@ -294,7 +306,17 @@ function ModificarNormativa() {
           setSelectedItems(normativa.regulations_modified || []);
           setSelectedItemsModifiedBy(normativa.regulations_that_modify || []);
 
-          // Guardar los valores originales de los PDFs
+          // Guardar los valores originales
+          setOriginalType(normativa.type);
+          setOriginalTypeAuthor(normativa.author_type);
+          setOriginalStatus(normativa.state);
+          setOriginalSubject(normativa.subject);
+          setOriginalAuthorsList(normativa.authors.map((a) => a.name));
+          setOriginalWordList(normativa.keywords.map((k) => k.word));
+          setOriginalSelectedItems(normativa.regulations_modified || []);
+          setOriginalSelectedItemsModifiedBy(
+            normativa.regulations_that_modify || []
+          );
           setOriginalPdfProcess(normativa.pdf_process);
           setOriginalPdfApproved(normativa.pdf_approved);
         }
@@ -310,81 +332,113 @@ function ModificarNormativa() {
     fetchNormativa();
   }, [id, forceUpdate]);
 
+  const handleUploadPdf = async (type, pdfFile) => {
+    // if (!pdfFile) return; // Si no hay archivo, no hacer nada (por lógica agregada no funciona)
+
+    const formData = new FormData();
+    formData.append(type, pdfFile);
+
+    try {
+      const response = await axios.post(API.UPDATE_REGULATIONS + id, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log(`PDF (${type}) subido correctamente:`, response.data);
+      }
+    } catch (error) {
+      console.error(`Error al subir ${type}`, error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar si el tipo no es "correspondence" y el estado es "approved" sin PDF aprobado
     if (type !== "correspondence" && status === "approved" && !pdfApproved) {
       setMessage("Debe subir el PDF de la normativa aprobada.");
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
-    // Verificar si el usuario es "concejal" y el tipo de autor no es "concejal"
     if (userRole === "concejal" && typeAuthor !== "concejal") {
       setMessage(
         "Como concejal, solo puede crear regulaciones con el tipo de autor 'concejal'."
       );
       setMessageType("danger");
-      window.scrollTo(0, 0); // Desplazar hacia arriba
+      window.scrollTo(0, 0);
       return;
     }
 
-    const formData = new FormData();
+    // Subir los PDFs solo si han cambiado
+    // if (pdfProcess !== originalPdfProcess && pdfProcess !== null) {
+    //   await handleUploadPdf("pdf_process", pdfProcess);
+    //   if (pdfProcess === undefined) {
+    //     await handleUploadPdf("pdf_process", undefined);
+    //   }
+    // }
 
-    // enviar mismo type que se recibe
-    formData.append("type", type);
+    // if (pdfApproved !== originalPdfApproved) {
+    //   await handleUploadPdf("pdf_approved", pdfApproved);
+    // }
 
-    formData.append("author_type", typeAuthor);
-    authorsList.forEach((author, index) => {
-      formData.append(`authors[${index}]`, author);
-    });
-    formData.append("state", status);
-    wordList.forEach((keyword, index) => {
-      formData.append(`keywords[${index}]`, keyword);
-    });
-    formData.append("subject", subject);
-
-    if (pdfProcess === null) {
-      formData.append("pdf_process", "null"); // No hace nada
-    } else if (pdfProcess === undefined) {
-      formData.append("pdf_process", undefined); // Borra el pdf
-    } else if (pdfProcess !== originalPdfProcess) {
-      formData.append("pdf_process", pdfProcess); // Carga el pdf
-    } else {
-      formData.append("pdf_process", originalPdfProcess); // Mantiene el pdf original
+    if (pdfProcess !== originalPdfProcess) {
+      if (pdfProcess === null) {
+        await handleUploadPdf("pdf_process", ""); // No hace nada
+      } else if (pdfProcess === undefined) {
+        await handleUploadPdf("pdf_process", undefined); // Borra el pdf
+      } else {
+        await handleUploadPdf("pdf_process", pdfProcess); // Carga el pdf
+      }
     }
 
-    if (pdfApproved === null) {
-      formData.append("pdf_approved", "null"); // No hace nada
-    } else if (pdfApproved === undefined) {
-      formData.append("pdf_approved", undefined); // Borra el pdf
-    } else if (pdfApproved !== originalPdfApproved) {
-      formData.append("pdf_approved", pdfApproved); // Carga el pdf
-    } else {
-      formData.append("pdf_approved", originalPdfApproved); // Mantiene el pdf original
+    if (pdfApproved !== originalPdfApproved) {
+      if (pdfApproved === null) {
+        await handleUploadPdf("pdf_approved", ""); // No hace nada
+      } else if (pdfApproved === undefined) {
+        await handleUploadPdf("pdf_approved", undefined); // Borra el pdf
+      } else {
+        await handleUploadPdf("pdf_approved", pdfApproved); // Carga el pdf
+      }
     }
 
-    selectedItems.forEach((item, index) => {
-      formData.append(`modifies[${index}]`, item.id);
-    });
+    // Crear el payload con solo los valores modificados
+    const payload = {
+      type: type !== originalType ? type : undefined,
+      author_type: typeAuthor !== originalTypeAuthor ? typeAuthor : undefined,
+      state: status !== originalStatus ? status : undefined,
+      subject: subject !== originalSubject ? subject : undefined,
+      keywords: wordList.length === 0 ? [] : wordList,
+      authors:
+        JSON.stringify(authorsList) !== JSON.stringify(originalAuthorsList)
+          ? authorsList
+          : undefined,
+      modifies:
+        JSON.stringify(selectedItems) !== JSON.stringify(originalSelectedItems)
+          ? selectedItems.map((i) => i.id)
+          : undefined,
+      modified_by:
+        JSON.stringify(selectedItemsModifiedBy) !==
+        JSON.stringify(originalSelectedItemsModifiedBy)
+          ? selectedItemsModifiedBy.map((i) => i.id)
+          : undefined,
+    };
 
-    selectedItemsModifiedBy.forEach((item, index) => {
-      formData.append(`modified_by[${index}]`, item.id);
-    });
+    // Eliminar claves undefined para no enviar datos innecesarios
+    Object.keys(payload).forEach(
+      (key) => payload[key] === undefined && delete payload[key]
+    );
 
     try {
-      const response = await axios.post(
-        API.UPDATE_REGULATIONS + id, // URL del endpoint
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Token de autenticación
-            "Content-Type": "multipart/form-data", // Tipo de contenido
-          },
-        }
-      );
+      const response = await axios.post(API.UPDATE_REGULATIONS + id, payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       // Manejo de la respuesta
       if (response.status === 200) {
@@ -392,10 +446,9 @@ function ModificarNormativa() {
         console.log(response.data);
         setMessageType("success");
         window.scrollTo(0, 0); // Desplazar hacia arriba
-
-        /*         setTimeout(() => {
-          window.location.reload();
-        }, 1000); */
+        setTimeout(() => {
+          window.location.reload(); // Recargar la página
+        }, 1500);
       }
     } catch (error) {
       // Manejo de errores
@@ -580,39 +633,41 @@ function ModificarNormativa() {
               />
             </Form.Group>
 
-            {(type !== "correspondence" && type !== "dem-message") && (
+            {type !== "correspondence" && type !== "dem-message" && (
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
                   <Form.Control type="file" onChange={handlePdfProcessChange} />
 
-                  {pdfProcess && pdfProcess !== "undefined" && (
-                    <>
-                      <div className="container-pdf-modify">
-                        <b className="container-pdf-modify__b">
-                          PDF cargado actualmente:
-                        </b>
-                        <Button
-                          title="Ver PDF"
-                          className="container-pdf-modify__pdf"
-                          variant="danger"
-                          href={pdfProcess}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FaRegFilePdf style={{ color: "white" }} />
-                        </Button>
-                        <Button
-                          title="Eliminar PDF"
-                          className="container-pdf-modify__delete"
-                          variant="danger"
-                          onClick={() => setPdfProcess(undefined)}
-                        >
-                          <MdDelete size={20} />
-                        </Button>
-                      </div>
-                    </>
-                  )}
+                  {pdfProcess &&
+                    pdfProcess !== "undefined" &&
+                    pdfProcess !== "null" && (
+                      <>
+                        <div className="container-pdf-modify">
+                          <b className="container-pdf-modify__b">
+                            PDF cargado actualmente:
+                          </b>
+                          <Button
+                            title="Ver PDF"
+                            className="container-pdf-modify__pdf"
+                            variant="danger"
+                            href={pdfProcess}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <FaRegFilePdf style={{ color: "white" }} />
+                          </Button>
+                          <Button
+                            title="Eliminar PDF"
+                            className="container-pdf-modify__delete"
+                            variant="danger"
+                            onClick={() => setPdfProcess(undefined)}
+                          >
+                            <MdDelete size={20} />
+                          </Button>
+                        </div>
+                      </>
+                    )}
                 </Form.Group>
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
@@ -622,30 +677,32 @@ function ModificarNormativa() {
                     onChange={handlePdfApprovedChange}
                   />
 
-                  {pdfApproved && pdfApproved !== "undefined" && (
-                    <div className="container-pdf-modify">
-                      <b className="container-pdf-modify__b">
-                        PDF cargado actualmente:
-                      </b>
-                      <Button
-                        className="container-pdf-modify__pdf"
-                        variant="danger"
-                        href={pdfApproved}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaRegFilePdf style={{ color: "white" }} />
-                      </Button>
-                      <Button
-                        title="Eliminar PDF"
-                        className="container-pdf-modify__delete"
-                        variant="danger"
-                        onClick={() => setPdfApproved(undefined)}
-                      >
-                        <MdDelete size={20} />
-                      </Button>
-                    </div>
-                  )}
+                  {pdfApproved &&
+                    pdfApproved !== "undefined" &&
+                    pdfApproved !== "null" && (
+                      <div className="container-pdf-modify">
+                        <b className="container-pdf-modify__b">
+                          PDF cargado actualmente:
+                        </b>
+                        <Button
+                          className="container-pdf-modify__pdf"
+                          variant="danger"
+                          href={pdfApproved}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaRegFilePdf style={{ color: "white" }} />
+                        </Button>
+                        <Button
+                          title="Eliminar PDF"
+                          className="container-pdf-modify__delete"
+                          variant="danger"
+                          onClick={() => setPdfApproved(undefined)}
+                        >
+                          <MdDelete size={20} />
+                        </Button>
+                      </div>
+                    )}
                 </Form.Group>
 
                 {(type === "ordinance" ||
@@ -662,19 +719,20 @@ function ModificarNormativa() {
                           onChange={handleSearchChange}
                           className="mb-2"
                         />
-                        {searchResults.length > 0 && (
-                          <ul className="list-group position-absolute w-100">
-                            {searchResults.map((result, index) => (
-                              <li
-                                key={result.id}
-                                className="list-group-item"
-                                onClick={() => handleSelectItem(result)}
-                              >
-                                {result.subject}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
+                        {Array.isArray(searchResults) &&
+                          searchResults.length > 0 && (
+                            <ul className="list-group position-absolute w-100">
+                              {searchResults.map((result, index) => (
+                                <li
+                                  key={result.id}
+                                  className="list-group-item"
+                                  onClick={() => handleSelectItem(result)}
+                                >
+                                  {result.subject}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                       </div>
                       <div className="word-list">
                         {selectedItems.map((item, index) => (
@@ -709,21 +767,22 @@ function ModificarNormativa() {
                           onChange={handleSearchChangeModifiedBy}
                           className="mb-2"
                         />
-                        {searchResultsModifiedBy.length > 0 && (
-                          <ul className="list-group position-absolute w-100">
-                            {searchResultsModifiedBy.map((result, index) => (
-                              <li
-                                key={result.id}
-                                className="list-group-item"
-                                onClick={() =>
-                                  handleSelectItemModifiedBy(result)
-                                }
-                              >
-                                {result.subject}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
+                        {Array.isArray(searchResultsModifiedBy) &&
+                          searchResultsModifiedBy.length > 0 && (
+                            <ul className="list-group position-absolute w-100">
+                              {searchResultsModifiedBy.map((result, index) => (
+                                <li
+                                  key={result.id}
+                                  className="list-group-item"
+                                  onClick={() =>
+                                    handleSelectItemModifiedBy(result)
+                                  }
+                                >
+                                  {result.subject}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                       </div>
                       <div className="word-list">
                         {selectedItemsModifiedBy.map((item, index) => (
@@ -749,7 +808,7 @@ function ModificarNormativa() {
               </>
             )}
 
-            <div className= "btn-container-form">
+            <div className="btn-container-form">
               <Button className="btn-banner" type="submit">
                 Modificar Normativa
               </Button>

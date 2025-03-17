@@ -60,7 +60,7 @@ function Login() {
       const last_name = response.data.user.last_name;
       const email_verified = response.data.user.email_verified;
 
-      console.log(name);
+      /* console.log(name); */
 
       // Almacena el token en el almacenamiento local
       localStorage.setItem("authToken", token);
@@ -69,7 +69,7 @@ function Login() {
       localStorage.setItem("userLastName", last_name);
       localStorage.setItem("email_verified", email_verified);
 
-      console.log(localStorage.getItem("email_verified"));
+      /* console.log(localStorage.getItem("email_verified")); */
 
       if (response.status === 200) {
         switch (role) {

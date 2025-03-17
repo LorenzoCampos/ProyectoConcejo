@@ -383,7 +383,7 @@ function ListRegulations() {
                         {/* Solo se renderizan los botones de PDF si el tipo NO es "correspondence" */}
                         {(regulation.type !== "correspondence" && regulation.type !== "dem-message") && (
                           <div>
-                            {regulation.pdf_approved && regulation.pdf_approved !== "undefined" ? (
+                            {regulation.pdf_approved && regulation.pdf_approved !== "undefined" && regulation.pdf_approved !== "null" ? (
                               <a target="_blank" href={regulation.pdf_approved}>
                                 <Button
                                   variant="primary"
@@ -393,7 +393,7 @@ function ListRegulations() {
                                   <FaRegFilePdf style={{ color: "white" }} />
                                 </Button>
                               </a>
-                            ) : regulation.pdf_process && regulation.pdf_process !== "undefined" ? (
+                            ) : regulation.pdf_process && regulation.pdf_process !== "undefined" && regulation.pdf_process !== "null" ? (
                               <a target="_blank" href={regulation.pdf_process}>
                                 <Button
                                   variant="primary"

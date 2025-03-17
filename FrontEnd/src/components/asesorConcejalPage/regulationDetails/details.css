@@ -1,66 +1,64 @@
-.cont-details-modifications{
-    display: flex;
-    flex-wrap: wrap;
+.cont-details-modifications {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.container-details{
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
-    background-color:#f5f5f5;
-    border-radius: 0.5rem;
-    padding: 1.25rem;
-    overflow: hidden;
-    box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
-    width: 45vw;
-    height: 45vh;
+.container-details {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--form-background-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  width: 45vw;
 }
 
-.container-details p{
-    font-size: 1rem;
-    font-weight: bold;
+@media (max-width: 600px) {
+  .container-details {
+    box-shadow: none;
+    background-color: transparent;
+    width: 100vw;
+  }
 }
 
-.details-text-container{
-    display: flex;
-    gap: 10px;
+.container-details p {
+  font-size: 1rem;
+  font-weight: bold;
 }
 
+.details-text-container {
+  display: flex;
+  gap: 10px;
+}
 
 .cont-details-modifications {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.content-page-container {
+  flex: 1;
+  min-width: 300px; /* Para que los contenedores no se hagan demasiado pequeños */
+}
+
+/* Para pantallas pequeñas (sm) */
+@media (max-width: 576px) {
+  .cont-details-modifications {
+    flex-direction: column;
+  }
+
+  .container-details {
+    width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  .cont-details-modifications .keywords {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    margin-bottom: 10px;
   }
-  
-  .content-page-container {
-    flex: 1;
-    min-width: 300px; /* Para que los contenedores no se hagan demasiado pequeños */
+  .cont-details-modifications .keywords p {
+    margin-bottom: 0px;
   }
-  
-  /* Para pantallas pequeñas (sm) */
-  @media (max-width: 576px) {
-    .cont-details-modifications {
-      flex-direction: column;
-    }
-  
-    .container-details {
-        width: 100%;
-        height: 100%;
-        
-    }
-    .cont-details-modifications .keywords{
-       display: flex;
-       flex-direction: column;
-       margin-bottom: 10px;
-   
-    }
-    .cont-details-modifications .keywords p{
-       
-        margin-bottom: 0px;
-      
-     }
-    
-  }
-  
+}
