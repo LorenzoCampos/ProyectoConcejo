@@ -12,6 +12,7 @@ use App\Services\Regulations\Resolution;
 use App\Services\Regulations\Minute;
 use App\Services\Regulations\Decree;
 use App\Services\Regulations\DemMessage;
+use App\Models\User;
 
 class RegulationController extends Controller
 {
@@ -86,13 +87,14 @@ class RegulationController extends Controller
         return response()->json($regulations, 200);
     }
 
-    public function modificationsRegulations(Request $request): JsonResponse
+    public function relationsRegulations(Request $request): JsonResponse
     {
         // quiero que me debuelva los parametros enviados en la request
         // dd($request->all());
 
         $type = $request->input('type');
         $rule = $request->input('rule');
+        $id = $request->input('id');
         $search = $request->input('search');
 
         // Validar el tipo
@@ -105,7 +107,9 @@ class RegulationController extends Controller
             ], 422);
         }
 
-        $query = Regulation::query();
+        $query = Regulation::query()->when($id, function ($q) use ($id) {
+            $q->where('id', '!=', $id);
+        });
 
         if ($type === 'ordinance') {
             if ($rule === 'modified-by') {
@@ -218,7 +222,7 @@ class RegulationController extends Controller
         $regulation = Regulation::findOrFail($id);
 
         // Cargar las relaciones de la regulación
-        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify', 'modifications']);
+        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify', 'modifications.user' // Carga la relación 'user' dentro de 'modifications'
 
         // Responder con la regulación y sus relaciones
         return response()->json($regulation, 200);
