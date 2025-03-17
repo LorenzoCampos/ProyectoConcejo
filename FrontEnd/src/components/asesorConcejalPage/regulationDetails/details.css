@@ -3,12 +3,25 @@
   flex-wrap: wrap;
 }
 
+.container-modifications {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+
+  padding: 0.3rem;
+  max-height: 29rem;
+  overflow-y: auto;
+
+  border-radius: 8px;
+}
+
 .container-details {
+  gap: .8rem;
   display: flex;
   flex-direction: column;
   background-color: var(--form-background-color);
   border-radius: 0.5rem;
-  padding: 1.25rem;
+  padding: 1rem;
   overflow: hidden;
   box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
   width: 45vw;
@@ -25,6 +38,7 @@
 .container-details p {
   font-size: 1rem;
   font-weight: bold;
+  margin: 0;
 }
 
 .details-text-container {

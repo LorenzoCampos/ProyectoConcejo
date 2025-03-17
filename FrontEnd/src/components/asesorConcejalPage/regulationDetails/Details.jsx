@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Alert, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import API from "../../../config/apiConfig";
 import "./details.css";
@@ -119,6 +120,14 @@ function Details() {
         return "Palabra clave agregada";
       case "relation: keywords - removed":
         return "Palabra clave eliminada";
+      case "relation: modifies - added":
+        return "Norma a la que modifica agregada";
+      case "relation: modifies - removed":
+        return "Norma a la que modifica eliminada";
+      case "relation: modifiedBy - added":
+        return "Norma que la modifica agregada";
+      case "relation: modifiedBy - removed":
+        return "Norma que la modifica eliminada";
       case "author_type":
         return "Tipo de autor";
       case "authors":
@@ -155,9 +164,9 @@ function Details() {
     const isLink =
       typeof translatedCell === "string" && translatedCell.startsWith("https");
 
-      if (field === "state") {
-        return formatState(translatedCell);
-      }
+    if (field === "state") {
+      return formatState(translatedCell);
+    }
 
     return isLink ? (
       <a href={translatedCell} target="_blank" rel="noopener noreferrer">
@@ -177,6 +186,18 @@ function Details() {
 
   const handleShowModifications = () => {
     setShowModifications(!showModifications);
+  };
+
+  const redirectTo = (id) => {
+    const userRole = localStorage.getItem("role");
+    const roleRoutes = {
+      admin: `/admin/detalles/${id}`,
+      concejal: `/asesor-concejal/detalles/${id}`,
+      mesa: `/asesor-concejal/detalles/${id}`,
+      asesor: `/asesor-concejal/detalles/${id}`,
+    };
+
+    return roleRoutes[userRole] || "/";
   };
 
   return (
@@ -265,16 +286,22 @@ function Details() {
                   <div className="details-text-container">
                     <p>Norma/s a la que modifica: </p>
                     {regulations_modified && regulations_modified.length > 0
-                      ? regulations_modified.map((reg) => reg.number).join(", ")
+                      ? regulations_modified.map((reg) => (
+                          <Link to={redirectTo(reg.id)} key={reg.id}>
+                            {formatType(reg.type)} N°{reg.number}
+                          </Link>
+                        ))
                       : "No aplica"}
                   </div>
                   <div className="details-text-container">
                     <p>Norma/s que la modifican: </p>
                     {regulations_that_modify &&
                     regulations_that_modify.length > 0
-                      ? regulations_that_modify
-                          .map((reg) => reg.number)
-                          .join(", ")
+                      ? regulations_that_modify.map((reg) => (
+                          <Link to={redirectTo(reg.id)} key={reg.id}>
+                            {formatType(reg.type)} N°{reg.number}
+                          </Link>
+                        ))
                       : "No aplica"}
                   </div>
                 </>
@@ -285,50 +312,77 @@ function Details() {
           {showModifications && (
             <div className="content-page-container">
               <h2 className="internal-title">Modificaciones</h2>
-              {modifications
-                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                .map((mod, index) => (
-                  <div key={index} className="container-details">
-                    <div className="details-text-container">
-                      <p>Autor: </p>
-                      {mod.name}
-                    </div>
-                    <div className="details-text-container">
-                      <p>Fecha de modificación: </p>
-                      {new Date(mod.updated_at).toLocaleString()}
-                    </div>
-                    <div className="details-text-container">
-                      <p>Campo que se modificó: </p>
-                      {translateModField(mod.name_cell)}
-                    </div>
-                    {mod.name_cell.startsWith("relation") ? (
-                      <>
-                        {mod.name_cell.endsWith("added") ? (
+              <div className="container-modifications">
+                {modifications
+                  // filtrar por id
+                  .sort((a, b) => b.id - a.id)
+                  .map((mod, index) => (
+                    <div key={index} className="container-details">
+                      <div className="details-text-container">
+                        <p>Autor: </p>
+                        {mod.user.name + " " + mod.user.last_name}
+                      </div>
+                      <div className="details-text-container">
+                        <p>Fecha de modificación: </p>
+                        {new Date(mod.updated_at).toLocaleString()}
+                      </div>
+                      <div className="details-text-container">
+                        <p>Campo que se modificó: </p>
+                        {translateModField(mod.name_cell)}
+                      </div>
+                      {mod.name_cell.startsWith("relation") ? (
+                        <>
+                          {mod.name_cell.endsWith("added") ? (
+                            <div className="details-text-container">
+                              <p>Agregado: </p>
+                              {mod.name_cell.startsWith("relation: modifies") ||
+                              mod.name_cell.startsWith(
+                                "relation: modifiedBy"
+                              ) ? (
+                                <Link
+                                  to={redirectTo(mod.new_cell)}
+                                  key={mod.new_cell}
+                                >
+                                  Ir a la normativa
+                                </Link>
+                              ) : (
+                                <>{renderCell(mod.new_cell, mod.name_cell)}</>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="details-text-container">
+                              <p>Eliminado: </p>
+                              {mod.name_cell.startsWith("relation: modifies") ||
+                              mod.name_cell.startsWith(
+                                "relation: modifiedBy"
+                              ) ? (
+                                <Link
+                                  to={redirectTo(mod.old_cell)}
+                                  key={mod.old_cell}
+                                >
+                                  Ir a la normativa
+                                </Link>
+                              ) : (
+                                <>{renderCell(mod.old_cell, mod.name_cell)}</>
+                              )}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <>
                           <div className="details-text-container">
-                            <p>Agregado: </p>
-                            {renderCell(mod.new_cell, mod.name_cell)}
-                          </div>
-                        ) : (
-                          <div className="details-text-container">
-                            <p>Eliminado: </p>
+                            <p>Antes: </p>
                             {renderCell(mod.old_cell, mod.name_cell)}
                           </div>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <div className="details-text-container">
-                          <p>Antes: </p>
-                          {renderCell(mod.old_cell, mod.name_cell)}
-                        </div>
-                        <div className="details-text-container">
-                          <p>Después: </p>
-                          {renderCell(mod.new_cell, mod.name_cell)}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
+                          <div className="details-text-container">
+                            <p>Después: </p>
+                            {renderCell(mod.new_cell, mod.name_cell)}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </div>
           )}
         </div>
