@@ -222,7 +222,7 @@ class RegulationController extends Controller
         $regulation = Regulation::findOrFail($id);
 
         // Cargar las relaciones de la regulación
-        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify', 'modifications.user' // Carga la relación 'user' dentro de 'modifications'
+        $regulation->load(['keywords', 'authors', 'regulationsModified', 'regulationsThatModify', 'modifications.user']); // Carga la relación 'user' dentro de 'modifications'
 
         // Responder con la regulación y sus relaciones
         return response()->json($regulation, 200);
