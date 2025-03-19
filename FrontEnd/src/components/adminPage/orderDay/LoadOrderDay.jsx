@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
 import ToastContainer from "react-bootstrap/ToastContainer";
@@ -14,18 +15,51 @@ function LoadOrderDay() {
   const [endDate, setEndDate] = useState("");
   const [data, setData] = useState({});
   const [selectedItems, setSelectedItems] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
+  const [inputValues, setInputValues] = useState({});
+  const [lists, setLists] = useState({
+    5: [],
+    6: [],
+    7: [],
+    8: [],
+  });
+
+  const handleAddItem = (index) => {
+    if (inputValues[index]?.trim() !== "") {
+      setLists({
+        ...lists,
+        [index]: [...lists[index], inputValues[index]],
+      });
+      setInputValues({ ...inputValues, [index]: "" });
+    }
+  };
+
+  const handleRemoveItem = (index, itemIndex) => {
+    setLists({
+      ...lists,
+      [index]: lists[index].filter((_, i) => i !== itemIndex),
+    });
+  };
+
   const handleClearFilters = () => {
     setStartDate("");
     setEndDate("");
+    setLoading(true);
   };
 
+  useEffect(() => {
+    if (startDate === "" && endDate === "" && loading === true) {
+      handleSearch();
+    }
+  }, [startDate, endDate, loading]);
+
   const handleSearch = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(API.GET_ORDERS, {
         headers: {
@@ -57,9 +91,11 @@ function LoadOrderDay() {
         });
       }
     } catch (error) {
-      setToastMessage("Error al cargar");
+      setToastMessage("Error en la busqueda.");
       setShowErrorToast(true);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,14 +141,26 @@ function LoadOrderDay() {
         projects: Object.keys(selectedItems.projects).filter(
           (id) => selectedItems.projects[id]
         ),
+        5: lists[5],
+        6: lists[6],
+        7: lists[7],
+        8: lists[8],
       };
 
       const response = await axios.post(API.GET_ORDERS, selectedData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
+          // "responseType": "blob", // Importante para manejar archivos binarios
         },
       });
+
+      // Crear una URL para el archivo PDF
+      // const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      // const pdfUrl = URL.createObjectURL(pdfBlob);
+  
+      // Abrir el PDF en una nueva pestaña
+      // window.open(pdfUrl, "_blank");
 
       if (response.status === 201) {
         setToastMessage("Orden del día cargada exitosamente.");
@@ -164,127 +212,247 @@ function LoadOrderDay() {
             </Button>
           </Form.Group>
         </Form>
-        {data.correspondence?.length > 0 ||
-        data.dem_message?.length > 0 ||
-        data.projects?.length > 0 ? (
-          <>
-            {data.correspondence && data.correspondence.length > 0 ? (
+
+        <div className="page-results-cont">
+          <div className="page-results">
+            {loading ? (
               <>
-                <h3>Correspondencias recibidas:</h3>
-                <Table striped bordered hover>
-                  <tbody>
-                    {data.correspondence.map((item) => (
-                      <tr key={item.id}>
-                        <td>
-                          {item.authors.map((author) => author.name).join(", ")}
-                          {": "}
-                          {item.subject}
-                          {". "}
-                          (Cargo N° {item.number})
-                        </td>
-                        <td className="checkbox-cell">
-                          <input
-                            type="checkbox"
-                            className="custom-checkbox"
-                            checked={
-                              selectedItems.correspondence[item.id] || false
-                            }
-                            onChange={() =>
-                              handleCheckboxChange("correspondence", item.id)
-                            }
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                <div className="loading-circle">
+                  <Spinner animation="border" role="status" size="md">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
               </>
             ) : (
-              <p>No hay correspondencias</p>
-            )}
-
-            {data.dem_message && data.dem_message.length > 0 ? (
               <>
-                <h3>Mensajes del DEM:</h3>
-                <Table striped bordered hover>
-                  <tbody>
-                    {data.dem_message.map((item) => (
-                      <tr key={item.id}>
-                        <td>
-                          {item.subject}
-                          {". "}
-                          (Cargo N° {item.number})
-                        </td>
-                        <td className="checkbox-cell">
-                          <input
-                            className="custom-checkbox"
-                            type="checkbox"
-                            checked={
-                              selectedItems.dem_message[item.id] || false
-                            }
-                            onChange={() =>
-                              handleCheckboxChange("dem_message", item.id)
-                            }
-                          />
-                        </td>
-                      </tr>
+                <Form className="manual-data">
+                  <Form.Group className="manual-data__item">
+                    <h5>SESIÓN ORDINARIA:</h5>
+                    <Form.Control
+                      type="date"
+                      placeholder="Ingrese la sesión ordinaria"
+                      date_format="dd/mm/yyyy"
+                      // name="date"
+                    />
+                  </Form.Group>
+                  <Form.Group className="manual-data__item">
+                    <h5>1. Aprobacion del acta anterior: N° </h5>
+                    <Form.Control
+                      type="text"
+                      placeholder="Ingrese el número del acta anterior"
+                      // name="acta"
+                    />
+                  </Form.Group>
+                </Form>
+
+                {data.correspondence?.length > 0 ||
+                data.dem_message?.length > 0 ||
+                data.projects?.length > 0 ? (
+                  <>
+                    {data.correspondence && data.correspondence.length > 0 ? (
+                      <>
+                        <h5 className="h5-underline">
+                          2. Correspondencias recibidas:
+                        </h5>
+                        <Table striped bordered hover>
+                          <tbody>
+                            {data.correspondence.map((item) => (
+                              <tr key={item.id}>
+                                <td>
+                                  {item.authors
+                                    .map((author) => author.name)
+                                    .join(", ")}
+                                  {": "}
+                                  {item.subject}
+                                  {". "}
+                                  (Cargo N° {item.number})
+                                </td>
+                                <td className="checkbox-cell">
+                                  <input
+                                    type="checkbox"
+                                    className="custom-checkbox"
+                                    checked={
+                                      selectedItems.correspondence[item.id] ||
+                                      false
+                                    }
+                                    onChange={() =>
+                                      handleCheckboxChange(
+                                        "correspondence",
+                                        item.id
+                                      )
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </>
+                    ) : (
+                      <p>No hay correspondencias</p>
+                    )}
+
+                    {data.dem_message && data.dem_message.length > 0 ? (
+                      <>
+                        <h5 className="h5-underline">3. Mensajes del DEM:</h5>
+                        <Table striped bordered hover>
+                          <tbody>
+                            {data.dem_message.map((item) => (
+                              <tr key={item.id}>
+                                <td>
+                                  {item.subject}
+                                  {". "}
+                                  (Cargo N° {item.number})
+                                </td>
+                                <td className="checkbox-cell">
+                                  <input
+                                    className="custom-checkbox"
+                                    type="checkbox"
+                                    checked={
+                                      selectedItems.dem_message[item.id] ||
+                                      false
+                                    }
+                                    onChange={() =>
+                                      handleCheckboxChange(
+                                        "dem_message",
+                                        item.id
+                                      )
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </>
+                    ) : (
+                      <p>No hay Mensajes del DEM</p>
+                    )}
+
+                    {data.projects && data.projects.length > 0 ? (
+                      <>
+                        <h5 className="h5-underline">
+                          4. PROYECTOS DE LOS SEÑORES CONCEJALES:
+                        </h5>
+                        <Table striped bordered hover>
+                          <tbody>
+                            {data.projects.map((item) => (
+                              <tr key={item.id}>
+                                <td>
+                                  {translateType(item.type)}
+                                  {": "}
+                                  {item.subject}
+                                  {". "}
+                                  {item.authors
+                                    .map((author) => author.name)
+                                    .join(", ")}
+                                  {". "}
+                                  (Cargo N°{item.number})
+                                </td>
+                                <td className="checkbox-cell">
+                                  <input
+                                    type="checkbox"
+                                    className="custom-checkbox"
+                                    checked={
+                                      selectedItems.projects[item.id] || false
+                                    }
+                                    onChange={() =>
+                                      handleCheckboxChange("projects", item.id)
+                                    }
+                                  />
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </>
+                    ) : (
+                      <p>No hay proyectos de los señores concejales</p>
+                    )}
+
+                    {[5, 6, 7, 8].map((index) => (
+                      <>
+                        <Form.Group key={index}>
+                            {index === 5 ? (
+                              <h5 className="h5_underline">
+                                5. DESPACHO DE LA COMISIÓN DE GOBIERNO:
+                              </h5>
+                            ) : null}
+                            {index === 6 ? (
+                              <h5 className="h5_underline">
+                                6. DESPACHO DE LA COMISIÓN DE HACIENDA:
+                              </h5>
+                            ) : null}
+                            {index === 7 ? (
+                              <h5 className="h5_underline">
+                                7. DESPACHO DE LA COMISIÓN DE OBRAS PÚBLICAS:
+                              </h5>
+                            ) : null}
+                            {index === 8 ? (
+                              <h5 className="h5_underline">
+                                8. DESPACHO DE LA COMISIÓN DE HIGIENE:
+                              </h5>
+                            ) : null}
+                          <div className="cont-lista-despachos">
+                            <div className="lista-despacho">
+                              <Form.Control
+                                type="text"
+                                placeholder=" Detallar despacho..."
+                                value={inputValues[index] || ""}
+                                onChange={(e) =>
+                                  setInputValues({
+                                    ...inputValues,
+                                    [index]: e.target.value,
+                                  })
+                                }
+                              />
+                              <Button
+                                variant="primary"
+                                onClick={() => handleAddItem(index)}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                          <ListGroup className="mt-3">
+                            {lists[index].map((item, i) => (
+                              <ListGroup.Item key={i} className="lista-item">
+                                {item}
+                                <Button
+                                  className="lista-item-button"
+                                  variant="light"
+                                  size="sm"
+                                  onClick={() => handleRemoveItem(index, i)}
+                                >
+                                  ❌
+                                </Button>
+                              </ListGroup.Item>
+                            ))}
+                          </ListGroup>
+                        </Form.Group>
+                      </>
                     ))}
-                  </tbody>
-                </Table>
+                      <div className="cont-button-orden-dia">
+                        <Form onSubmit={handleSubmit}>
+                          <Button variant="primary" type="submit">
+                            Cargar orden del día
+                          </Button>
+                        </Form>
+                      </div>
+                  </>
+                ) : (
+                  <>
+                    <p>No hay datos disponibles.</p>
+                    <Spinner animation="border" role="status" size="md">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  </>
+                )}
               </>
-            ) : (
-              <p>No hay Mensajes del DEM</p>
             )}
-
-            {data.projects && data.projects.length > 0 ? (
-              <>
-                <h3>Proyectos de los señores concejales:</h3>
-                <Table striped bordered hover>
-                  <tbody>
-                    {data.projects.map((item) => (
-                      <tr key={item.id}>
-                        <td>
-                          {translateType(item.type)}
-                          {": "}
-                          {item.subject}
-                          {". "}
-                          {item.authors.map((author) => author.name).join(", ")}
-                          {". "}
-                          (Cargo N°{item.number})
-                        </td>
-                        <td className="checkbox-cell">
-                          <input
-                            type="checkbox"
-                            className="custom-checkbox"
-                            checked={selectedItems.projects[item.id] || false}
-                            onChange={() =>
-                              handleCheckboxChange("projects", item.id)
-                            }
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </>
-            ) : (
-              <p>No hay proyectos de los señores concejales</p>
-            )}
-
-            <Form onSubmit={handleSubmit}>
-              <Button variant="primary" type="submit">
-                Cargar orden del día
-              </Button>
-            </Form>
-          </>
-        ) : (
-          <>
-            <Spinner animation="border" role="status" size="md">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </>
-        )}
-
+          
+          </div>
+        </div>
         <ToastContainer position="top-end" className="p-3">
           <Toast
             bg="success"
