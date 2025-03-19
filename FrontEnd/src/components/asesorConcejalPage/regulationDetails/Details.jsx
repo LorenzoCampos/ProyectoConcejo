@@ -243,13 +243,13 @@ function Details() {
                 <p>Estado: </p>
                 {formatState(state)}
               </div>
-              <div className="details-text-container keywords">
+              <div className="details-text-container keywords stacked-field">
                 <p>Palabras claves: </p>
                 {keywords && keywords.length > 0
                   ? keywords.map((k) => k.word).join(" - ")
                   : "Sin palabras claves"}
               </div>
-              <div className="details-text-container">
+              <div className="details-text-container stacked-field">
                 <p>Tema: </p>
                 {subject || "Sin Asunto"}
               </div>
@@ -257,7 +257,7 @@ function Details() {
                 <>
                   <div className="details-text-container">
                     <p>PDF de la normativa en proceso: </p>
-                    {pdf_process ? (
+                    {pdf_process && pdf_process !== "undefined" ? (
                       <a
                         href={pdf_process}
                         target="_blank"
@@ -271,7 +271,7 @@ function Details() {
                   </div>
                   <div className="details-text-container">
                     <p>PDF de la normativa aprobada: </p>
-                    {pdf_approved ? (
+                    {pdf_approved && pdf_approved !== "undefined" ? (
                       <a
                         href={pdf_approved}
                         target="_blank"
@@ -283,7 +283,7 @@ function Details() {
                       "No disponible"
                     )}
                   </div>
-                  <div className="details-text-container">
+                  <div className="details-text-container stacked-field">
                     <p>Norma/s a la que modifica: </p>
                     {regulations_modified && regulations_modified.length > 0
                       ? regulations_modified.map((reg) => (
@@ -293,7 +293,7 @@ function Details() {
                         ))
                       : "No aplica"}
                   </div>
-                  <div className="details-text-container">
+                  <div className="details-text-container stacked-field">
                     <p>Norma/s que la modifican: </p>
                     {regulations_that_modify &&
                     regulations_that_modify.length > 0

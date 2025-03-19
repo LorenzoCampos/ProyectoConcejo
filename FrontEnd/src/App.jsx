@@ -8,15 +8,17 @@ import ResetPassword from "./components/login/resetPassword/ResetPassword";
 import EmailVerified from "./components/pages/EmailVerified";
 import { AdminPage, AsesorConcejalPage, CMPage } from "./components";
 import SeeNew from "./components/news/SeeNew";
+import OrdenesDelDia from "./components/pages/OrdenesDelDia";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-
+          {/* Publico */}
           <Route path="/" element={<Home />} />
           <Route path="/normativas" element={<Normativas />} />
+          <Route path="/ver-orden-dia" element={<OrdenesDelDia />} />
           <Route path="/login" element={<Access />} />
           <Route path="/verified/:status" element={<EmailVerified />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

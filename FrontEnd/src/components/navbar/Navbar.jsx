@@ -66,6 +66,7 @@ function NavBar(onHomeClick) {
             <Nav className="links">
               <Nav.Link as={Link} to="/" className='link-nav' onClick={onHomeClick}>Home</Nav.Link>
               <Nav.Link as={Link} to="/normativas" className='link-nav'>Normativas</Nav.Link>
+              <Nav.Link as={Link} to="/ver-orden-dia" className='link-nav'>Orden del Día</Nav.Link>
               {isAuthenticated ? (
                 <>
                   {role === "admin" && <Nav.Link as={Link} to="/admin" className='link-nav'>Admin Panel</Nav.Link>}

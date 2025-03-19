@@ -4,7 +4,7 @@
 const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
 // Local
-//const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
+// const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
 
 const API = {
   // Profile
@@ -34,6 +34,10 @@ const API = {
   LIST_USERS: `${URL}/users/non-admin`,
   CREATE_USERS: `${URL}/register`,
   UPDATE_ROLE: `${URL}/users/userId/role`,
+
+  GET_ORDERS: `${URL}/regulations/order-day`, // get
+  DELETE_ORDER_DAY: `${URL}/regulations/order-day/`, // delete
+  CREATE_ORDER_DAY: `${URL}/regulations/order-day/`, // post
 
   //CM
   // Banners
