@@ -1,7 +1,7 @@
 // apiConfig.js
 
-// Servidor Local (prueba)
-const URL = "http://127.0.0.1";
+// Servidor Local APACHE
+const URL = "http://127.0.0.1"; //hosting local
 
 // Servidor
 // const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
