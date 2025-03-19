@@ -7,7 +7,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import API from "../../../config/apiConfig";
-import "./OrderDay.css";
+import "./orderDay.css";
 
 function LoadOrderDay() {
   const [startDate, setStartDate] = useState("");
