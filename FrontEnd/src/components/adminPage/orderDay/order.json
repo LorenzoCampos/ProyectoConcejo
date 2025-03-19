@@ -1,0 +1,298 @@
+{
+    "correspondence": [
+        {
+            "id": 15,
+            "type": "correspondence",
+            "number": 1,
+            "state": "process",
+            "subject": "Tema de una correspondencia particular",
+            "author_type": "particular",
+            "pdf_process": null,
+            "pdf_approved": null,
+            "fk_user_creator": 1,
+            "created_at": "2025-03-18T20:46:26.000000Z",
+            "updated_at": "2025-03-18T20:46:26.000000Z",
+            "authors": [
+                {
+                    "id": 98,
+                    "fk_regulation": 15,
+                    "type": "particular",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-18T20:46:26.000000Z",
+                    "updated_at": "2025-03-18T20:46:26.000000Z"
+                }
+            ]
+        }
+    ],
+    "dem-message": [
+        {
+            "id": 10,
+            "type": "dem-message",
+            "number": 1,
+            "state": "process",
+            "subject": "Mensaje N° 135/8: Proyecto de decreto para probar se el DEM anda bien",
+            "author_type": "DEM",
+            "pdf_process": null,
+            "pdf_approved": null,
+            "fk_user_creator": 1,
+            "created_at": "2025-03-13T23:40:24.000000Z",
+            "updated_at": "2025-03-13T23:40:24.000000Z"
+        }
+    ],
+    "projects": [
+        {
+            "id": 2,
+            "type": "declaration",
+            "number": 1,
+            "state": "process",
+            "subject": "Declaracion",
+            "author_type": "concejal",
+            "pdf_process": null,
+            "pdf_approved": null,
+            "fk_user_creator": 3,
+            "created_at": "2025-03-10T20:29:20.000000Z",
+            "updated_at": "2025-03-12T19:35:08.000000Z",
+            "authors": [
+                {
+                    "id": 2,
+                    "fk_regulation": 2,
+                    "type": "concejal",
+                    "name": "Tonelli",
+                    "created_at": "2025-03-10T20:29:20.000000Z",
+                    "updated_at": "2025-03-10T20:29:20.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "type": "resolution",
+            "number": 1,
+            "state": "approved",
+            "subject": "Resolucion",
+            "author_type": "concejal",
+            "pdf_process": null,
+            "pdf_approved": "C:\\xampp\\tmp\\php2A4.tmp",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-10T20:31:07.000000Z",
+            "updated_at": "2025-03-13T21:57:16.000000Z",
+            "authors": [
+                {
+                    "id": 38,
+                    "fk_regulation": 3,
+                    "type": "concejal",
+                    "name": "Pullaro",
+                    "created_at": "2025-03-13T21:57:16.000000Z",
+                    "updated_at": "2025-03-13T21:57:16.000000Z"
+                },
+                {
+                    "id": 39,
+                    "fk_regulation": 3,
+                    "type": "concejal",
+                    "name": "Ernesto Tonelli",
+                    "created_at": "2025-03-13T21:57:16.000000Z",
+                    "updated_at": "2025-03-13T21:57:16.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "type": "decree",
+            "number": 1,
+            "state": "approved",
+            "subject": "ffffffffffffffffffff",
+            "author_type": "concejal",
+            "pdf_process": "undefined",
+            "pdf_approved": "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/pdfs/AelX5RxKBdqMHiaXzg2oUWEiYuXM2FJ92iMuCrke.pdf",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-10T20:39:12.000000Z",
+            "updated_at": "2025-03-13T23:34:02.000000Z",
+            "authors": [
+                {
+                    "id": 72,
+                    "fk_regulation": 4,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-13T23:34:02.000000Z",
+                    "updated_at": "2025-03-13T23:34:02.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "decree",
+            "number": 2,
+            "state": "process",
+            "subject": "Decreto jajajajaja",
+            "author_type": "concejal",
+            "pdf_process": "undefined",
+            "pdf_approved": "undefined",
+            "fk_user_creator": 3,
+            "created_at": "2025-03-10T20:44:49.000000Z",
+            "updated_at": "2025-03-13T23:37:38.000000Z",
+            "authors": [
+                {
+                    "id": 73,
+                    "fk_regulation": 5,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-13T23:37:38.000000Z",
+                    "updated_at": "2025-03-13T23:37:38.000000Z"
+                },
+                {
+                    "id": 74,
+                    "fk_regulation": 5,
+                    "type": "concejal",
+                    "name": "ddddddddddddddddddd",
+                    "created_at": "2025-03-13T23:37:38.000000Z",
+                    "updated_at": "2025-03-13T23:37:38.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "type": "decree",
+            "number": 3,
+            "state": "approved",
+            "subject": "Decreto",
+            "author_type": "concejal",
+            "pdf_process": "C:\\xampp\\tmp\\phpD507.tmp",
+            "pdf_approved": "C:\\xampp\\tmp\\php4400.tmp",
+            "fk_user_creator": 3,
+            "created_at": "2025-03-10T20:45:48.000000Z",
+            "updated_at": "2025-03-13T22:23:45.000000Z",
+            "authors": [
+                {
+                    "id": 46,
+                    "fk_regulation": 6,
+                    "type": "concejal",
+                    "name": "Julian Cannata",
+                    "created_at": "2025-03-13T22:23:45.000000Z",
+                    "updated_at": "2025-03-13T22:23:45.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "type": "decree",
+            "number": 4,
+            "state": "process",
+            "subject": "decreto",
+            "author_type": "concejal",
+            "pdf_process": "null",
+            "pdf_approved": "undefined",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-10T20:47:29.000000Z",
+            "updated_at": "2025-03-16T16:01:46.000000Z",
+            "authors": [
+                {
+                    "id": 88,
+                    "fk_regulation": 7,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-16T16:04:05.000000Z",
+                    "updated_at": "2025-03-16T16:04:05.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "type": "ordinance",
+            "number": 2,
+            "state": "process",
+            "subject": "Tema de prueba",
+            "author_type": "concejal",
+            "pdf_process": null,
+            "pdf_approved": "C:\\xampp\\tmp\\php59CF.tmp",
+            "fk_user_creator": 10,
+            "created_at": "2025-03-12T21:19:57.000000Z",
+            "updated_at": "2025-03-13T22:02:53.000000Z",
+            "authors": [
+                {
+                    "id": 40,
+                    "fk_regulation": 8,
+                    "type": "concejal",
+                    "name": "Concejal2 Concejo",
+                    "created_at": "2025-03-13T22:02:53.000000Z",
+                    "updated_at": "2025-03-13T22:02:53.000000Z"
+                },
+                {
+                    "id": 41,
+                    "fk_regulation": 8,
+                    "type": "concejal",
+                    "name": "Lorenzo",
+                    "created_at": "2025-03-13T22:02:53.000000Z",
+                    "updated_at": "2025-03-13T22:02:53.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "type": "ordinance",
+            "number": 3,
+            "state": "process",
+            "subject": "Tema de prueba para un pdf aprobado en el filtrado publico",
+            "author_type": "concejal",
+            "pdf_process": "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/pdfs/NFRf2EOzokaqACIABZ56mPKQnjYOImhpMNhh03nq.pdf",
+            "pdf_approved": "undefined",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-13T21:48:02.000000Z",
+            "updated_at": "2025-03-16T13:57:23.000000Z",
+            "authors": [
+                {
+                    "id": 81,
+                    "fk_regulation": 9,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-16T13:57:28.000000Z",
+                    "updated_at": "2025-03-16T13:57:28.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "type": "ordinance",
+            "number": 6,
+            "state": "process",
+            "subject": "ddddddddddddddddddddddd",
+            "author_type": "concejal",
+            "pdf_process": "undefined",
+            "pdf_approved": "undefined",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-16T16:07:41.000000Z",
+            "updated_at": "2025-03-17T18:49:47.000000Z",
+            "authors": [
+                {
+                    "id": 95,
+                    "fk_regulation": 13,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-17T00:04:58.000000Z",
+                    "updated_at": "2025-03-17T00:04:58.000000Z"
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "type": "ordinance",
+            "number": 7,
+            "state": "process",
+            "subject": "Tema de ordenanza de prueba de los log de las modificaciones",
+            "author_type": "concejal",
+            "pdf_process": "undefined",
+            "pdf_approved": "undefined",
+            "fk_user_creator": 1,
+            "created_at": "2025-03-17T20:43:26.000000Z",
+            "updated_at": "2025-03-18T18:09:26.000000Z",
+            "authors": [
+                {
+                    "id": 97,
+                    "fk_regulation": 14,
+                    "type": "concejal",
+                    "name": "Lorenzo Campos",
+                    "created_at": "2025-03-17T20:45:44.000000Z",
+                    "updated_at": "2025-03-17T20:45:44.000000Z"
+                }
+            ]
+        }
+    ]
+}

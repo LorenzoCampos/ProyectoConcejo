@@ -8,6 +8,7 @@ import Profile from "../profile/Profile";
 
 import VerNormativas from "../asesorConcejalPage/listRegulations/ListRegulations";
 import Details from "../asesorConcejalPage/regulationDetails/Details";
+import LoadOrderDay from "../adminPage/orderDay/LoadOrderDay";
 
 function AdminPage() {
   return (
@@ -15,6 +16,7 @@ function AdminPage() {
       <NavbarForRole />
       <Routes>
         <Route path="" element={<VerNormativas />} />
+        <Route path="cargar-orden-dia" element={<LoadOrderDay />} />
         <Route path="cargar-normativa" element={<LoadRegulation />} />
         <Route path="modificar-normativa/:id" element={<ModificarNormativa />} />
         <Route path="detalles/:id" element={<Details />} />

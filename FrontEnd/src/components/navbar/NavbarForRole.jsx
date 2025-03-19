@@ -163,6 +163,14 @@ function NavbarForRole() {
                         >
                           Gestionar Usuarios
                         </Nav.Link>
+                        <Nav.Link
+                          as={Link}
+                          to={`${getBasePath(userRole)}/cargar-orden-dia`}
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                        >
+                          Generar Orden del Dia
+                        </Nav.Link>
                       </>
                     )}
 

@@ -1,0 +1,45 @@
+/* Estilos generales del checkbox */
+.checkbox-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.custom-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Efecto cuando está marcado */
+.custom-checkbox:checked {
+  background-color: #007bff;
+  border-color: #0056b3;
+}
+
+/* Icono de check personalizado */
+.custom-checkbox:checked::after {
+  content: "✔";
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Efecto hover */
+.custom-checkbox:hover {
+  border-color: #0056b3;
+}
+
+/* Efecto cuando está enfocado (navegación con teclado) */
+.custom-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
