@@ -11,6 +11,8 @@ Route::prefix('v1')->group(function () {
         return 'Viva La Libertad Carajo';
     });
 
+    Route::middleware(['auth:sanctum', 'verified'])->get('regulations/order-day', [RegulationController::class, 'orderDay']);
+
     // Ruta pública para regulaciones publicadas
     Route::get('regulations/published', [RegulationController::class, 'indexPublished']);
 
@@ -32,6 +34,8 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['permission:ver normativa'])->get('regulations/{id}', [RegulationController::class, 'show']);
         Route::middleware(['permission:crear normativa', 'verified'])->post('regulations', [RegulationController::class, 'store']);
         Route::middleware(['permission:modificar normativa', 'verified'])->post('regulations/{id}', [RegulationController::class, 'update']);
+
+        Route::middleware(['permission:crear orden del día', 'verified'])->post('regulations/order-day', [RegulationController::class, 'storeOrderDay']);
     });
 
     Route::middleware(['auth:sanctum', 'role:cm'])->group(function () {
