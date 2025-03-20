@@ -192,6 +192,14 @@ function NavbarForRole() {
                         >
                           Gestionar Noticias
                         </Nav.Link>
+                        <Nav.Link
+                          as={Link}
+                          to={`${getBasePath(userRole)}/cargar-contactos`}
+                          className="link-nav"
+                          style={{ fontSize: "1rem" }}
+                        >
+                          Cargar Contactos
+                        </Nav.Link>
                       </>
                     )}
                   </div>
