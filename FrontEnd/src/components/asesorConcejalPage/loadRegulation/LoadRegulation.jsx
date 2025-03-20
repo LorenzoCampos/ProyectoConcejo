@@ -536,13 +536,17 @@ function LoadRegulation() {
               <>
                 <Form.Group controlId="pdfProcess" className="mb-3">
                   <Form.Label>PDF de la normativa en proceso:</Form.Label>
-                  <Form.Control type="file" onChange={handlePdfProcessChange} />
+                  <Form.Control
+                    type="file"
+                    accept=".pdf"
+                    onChange={handlePdfProcessChange} />
                 </Form.Group>
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
                   <Form.Label>PDF de la normativa aprobada:</Form.Label>
                   <Form.Control
                     type="file"
+                    accept=".pdf"
                     onChange={handlePdfApprovedChange}
                   />
                 </Form.Group>
