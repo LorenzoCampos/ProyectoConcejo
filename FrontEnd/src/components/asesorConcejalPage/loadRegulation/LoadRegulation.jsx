@@ -25,7 +25,9 @@ function LoadRegulation() {
   const [state, setState] = useState("process");
 
   const [pdfProcess, setPdfProcess] = useState(null);
+  const [errorProcess, setErrorProcess] = useState("");
   const [pdfApproved, setPdfApproved] = useState(null);
+  const [errorApproved, setErrorApproved] = useState("");
 
   const [type, setType] = useState("");
   const [typeAuthor, setTypeAuthor] = useState("");
@@ -119,11 +121,33 @@ function LoadRegulation() {
   };
 
   const handlePdfProcessChange = (e) => {
-    setPdfProcess(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      if (selectedFile.type === "application/pdf") {
+        setPdfProcess(selectedFile);
+        setErrorProcess(""); // Borra el mensaje de error si el archivo es válido
+      } else {
+        setPdfProcess(null);
+        setErrorProcess("❌ Solo se permiten archivos PDF.");
+        e.target.value = ""; // Resetea el input
+      }
+    }
   };
 
   const handlePdfApprovedChange = (e) => {
-    setPdfApproved(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      if (selectedFile.type === "application/pdf") {
+        setPdfApproved(selectedFile);
+        setErrorApproved(""); // Borra el mensaje de error si el archivo es válido
+      } else {
+        setPdfApproved(null);
+        setErrorApproved("❌ Solo se permiten archivos PDF.");
+        e.target.value = ""; // Resetea el input
+      }
+    }
   };
 
   const handleTypeChange = (e) => {
@@ -382,7 +406,6 @@ function LoadRegulation() {
     } else if (type === "dem-message") {
       return (
         <>
-
           <option value="DEM">DEM</option>
         </>
       );
@@ -539,7 +562,10 @@ function LoadRegulation() {
                   <Form.Control
                     type="file"
                     accept=".pdf"
-                    onChange={handlePdfProcessChange} />
+                    onChange={handlePdfProcessChange}
+                  />
+                   {errorProcess && <p className="mt-2 text-danger">{errorProcess}</p>}
+                   {pdfProcess && <p className="mt-2 text-success">Archivo seleccionado: {pdfProcess.name}</p>}
                 </Form.Group>
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
@@ -549,6 +575,8 @@ function LoadRegulation() {
                     accept=".pdf"
                     onChange={handlePdfApprovedChange}
                   />
+                  {errorApproved && <p className="mt-2 text-danger">{errorApproved}</p>}
+                  {pdfApproved && <p className="mt-2 text-success">Archivo seleccionado: {pdfApproved.name}</p>}
                 </Form.Group>
 
                 {(type === "ordinance" ||
