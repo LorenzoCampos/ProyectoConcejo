@@ -12,76 +12,14 @@ use App\Services\Regulations\Resolution;
 use App\Services\Regulations\Minute;
 use App\Services\Regulations\Decree;
 use App\Services\Regulations\DemMessage;
+use Illuminate\Support\Facades\Validator;
+use Dompdf\Dompdf;
 
 class RegulationController extends Controller
 {
     private $validTypes = ['ordinance', 'correspondence', 'minute', 'declaration', 'resolution', 'decree', 'dem-message'];
 
     private $validTypesFormodifiesRefulations = ['ordinance', 'resolution', 'decree'];
-
-    public function orderDay(Request $request): JsonResponse
-    {
-        $from = $request->input('startDate'); // Fecha de inicio
-        $to = $request->input('endDate'); // Fecha de fin
-
-        // Filtrar normativas de tipo 'correspondence' con rango de fechas si están presentes
-        $correspondence = Regulation::where('type', 'correspondence')
-            ->when($from && $to, function ($query) use ($from, $to) {
-                $query->whereBetween('created_at', [$from, $to]);
-            })
-            ->when($from && !$to, function ($query) use ($from) {
-                $query->where('created_at', '>=', $from);
-            })
-            ->when(!$from && $to, function ($query) use ($to) {
-                $query->where('created_at', '<=', $to);
-            });
-
-        $orderCorrespondence = $correspondence->get();
-
-        $orderCorrespondence->load(['authors']);
-
-        // Filtrar normativas de tipo 'dem-message' con rango de fechas si están presentes
-        $demMessage = Regulation::where('type', 'dem-message')
-            ->when($from && $to, function ($query) use ($from, $to) {
-                $query->whereBetween('created_at', [$from, $to]);
-            })
-            ->when($from && !$to, function ($query) use ($from) {
-                $query->where('created_at', '>=', $from);
-            })
-            ->when(!$from && $to, function ($query) use ($to) {
-                $query->where('created_at', '<=', $to);
-            });
-
-        $orderDemMessage = $demMessage->get();
-
-        // Filtrar normativas de tipo 'concejal' con rango de fechas si están presentes
-        $project = Regulation::where('author_type', 'concejal')
-            ->when($from && $to, function ($query) use ($from, $to) {
-                $query->whereBetween('created_at', [$from, $to]);
-            })
-            ->when($from && !$to, function ($query) use ($from) {
-                $query->where('created_at', '>=', $from);
-            })
-            ->when(!$from && $to, function ($query) use ($to) {
-                $query->where('created_at', '<=', $to);
-            });
-
-        $orderProject = $project->get();
-
-        $orderProject->load(['authors']);
-
-        // Retornar la respuesta en formato JSON
-        return response()->json([
-            'correspondence' => $orderCorrespondence,
-            'dem_message' => $orderDemMessage,
-            'projects' => $orderProject,
-        ], 200);
-    }
-
-    public function storeOrderDay(Request $request): JsonResponse
-    {
-        return response()->json($request->all(), 201);
-    }
 
     public function indexPublished(Request $request): JsonResponse
     {
@@ -101,12 +39,13 @@ class RegulationController extends Controller
             $q->where('state', $state);
         });
 
+        // Excluir los tipos 'dem-message', 'correspondence' y 'minute'
+        $query->whereNotIn('type', ['dem-message', 'correspondence', 'minute']);
+
         // Aplicar filtros condicionalmente
         $query->when($type, function ($q) use ($type) {
             $q->where('type', $type);
         });
-
-
 
         $query->when($search, function ($q) use ($search) {
             $q->where(function ($q) use ($search) {
