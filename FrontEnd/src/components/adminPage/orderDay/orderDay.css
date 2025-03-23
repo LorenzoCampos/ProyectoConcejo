@@ -144,3 +144,7 @@
     white-space: wrap;
   }
 }
+
+.delete-pdf-btn {
+  background-color: red;
+}

@@ -14,6 +14,9 @@ function LoadOrderDay() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [data, setData] = useState({});
+  const [sessionDate, setSessionDate] = useState("");
+  const [actaNumber, setActaNumber] = useState("");
+
   const [selectedItems, setSelectedItems] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -132,6 +135,8 @@ function LoadOrderDay() {
     console.log("Selected Items: ", selectedItems);
     try {
       const selectedData = {
+        date: sessionDate,
+        acta: actaNumber,
         correspondence: Object.keys(selectedItems.correspondence).filter(
           (id) => selectedItems.correspondence[id]
         ),
@@ -141,30 +146,27 @@ function LoadOrderDay() {
         projects: Object.keys(selectedItems.projects).filter(
           (id) => selectedItems.projects[id]
         ),
-        5: lists[5],
-        6: lists[6],
-        7: lists[7],
-        8: lists[8],
+        comision_gobierno: lists[5],
+        comision_hacienda: lists[6],
+        comision_obras: lists[7],
+        comision_higiene: lists[8],
       };
 
       const response = await axios.post(API.GET_ORDERS, selectedData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           "Content-Type": "application/json",
-          // "responseType": "blob", // Importante para manejar archivos binarios
         },
       });
-
-      // Crear una URL para el archivo PDF
-      // const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-      // const pdfUrl = URL.createObjectURL(pdfBlob);
-  
-      // Abrir el PDF en una nueva pestaña
-      // window.open(pdfUrl, "_blank");
 
       if (response.status === 201) {
         setToastMessage("Orden del día cargada exitosamente.");
         setShowSuccessToast(true);
+        window.scrollTo(0, 0); // Desplazar hacia arriba
+        setTimeout(() => {
+          window.location.reload(); // Recargar la página
+        }, 1500);
+
         console.log("Respuesta: ", response.data);
       }
     } catch (error) {
@@ -230,8 +232,10 @@ function LoadOrderDay() {
                     <h5>SESIÓN ORDINARIA:</h5>
                     <Form.Control
                       type="date"
+                      value={sessionDate}
                       placeholder="Ingrese la sesión ordinaria"
                       date_format="dd/mm/yyyy"
+                      onChange={(e) => setSessionDate(e.target.value)}
                       // name="date"
                     />
                   </Form.Group>
@@ -239,7 +243,9 @@ function LoadOrderDay() {
                     <h5>1. Aprobacion del acta anterior: N° </h5>
                     <Form.Control
                       type="text"
+                      value={actaNumber}
                       placeholder="Ingrese el número del acta anterior"
+                      onChange={(e) => setActaNumber(e.target.value)}
                       // name="acta"
                     />
                   </Form.Group>
