@@ -2,8 +2,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Pagination from "react-bootstrap/Pagination";
 import Spinner from "react-bootstrap/Spinner";
-import { CiEdit } from "react-icons/ci";
-import { TbListDetails } from "react-icons/tb";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
@@ -26,7 +24,6 @@ function ListRegulations() {
   const [loading, setLoading] = useState(false);
 
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [showWarningToast, setShowWarningToast] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -34,8 +31,6 @@ function ListRegulations() {
   const [type, setType] = useState("");
   const [from, setFromDate] = useState("");
   const [to, setToDate] = useState("");
-  const [state, setState] = useState("");
-  const [author_type, setAuthorType] = useState("");
 
   const navigate = useNavigate();
 
@@ -272,16 +267,6 @@ function ListRegulations() {
             bg="success"
             onClose={() => setShowSuccessToast(false)}
             show={showSuccessToast}
-            delay={3000}
-            autohide
-          >
-            <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-          </Toast>
-
-          <Toast
-            bg="warning"
-            onClose={() => setShowWarningToast(false)}
-            show={showWarningToast}
             delay={3000}
             autohide
           >
