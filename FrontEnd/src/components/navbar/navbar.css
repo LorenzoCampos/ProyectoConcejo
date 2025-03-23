@@ -47,7 +47,7 @@ Nav .link-nav {
 }
 
 a.nav-link {
-  padding-left: 1rem;
+  padding: .5rem;
 }
 
 a.link-nav.nav-link {
@@ -92,6 +92,10 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
   .navbar-expand-sm .navbar-nav {
     align-items: center;
     background-color: #fff;
+  }
+  .offcanvas-sm {
+    /* max-width: 300px !important; */
+    width: 300px !important;
   }
 }
 

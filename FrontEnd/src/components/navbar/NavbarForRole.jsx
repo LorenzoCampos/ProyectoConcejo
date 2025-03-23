@@ -19,7 +19,7 @@ function NavbarForRole() {
   const [verifiedEmail, setVerifiedEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const [status, setStatus] = useState("");
@@ -52,6 +52,7 @@ function NavbarForRole() {
   }, []);
 
   const handleLinkClick = (path) => {
+    
     navigate(path);
     setShowOffcanvas(false);
   };
@@ -88,6 +89,8 @@ function NavbarForRole() {
     return rolePaths[userRole] || "/"; // Fallback a "/" si el rol no existe
   };
 
+  // onClick={() => handleLinkClick(`${getBasePath(userRole)}/cargar-normativa`)}
+
   return (
     <>
       <div className="nav-cont">
@@ -112,6 +115,7 @@ function NavbarForRole() {
               placement="end"
               show={showOffcanvas}
               onHide={() => setShowOffcanvas(false)}
+              className="offcanvas-sm"
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
@@ -125,7 +129,6 @@ function NavbarForRole() {
                   </div>
                 </Offcanvas.Title>
               </Offcanvas.Header>
-
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <div className="container-nav-link d-flex flex-column flex-sm-row">
@@ -137,6 +140,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -145,6 +149,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}/cargar-normativa`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -158,6 +163,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}/gestionar-usuarios`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -165,11 +171,12 @@ function NavbarForRole() {
                         </Nav.Link>
                         <Nav.Link
                           as={Link}
-                          to={`${getBasePath(userRole)}/cargar-orden-dia`}
+                          to={`/ver-orden-dia`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
-                          Generar Orden del Dia
+                          Gestionar Ordenes del Día
                         </Nav.Link>
                       </>
                     )}
@@ -179,6 +186,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -187,6 +195,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}/gestionar-noticias`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -195,6 +204,7 @@ function NavbarForRole() {
                         <Nav.Link
                           as={Link}
                           to={`${getBasePath(userRole)}/cargar-contactos`}
+                          onClick={() => setShowOffcanvas(false)}
                           className="link-nav"
                           style={{ fontSize: "1rem" }}
                         >
@@ -233,6 +243,7 @@ function NavbarForRole() {
                       <NavDropdown.Item
                         as={Link}
                         to={`${getBasePath(userRole)}/profile`}
+                        onClick={() => setShowOffcanvas(false)}
                       >
                         Ver Perfil
                       </NavDropdown.Item>
