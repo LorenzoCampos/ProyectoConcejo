@@ -139,6 +139,23 @@ function ListUsers() {
     }
   };
 
+  const handleTranslateRole = (role) => {
+    switch (role) {
+      case "asesor":
+        return "Asesor";
+      case "mesa":
+        return "Mesa de Entrada";
+      case "concejal":
+        return "Concejal";
+      case "cm":
+        return "CM";
+      case "user":
+        return "Usuario";
+      default:
+        return "Sin rol";
+    }
+  };
+
   // End Filtro de Users
 
   return (
@@ -187,10 +204,12 @@ function ListUsers() {
               {filteredData.map((user) => (
                 <tr key={user.id}>
                   <td data-title="Nombre">
-                    {(user.name ? user.name : "-") + " " + (user.last_name ? user.last_name : "-")}
+                    {(user.name ? user.name : "-") +
+                      " " +
+                      (user.last_name ? user.last_name : "-")}
                   </td>
                   <td data-title="Email">{user.email}</td>
-                  <td data-title="Rol">{user.role ? user.role : "Sin rol"}</td>
+                  <td data-title="Rol">{handleTranslateRole(user.role)}</td>
                   <td data-title="Cambiar rol">
                     <div className="accion-buttons ">
                       <div>
@@ -203,9 +222,7 @@ function ListUsers() {
                           >
                             <option value="">---Seleccionar un rol---</option>
                             <option value="asesor">Asesor</option>
-                            <option value="mesa">
-                              Mesa de Entrada
-                            </option>
+                            <option value="mesa">Mesa de Entrada</option>
                             <option value="concejal">Concejal</option>
                             <option value="cm">CM</option>
                             <option value="user">Usuario</option>
