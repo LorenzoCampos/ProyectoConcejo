@@ -23,9 +23,9 @@ return [
     // 'max_age' => 0,
     // 'supports_credentials' => true,
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Asegúrate de incluir todos los endpoints necesarios
+    'paths' => ['*'],  // Asegúrate de incluir todos los endpoints necesarios
     'allowed_methods' => ['*'], // Permite todos los métodos (GET, POST, PUT, DELETE, etc.)
-    'allowed_origins' => ['*'], // Permite el origen de tu frontend
+    'allowed_origins' => ['https://concejoarroyoseco.duckdns.org', 'https://4rkgr627-5173.brs.devtunnels.ms'], // Permite el origen de tu frontend
     'allowed_headers' => ['*'],  // Permite todos los encabezados
     'exposed_headers' => [],
     'max_age' => 0,
