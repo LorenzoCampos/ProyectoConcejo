@@ -32,14 +32,14 @@ class ContactCardController extends Controller
 
         if ($request->hasFile('image_left')) {
             $imagePath = $request->file('image_left')->store('images/contact', 'public');
-            // $endImageLeftPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
-            $endImageLeftPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
+            $endImageLeftPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
+            // $endImageLeftPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
         }
 
         if ($request->hasFile('image_right')) {
             $imagePath = $request->file('image_right')->store('images/contact', 'public');
-            // $endImageRightPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
-            $endImageRightPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
+            $endImageRightPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
+            // $endImageRightPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imagePath;
         }
 
         $ContactCard = ContactCard::create([
@@ -62,26 +62,26 @@ class ContactCardController extends Controller
 
         if ($request->hasFile('image_left')) {
             $currentLeftImage = $contactCard->image_left;
-            // $oldImageLeftPath = str_replace('https://api-concejoarroyoseco.duckdns.org/storage/', '', $currentLeftImage);
+            $oldImageLeftPath = str_replace('https://api-concejoarroyoseco.duckdns.org/storage/', '', $currentLeftImage);
 
-            $oldImageLeftPath = str_replace('https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $currentLeftImage);
+            // $oldImageLeftPath = str_replace('https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $currentLeftImage);
             Storage::disk('public')->delete($oldImageLeftPath);
 
             $imageLeftPath = $request->file('image_left')->store('images/contact', 'public');
-            // $endImageLeftPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
-            $endImageLeftPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imageLeftPath;
+            $endImageLeftPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' .$imageLeftPath;
+            // $endImageLeftPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imageLeftPath;
         }
 
         if ($request->hasFile('image_right')) {
             $currentRightImage = $contactCard->image_right;
-            // $oldImageRightPath = str_replace('https://api-concejoarroyoseco.duckdns.org/storage/', '', $currentRightImage);
+            $oldImageRightPath = str_replace('https://api-concejoarroyoseco.duckdns.org/storage/', '', $currentRightImage);
 
-            $oldImageRightPath = str_replace('https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $currentRightImage);
+            // $oldImageRightPath = str_replace('https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/', '', $currentRightImage);
             Storage::disk('public')->delete($oldImageRightPath);
 
             $imageRightPath = $request->file('image_right')->store('images/contact', 'public');
-            // $endImageRightPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imagePath;
-            $endImageRightPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imageRightPath;
+            $endImageRightPath = 'https://api-concejoarroyoseco.duckdns.org/storage/' . $imageRightPath;
+            // $endImageRightPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/' . $imageRightPath;
         }
 
         $newContactCard = [];

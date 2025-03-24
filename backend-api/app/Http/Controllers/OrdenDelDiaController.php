@@ -193,8 +193,8 @@ class OrdenDelDiaController extends Controller
         Storage::disk('public')->put($filePath, $pdf->output());
 
         // Generar la URL personalizada del archivo
-        $endPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/day_orders/' . $fileName;
-        // $endPath = 'https://api-concejoarroyoseco.duckdns.org/storage/day_orders/' . $fileName;
+        // $endPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/day_orders/' . $fileName;
+        $endPath = 'https://api-concejoarroyoseco.duckdns.org/storage/day_orders/' . $fileName;
 
         // Guardar en la base de datos
         $datOrder = DayOrder::create(['pdf_path' => $endPath, 'date_creation' => $date]);
