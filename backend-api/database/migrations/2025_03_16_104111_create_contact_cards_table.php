@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('contact_cards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image');
+            $table->string('image_left');
+            $table->string('image_right');
             $table->timestamps();
         });
     }
