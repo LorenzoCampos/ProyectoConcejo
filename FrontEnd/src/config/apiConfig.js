@@ -1,7 +1,10 @@
 // apiConfig.js
 
+// Servidor Local APACHE
+ const URL = "http://127.0.0.1"; //hosting local
+
 // Servidor
-const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
+// const URL = "https://api-concejoarroyoseco.duckdns.org/api/v1";
 
 // Local
 // const URL = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/api/v1";
@@ -26,6 +29,9 @@ const API = {
   // News Public
   NEWS_PUBLIC: `${URL}/news/published`,
 
+  // Orders Public
+  ORDERS_PUBLIC: `${URL}/regulations/published/order-day`,
+
   // Login & logout
   LOGIN: `${URL}/login`,
   LOGOUT: `${URL}/logout`,
@@ -36,8 +42,7 @@ const API = {
   UPDATE_ROLE: `${URL}/users/userId/role`,
 
   GET_ORDERS: `${URL}/regulations/order-day`, // get
-  DELETE_ORDER_DAY: `${URL}/regulations/order-day/`, // delete
-  CREATE_ORDER_DAY: `${URL}/regulations/order-day/`, // post
+  DELETE_ORDER: `${URL}/regulations/order-day/`, // delete
 
   //CM
   // Banners
@@ -45,12 +50,14 @@ const API = {
   CREATE_BANNERS: `${URL}/news-banners`,
   UPDATE_BANNERS: `${URL}/news-banners/`,
   DELETE_BANNERS: `${URL}/news-banners/`,
-
   // News
   LIST_NEWS: `${URL}/news`,
   CREATE_NEWS: `${URL}/news-banners`,
   UPDATE_NEWS: `${URL}/news-banners/`,
   DELETE_NEWS: `${URL}/news-banners/`,
+  // Contact
+  GET_CONTACT: `${URL}/contact`, //ACA
+  UPLOAD_CONTACT: `${URL}/contact/update`, //ACA
 
   //Regulations
   LIST_REGULATIONS: `${URL}/regulations`, // Lista de Normativas

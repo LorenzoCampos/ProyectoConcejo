@@ -1,3 +1,26 @@
+.page-results-cont {
+  width: 120vh;
+
+}
+
+.page-results {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.loading-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cont-button-orden-dia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Estilos generales del checkbox */
 .checkbox-cell {
   text-align: center;
@@ -42,4 +65,86 @@
 .custom-checkbox:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* END Estilos generales del checkbox */
+
+.manual-data {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.manual-data__item {
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.manual-data__item h5 {
+  margin: 0;
+  /* que el texto no haga wrap */
+  white-space: nowrap;
+  text-align: left;
+  text-decoration: underline;
+}
+
+.h5-underline{
+  text-decoration: underline;
+}
+
+.cont-lista-despachos {
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-despacho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lista-despacho input {
+  flex: 1; /* Para que el input tome el espacio disponible */
+}
+
+.lista-despacho button {
+  white-space: nowrap;
+}
+
+.lista-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #eeeeee;
+  margin-bottom: 5px;
+}
+
+.lista-item-button{
+  background-color: #ffffff;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.manual-data__item input {
+  width: 10rem;
+}
+
+@media (max-width: 571px) {
+  .manual-data__item label {
+    margin: 0;
+    /* que el texto no haga wrap */
+    white-space: wrap;
+  }
+}
+
+.delete-pdf-btn {
+  background-color: red;
 }
