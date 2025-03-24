@@ -11,6 +11,6 @@ class DayOrder extends Model
 
     protected $fillable = [
         'pdf_path',
-        'creation_date'
+        'date_creation',
     ];
 }

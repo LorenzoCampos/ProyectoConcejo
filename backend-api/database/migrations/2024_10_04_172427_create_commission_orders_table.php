@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('commission_orders', function (Blueprint $table) {
             $table->id();
             $table->string('pdf_path');
-            $table->date('creation_date');
+            $table->date('date_creation');
             $table->timestamps();
         });
     }
