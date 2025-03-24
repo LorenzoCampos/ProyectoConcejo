@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ContactCardController;
 use App\Http\Controllers\NewsBannerController;
+use App\Http\Controllers\OrdenDelDiaController;
 use App\Http\Controllers\RegulationController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
@@ -11,10 +13,16 @@ Route::prefix('v1')->group(function () {
         return 'Viva La Libertad Carajo';
     });
 
-    Route::middleware(['auth:sanctum', 'verified'])->get('regulations/order-day', [RegulationController::class, 'orderDay']);
+    Route::get('regulations/published/order-day', [OrdenDelDiaController::class, 'index']);
 
     // Ruta pública para regulaciones publicadas
     Route::get('regulations/published', [RegulationController::class, 'indexPublished']);
+
+    Route::middleware(['auth:sanctum', 'verified', 'permission:crear orden del día'])->group(function () {
+        Route::get('regulations/order-day', [OrdenDelDiaController::class, 'orderDay']);
+        Route::post('regulations/order-day', [OrdenDelDiaController::class, 'storeOrderDay']);
+        Route::delete('regulations/order-day/{id}', [OrdenDelDiaController::class, 'delete']);
+    });
 
     Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -30,12 +38,10 @@ Route::prefix('v1')->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::middleware(['permission:ver normativa'])->get('regulations', [RegulationController::class, 'index']);
-        Route::middleware(['permission:ver normativa'])->get('regulations/modified', [RegulationController::class,'relationsRegulations']);
+        Route::middleware(['permission:ver normativa'])->get('regulations/modified', [RegulationController::class, 'relationsRegulations']);
         Route::middleware(['permission:ver normativa'])->get('regulations/{id}', [RegulationController::class, 'show']);
         Route::middleware(['permission:crear normativa', 'verified'])->post('regulations', [RegulationController::class, 'store']);
         Route::middleware(['permission:modificar normativa', 'verified'])->post('regulations/{id}', [RegulationController::class, 'update']);
-
-        Route::middleware(['permission:crear orden del día', 'verified'])->post('regulations/order-day', [RegulationController::class, 'storeOrderDay']);
     });
 
     Route::middleware(['auth:sanctum', 'role:cm'])->group(function () {
@@ -46,8 +52,12 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['verified'])->post('news-banners', [NewsBannerController::class, 'store']);
         Route::middleware(['verified'])->post('news-banners/{id}', [NewsBannerController::class, 'update']);
         Route::middleware(['verified'])->delete('news-banners/{id}', [NewsBannerController::class, 'delete']);
+
+        Route::middleware(['verified'])->post('contact', [ContactCardController::class, 'store']);
+        Route::middleware(['verified'])->post('contact/update', [ContactCardController::class, 'update']);
     });
 
+    Route::get('contact', [ContactCardController::class, 'index']);
     Route::get('banners/published', [NewsBannerController::class, 'getAllPublishedBanners']);
     Route::get('news/published', [NewsBannerController::class, 'getAllPublishedNews']);
 });
