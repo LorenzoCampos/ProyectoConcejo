@@ -12,8 +12,6 @@ use App\Services\Regulations\Resolution;
 use App\Services\Regulations\Minute;
 use App\Services\Regulations\Decree;
 use App\Services\Regulations\DemMessage;
-use Illuminate\Support\Facades\Validator;
-use Dompdf\Dompdf;
 
 class RegulationController extends Controller
 {
