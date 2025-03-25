@@ -1,7 +1,6 @@
 import SearchFilter from "../searchFilter/SearchFilter";
 import Social from "../social/Social";
 import Navbar from "../navbar/Navbar";
-import Footer from "../footer/Footer";
 
 function Normativas() {
   return (
@@ -9,7 +8,6 @@ function Normativas() {
       <Navbar />
       <SearchFilter />
       <Social />
-      <Footer />
     </>
   );
 }
