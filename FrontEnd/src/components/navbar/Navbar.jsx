@@ -69,10 +69,7 @@ function NavBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="links">
               <Nav.Link
-                as={Link}
-                to="/"
-                className="link-nav"
-                onClick={linkToHome}
+                as={Link} to="/" className="link-nav"
               >
                 Home
               </Nav.Link>

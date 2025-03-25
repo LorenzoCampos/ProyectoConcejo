@@ -1,6 +1,5 @@
 import Social from "../social/Social";
 import Navbar from "../navbar/Navbar";
-import Footer from "../footer/Footer";
 import ListOrderDay from "../adminPage/orderDay/ListOrderDay";
 
 function OrdenesDelDia() {
@@ -9,7 +8,6 @@ function OrdenesDelDia() {
       <Navbar />
       <ListOrderDay/>
       <Social />
-      <Footer />
     </>
   );
 }
