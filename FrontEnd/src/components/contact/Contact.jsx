@@ -20,7 +20,11 @@ function Contact() {
 
       const response = await axios.request(reqOptions);
 
-      if (response.status === 200) {
+      if (
+        response.status === 200 &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
         setImages(response.data[0]);
       }
     } catch (error) {
@@ -41,17 +45,23 @@ function Contact() {
           <p>Contacto</p>
         </div>
         <div className="container-forms">
-          {images.image_left && images.image_right ? (
+          {images.image_left || images.image_right ? (
             <>
-              <div className="form">
-                <img src={images.image_left} alt="Imagen Izquierda" />
-              </div>
-              <div className="form">
-                <img src={images.image_right} alt="Imagen derecha" />
-              </div>
+              {images.image_left && (
+                <div className="form">
+                  <img src={images.image_left} alt="Imagen Izquierda" />
+                </div>
+              )}
+              {images.image_right && (
+                <div className="form">
+                  <img src={images.image_right} alt="Imagen Derecha" />
+                </div>
+              )}
             </>
           ) : (
-            <p>Cargando imagenes...</p>
+            <>
+              <p>No hay imágenes disponibles.</p>
+            </>
           )}
         </div>
       </div>
