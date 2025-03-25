@@ -97,11 +97,13 @@ function ListOrderDay() {
   };
 
   function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses van de 0 a 11
-    const year = date.getFullYear();
-
+    if (!dateString) return "";
+  
+    const date = new Date(dateString + "T00:00:00"); // Asegura que se tome en la fecha correcta sin ajustes de uso horario
+    const day = String(date.getUTCDate()).padStart(2, "0"); // Usa UTC para evitar cambios de zona horaria
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Meses en JS van de 0 a 11
+    const year = date.getUTCFullYear();
+  
     return `${day}/${month}/${year}`;
   }
 
