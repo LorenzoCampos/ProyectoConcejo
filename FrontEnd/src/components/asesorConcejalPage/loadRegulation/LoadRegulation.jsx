@@ -369,6 +369,11 @@ function LoadRegulation() {
         setPdfApproved(null);
         setSelectedItems([]);
         setSelectedItemsModifiedBy([]);
+
+        setTimeout(() => {
+          window.location.reload(); // Recargar la página
+        }, 1500);
+        
       }
     } catch (error) {
       if (error.response.status === 422) {

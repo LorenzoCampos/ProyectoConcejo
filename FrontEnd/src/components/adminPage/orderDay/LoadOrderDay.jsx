@@ -8,6 +8,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import axios from "axios";
 import API from "../../../config/apiConfig";
+import { useNavigate } from "react-router-dom";
 import "./orderDay.css";
 
 function LoadOrderDay() {
@@ -31,6 +32,8 @@ function LoadOrderDay() {
     7: [],
     8: [],
   });
+
+  const navigate = useNavigate();
 
   const handleAddItem = (index) => {
     if (inputValues[index]?.trim() !== "") {
@@ -164,7 +167,7 @@ function LoadOrderDay() {
         setShowSuccessToast(true);
         window.scrollTo(0, 0); // Desplazar hacia arriba
         setTimeout(() => {
-          window.location.reload(); // Recargar la página
+          navigate("/ver-orden-dia"); // Recargar la página
         }, 1500);
 
         console.log("Respuesta: ", response.data);
@@ -257,14 +260,14 @@ function LoadOrderDay() {
                   <>
                     {data.correspondence && data.correspondence.length > 0 ? (
                       <>
-                        <h5 className="h5-underline">
-                          2. Correspondencias recibidas:
-                        </h5>
-                        <Table striped bordered hover>
-                          <tbody>
+                        <div className="sections">
+                          <h5 className="h5-underline">
+                            2. Correspondencias recibidas:
+                          </h5>
+                          <div className="items-list">
                             {data.correspondence.map((item) => (
-                              <tr key={item.id}>
-                                <td>
+                              <div key={item.id} className="item">
+                                <div>
                                   {item.authors
                                     .map((author) => author.name)
                                     .join(", ")}
@@ -272,8 +275,8 @@ function LoadOrderDay() {
                                   {item.subject}
                                   {". "}
                                   (Cargo N° {item.number})
-                                </td>
-                                <td className="checkbox-cell">
+                                </div>
+                                <div className="checkbox-cell">
                                   <input
                                     type="checkbox"
                                     className="custom-checkbox"
@@ -288,11 +291,11 @@ function LoadOrderDay() {
                                       )
                                     }
                                   />
-                                </td>
-                              </tr>
+                                </div>
+                              </div>
                             ))}
-                          </tbody>
-                        </Table>
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <p>No hay correspondencias</p>
@@ -300,17 +303,17 @@ function LoadOrderDay() {
 
                     {data.dem_message && data.dem_message.length > 0 ? (
                       <>
-                        <h5 className="h5-underline">3. Mensajes del DEM:</h5>
-                        <Table striped bordered hover>
-                          <tbody>
+                        <div className="sections">
+                          <h5 className="h5-underline">3. Mensajes del DEM:</h5>
+                          <div className="items-list">
                             {data.dem_message.map((item) => (
-                              <tr key={item.id}>
-                                <td>
+                              <div key={item.id} className="item">
+                                <div>
                                   {item.subject}
                                   {". "}
                                   (Cargo N° {item.number})
-                                </td>
-                                <td className="checkbox-cell">
+                                </div>
+                                <div className="checkbox-cell">
                                   <input
                                     className="custom-checkbox"
                                     type="checkbox"
@@ -325,11 +328,11 @@ function LoadOrderDay() {
                                       )
                                     }
                                   />
-                                </td>
-                              </tr>
+                                </div>
+                              </div>
                             ))}
-                          </tbody>
-                        </Table>
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <p>No hay Mensajes del DEM</p>
@@ -337,14 +340,14 @@ function LoadOrderDay() {
 
                     {data.projects && data.projects.length > 0 ? (
                       <>
-                        <h5 className="h5-underline">
-                          4. PROYECTOS DE LOS SEÑORES CONCEJALES:
-                        </h5>
-                        <Table striped bordered hover>
-                          <tbody>
+                        <div className="sections">
+                          <h5 className="h5-underline">
+                            4. PROYECTOS DE LOS SEÑORES CONCEJALES:
+                          </h5>
+                          <div className="items-list">
                             {data.projects.map((item) => (
-                              <tr key={item.id}>
-                                <td>
+                              <div key={item.id} className="item">
+                                <div>
                                   {translateType(item.type)}
                                   {": "}
                                   {item.subject}
@@ -354,8 +357,8 @@ function LoadOrderDay() {
                                     .join(", ")}
                                   {". "}
                                   (Cargo N°{item.number})
-                                </td>
-                                <td className="checkbox-cell">
+                                </div>
+                                <div className="checkbox-cell">
                                   <input
                                     type="checkbox"
                                     className="custom-checkbox"
@@ -366,11 +369,11 @@ function LoadOrderDay() {
                                       handleCheckboxChange("projects", item.id)
                                     }
                                   />
-                                </td>
-                              </tr>
+                                </div>
+                              </div>
                             ))}
-                          </tbody>
-                        </Table>
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <p>No hay proyectos de los señores concejales</p>
@@ -379,26 +382,26 @@ function LoadOrderDay() {
                     {[5, 6, 7, 8].map((index) => (
                       <>
                         <Form.Group key={index}>
-                            {index === 5 ? (
-                              <h5 className="h5_underline">
-                                5. DESPACHO DE LA COMISIÓN DE GOBIERNO:
-                              </h5>
-                            ) : null}
-                            {index === 6 ? (
-                              <h5 className="h5_underline">
-                                6. DESPACHO DE LA COMISIÓN DE HACIENDA:
-                              </h5>
-                            ) : null}
-                            {index === 7 ? (
-                              <h5 className="h5_underline">
-                                7. DESPACHO DE LA COMISIÓN DE OBRAS PÚBLICAS:
-                              </h5>
-                            ) : null}
-                            {index === 8 ? (
-                              <h5 className="h5_underline">
-                                8. DESPACHO DE LA COMISIÓN DE HIGIENE:
-                              </h5>
-                            ) : null}
+                          {index === 5 ? (
+                            <h5 className="h5_underline">
+                              5. DESPACHO DE LA COMISIÓN DE GOBIERNO:
+                            </h5>
+                          ) : null}
+                          {index === 6 ? (
+                            <h5 className="h5_underline">
+                              6. DESPACHO DE LA COMISIÓN DE HACIENDA:
+                            </h5>
+                          ) : null}
+                          {index === 7 ? (
+                            <h5 className="h5_underline">
+                              7. DESPACHO DE LA COMISIÓN DE OBRAS PÚBLICAS:
+                            </h5>
+                          ) : null}
+                          {index === 8 ? (
+                            <h5 className="h5_underline">
+                              8. DESPACHO DE LA COMISIÓN DE HIGIENE:
+                            </h5>
+                          ) : null}
                           <div className="cont-lista-despachos">
                             <div className="lista-despacho">
                               <Form.Control
@@ -438,13 +441,13 @@ function LoadOrderDay() {
                         </Form.Group>
                       </>
                     ))}
-                      <div className="cont-button-orden-dia">
-                        <Form onSubmit={handleSubmit}>
-                          <Button variant="primary" type="submit">
-                            Cargar orden del día
-                          </Button>
-                        </Form>
-                      </div>
+                    <div className="cont-button-orden-dia">
+                      <Form onSubmit={handleSubmit}>
+                        <Button variant="primary" type="submit">
+                          Cargar orden del día
+                        </Button>
+                      </Form>
+                    </div>
                   </>
                 ) : (
                   <>
@@ -456,7 +459,6 @@ function LoadOrderDay() {
                 )}
               </>
             )}
-          
           </div>
         </div>
         <ToastContainer position="top-end" className="p-3">
