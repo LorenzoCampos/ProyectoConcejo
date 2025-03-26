@@ -175,23 +175,21 @@ class UserController extends Controller
         return response()->json($roles, 200);
     }
 
-    public function typeTranslate($type)
+    public function typeTranslate($role)
     {
-        switch ($type) {
-            case 'ordinance':
-                return 'Ordenanza';
-            case 'correspondence':
-                return 'Correspondencia';
-            case 'declaration':
-                return 'Declaración';
-            case 'resolution':
-                return 'Resolución';
-            case 'minute':
-                return 'Minuta';
-            case 'decree':
-                return 'Decreto';
-            case 'dem-message':
-                return 'Mensaje DEM';
+        switch ($role) {
+            case 'admin':
+                return 'Admin';
+            case 'asesor':
+                return 'Asesor';
+            case 'mesa':
+                return 'Mesa de Entrada';
+            case 'concejal':
+                return 'Concejal';
+            case 'cm':
+                return 'Redes';
+            case 'user':
+                return 'Usuario';
             default:
                 return 'Desconocido';
         }
