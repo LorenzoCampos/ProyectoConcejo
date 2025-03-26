@@ -7,7 +7,6 @@ import './index.css';
 /* Home */
 import NavBar from "./navbar/Navbar";
 import Banner from "./banner/Banner";
-import News from "./news/News";
 import Social from "./social/Social";
 import Contact from "./contact/Contact";
 import Footer from "./footer/Footer";
@@ -49,7 +48,6 @@ export{
     EmailVerified,
     NavBar,
     Banner,
-    News,
     Social,
     Contact,
     SearchFilter,

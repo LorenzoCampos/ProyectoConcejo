@@ -6,14 +6,17 @@ import Access from "./components/pages/Access";
 import ForgotPassword from "./components/login/forgotPassword/ForgotPassword";
 import ResetPassword from "./components/login/resetPassword/ResetPassword";
 import EmailVerified from "./components/pages/EmailVerified";
-import { AdminPage, AsesorConcejalPage, CMPage } from "./components";
-import SeeNew from "./components/news/SeeNew";
+import { AdminPage, AsesorConcejalPage, CMPage, Footer } from "./components";
 import OrdenesDelDia from "./components/pages/OrdenesDelDia";
+import NewDetail from "./components/pages/NewDetail";
+
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+    <div className="page-container">
+    <div className="content">
+    <BrowserRouter>
         <Routes>
           {/* Publico */}
           <Route path="/" element={<Home />} />
@@ -25,7 +28,8 @@ function App() {
           <Route path="/password-reset/:token" element={<ResetPassword />} />
 
            {/* 🔹 Nueva ruta para la noticia individual */}
-          <Route path="/news/:id" element={<SeeNew />} />
+          <Route path="/noticia/:id" element={<NewDetail />} />
+          
 
           <Route path="/admin/*" element={<PrivateRoute roles="admin"><AdminPage /></PrivateRoute>} />
           <Route path="/cm/*" element={<PrivateRoute roles="cm"><CMPage /></PrivateRoute>} />
@@ -33,6 +37,10 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+</div>
+<Footer />
+    </div>
+      
     </>
   );
 }

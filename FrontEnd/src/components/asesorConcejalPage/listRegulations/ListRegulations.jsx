@@ -153,15 +153,22 @@ function ListRegulations() {
   };
 
   function formatDate(dateString) {
+    if (!dateString) return "";
+  
     const date = new Date(dateString);
+  
+    if (isNaN(date.getTime())) return "Fecha inválida"; // Manejo de error si la fecha no es válida
+  
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses van de 0 a 11
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Meses en JS van de 0 a 11
     const year = date.getFullYear();
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
-
+  
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
+  
+  
 
   const typeTranslations = {
     ordinance: "Ordenanza",

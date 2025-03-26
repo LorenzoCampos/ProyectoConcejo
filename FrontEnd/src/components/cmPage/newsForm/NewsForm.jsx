@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 
 import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PreviewNews from "./PreviewNews";
 import "./newsForm.css";
@@ -36,7 +36,6 @@ function NewsForm() {
   //const [publicationDate, setPublicationDate] = useState("");
   // const [unpublicationDate, setUnpublicationDate] = useState("");
   //const [imagePreview, setImagePreview] = useState(null); // Vista previa de la imagen
-  const [showNewsList, setShowNewsList] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showWarningToast, setShowWarningToast] = useState(false);
@@ -45,7 +44,7 @@ function NewsForm() {
   // Extraer miniatura del reel de instagram
   const [videoUrl, setVideoUrl] = useState("");
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -147,7 +146,7 @@ function NewsForm() {
         setToastMessage("Noticia subido exitosamente");
         setShowSuccessToast(true);
         setTimeout(() => {
-          setShowNewsList(true);
+          navigate("/cm/gestionar-noticias")
         }, 1000); // Tiempo de espera de 1 segundo
       }
     } catch (error) {
@@ -169,9 +168,6 @@ function NewsForm() {
       setShowErrorToast(true);
     }
   };
-  if (showNewsList) {
-    return <ListNews />;
-  }
 
   return (
     <div className="page-form">

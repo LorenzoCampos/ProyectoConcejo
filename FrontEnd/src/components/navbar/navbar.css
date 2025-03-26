@@ -72,6 +72,8 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
 
 .navbar-nav {
   gap: 2rem;
+  padding: 0.4rem;
+  margin-right: 0.4rem;
 }
 
 .container-nav-link {
@@ -79,6 +81,9 @@ nav.bg-navbar.fixed-top.navbar.navbar-expand-lg.navbar-light {
   flex-direction: row;
   align-items: center;
   gap: 25px;
+}
+.navbar-toggler {
+  margin-right: 0.4rem;
 }
 
 @media (max-width: 990px) {

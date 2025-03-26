@@ -99,13 +99,19 @@ function ListRegulations() {
   };
 
   function formatDate(dateString) {
+    if (!dateString) return ""; // Manejo de valores vacíos o nulos
+  
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses van de 0 a 11
-    const year = date.getFullYear();
-
+  
+    if (isNaN(date.getTime())) return "Fecha inválida"; // Validar si la fecha es correcta
+  
+    const day = String(date.getUTCDate()).padStart(2, "0"); // Usar UTC para evitar desfase por zona horaria
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+  
     return `${day}/${month}/${year}`;
   }
+  
 
   const typeTranslations = {
     ordinance: "Ordenanza",

@@ -2,22 +2,40 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 import axios from "axios";
 import "./news.css";
-import News from "./News";
 
 import API from "../../config/apiConfig";
 
-function GetNewsPublic({ onSeeNew, setNewsList }) {
+function GetNewsPublic() {
   const [news, setNews] = useState([]);
 
   const [toastMessage, setToastMessage] = useState("");
   const [showErrorToast, setShowErrorToast] = useState(false);
+  const navigate = useNavigate();
+
+  const [visibleCards, setVisibleCards] = useState(6);
+
+  const handleShowMoreCards = () => {
+    setVisibleCards((prevVisibleCards) => prevVisibleCards + 6);
+  };
+
+  const handleShowLessCards = () => {
+    setVisibleCards((prevVisibleCards) => prevVisibleCards - 6);
+  };
+
 
   useEffect(() => {
     getAllNews();
   }, []);
+
+  const handleSeeNew = (item) => {
+    navigate(`noticia/${item.id}`,{state: {newsList: news} })
+  };
 
   const getAllNews = async () => {
     try {
@@ -34,7 +52,6 @@ function GetNewsPublic({ onSeeNew, setNewsList }) {
       
       
       setNews(response.data);
-      setNewsList(response.data);
       console.log(response.data);
 
     } catch (error) {
@@ -53,8 +70,43 @@ function GetNewsPublic({ onSeeNew, setNewsList }) {
         <div className="title-news">
         <p >Noticias</p>
         </div>
-       
-        <News news={news} onSeeNew={onSeeNew} />
+
+        <div className="cards-container">
+        <div className="cards">
+          {news.slice().reverse().slice(0, visibleCards).map((item) => (
+            <Card key={item.id} className="shadow rounded fixed-card">
+              <div className="img-container">
+              <Card.Img variant="top" src={item.image} className="fixed-img"/>
+              </div>
+              <Card.Body>
+                <Card.Title>{item.title}</Card.Title>
+               
+                <Card.Text className="limited-text" dangerouslySetInnerHTML={{ __html: item.description }} />
+                <div className="button-container">
+                  <Button className="btn-banner" onClick={() => handleSeeNew(item)}>Ver más</Button>
+                </div>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+
+        {visibleCards < news.length && (
+          <div className="btn-container">
+            <Button onClick={handleShowMoreCards} className="btn-see-more">
+              Ver más
+            </Button>
+          </div>
+        )}
+
+        {visibleCards > 6 && (
+          <Button onClick={handleShowLessCards} className="btn-see-more">
+            Ver menos
+          </Button>
+        )}
+      </div>
+      
+          
+        
       </div>
 
 
@@ -75,3 +127,4 @@ function GetNewsPublic({ onSeeNew, setNewsList }) {
 }
 
 export default GetNewsPublic;
+
