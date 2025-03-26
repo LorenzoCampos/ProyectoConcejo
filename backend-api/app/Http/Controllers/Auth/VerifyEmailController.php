@@ -19,14 +19,14 @@ class VerifyEmailController extends Controller
         // Verifica si el hash en la URL es válido para este usuario.
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             return redirect()->intended(
-                env('FRONTEND_URL') . '/verified/failure'
+                config('app.frontend_url') . '/verified/failure'
             );
         }
 
         if ($user->hasVerifiedEmail()) {
             return redirect()->intended(
                 // ruta proveniente del .env
-                env('FRONTEND_URL') . '/verified/success'
+                config('app.frontend_url') . '/verified/success'
             );
         }
 
@@ -35,7 +35,7 @@ class VerifyEmailController extends Controller
         }
 
         return redirect()->intended(
-            env('FRONTEND_URL') . '/verified/success'
+            config('app.frontend_url') . '/verified/success'
         );
     }
 }
