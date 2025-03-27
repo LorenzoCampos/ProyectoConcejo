@@ -19,7 +19,6 @@ function ForgotPassword() {
   const [showAlert, setShowAlert] = useState(false);
 
 
-
   const handleForgotFormSubmit = async (e) => {
     e.preventDefault();
 
