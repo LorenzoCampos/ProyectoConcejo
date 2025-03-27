@@ -59,7 +59,7 @@ class CustomVerifyEmail extends Notification
         );
 
         // Define la URL base para el frontend (ajústala según tu entorno)
-        $baseUrl = "https://api-concejoarroyoseco.duckdns.org";
+        $baseUrl = "https://concejoarroyoseco.duckdns.org";
         // $baseUrl = "https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public";
 
         // Reemplaza la URL base por la del frontend

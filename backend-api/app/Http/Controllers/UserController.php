@@ -30,7 +30,7 @@ class UserController extends Controller
             // Devolver la respuesta
             return response()->json([
                 'user' => $user,
-                'role' => $role,
+                'role' => $this->typeTranslate($role),
                 'email_verified' => $verified_email
             ], 200);
         } catch (\Exception $e) {
@@ -173,5 +173,25 @@ class UserController extends Controller
         }
 
         return response()->json($roles, 200);
+    }
+
+    public function typeTranslate($role)
+    {
+        switch ($role) {
+            case 'admin':
+                return 'Admin';
+            case 'asesor':
+                return 'Asesor';
+            case 'mesa':
+                return 'Mesa de Entrada';
+            case 'concejal':
+                return 'Concejal';
+            case 'cm':
+                return 'Redes';
+            case 'user':
+                return 'Usuario';
+            default:
+                return 'Desconocido';
+        }
     }
 }
