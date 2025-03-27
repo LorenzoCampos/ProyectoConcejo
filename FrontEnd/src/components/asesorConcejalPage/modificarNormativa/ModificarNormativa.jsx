@@ -575,7 +575,7 @@ function ModificarNormativa() {
                 {authorsList.map((a, index) => (
                   <div key={index} className="list">
                     {a}
-                    {index !== 0 && (
+
                       <Button
                         className="btn-delete"
                         variant="danger"
@@ -584,7 +584,7 @@ function ModificarNormativa() {
                       >
                         -
                       </Button>
-                    )}
+                    
                   </div>
                 ))}
               </div>
