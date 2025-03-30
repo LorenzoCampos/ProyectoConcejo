@@ -429,6 +429,9 @@ function LoadRegulation() {
         )}
         <div className="content-form">
           <Form onSubmit={handleSubmit}>
+
+            {/* Fecha personalizada */}
+
             <Form.Group controlId="type" className="mb-3">
               <Form.Label>Tipo de normativa:</Form.Label>
               <Form.Select
