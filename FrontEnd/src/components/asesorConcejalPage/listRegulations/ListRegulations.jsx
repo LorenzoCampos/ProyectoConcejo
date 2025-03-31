@@ -173,7 +173,7 @@ function ListRegulations() {
   const typeTranslations = {
     ordinance: "Ordenanza",
     resolution: "Resolución",
-    minutes: "Minutas",
+    minute: "Minuta",
     decree: "Decreto",
     declaration: "Declaración",
     correspondence: "Correspondencia",
