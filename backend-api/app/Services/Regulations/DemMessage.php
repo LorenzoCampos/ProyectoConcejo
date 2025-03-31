@@ -11,6 +11,7 @@ class DemMessage extends BaseRegulation
         $rules = [
             'type' => $isCreation ? 'required|string|in:dem-message' : 'sometimes|string|in:dem-message',
             'number' => 'nullable|integer',
+            'creation_date' => 'nullable|date_format:Y-m-d',
             'state' => $isCreation ? 'required|string|in:process,approved' : 'sometimes|string|in:process,approved',
             'subject' => $isCreation ? 'required|string|max:255' : 'sometimes|string|max:255',
             'author_type' => $isCreation ? 'required|string|in:DEM,particular' : 'sometimes|string|in:DEM,particular',

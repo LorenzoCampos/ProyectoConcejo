@@ -17,7 +17,8 @@ class Regulation extends Model
         'author_type',
         'pdf_process',
         'pdf_approved',
-        'fk_user_creator'
+        'fk_user_creator',
+        'created_at'
     ];
 
     public function userCreator()

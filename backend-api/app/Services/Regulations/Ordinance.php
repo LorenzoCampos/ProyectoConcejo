@@ -12,6 +12,7 @@ class Ordinance extends BaseRegulation
         $rules = [
             'type' => $isCreation ? 'required|string|in:ordinance' : 'sometimes|string|in:ordinance',
             'number' => 'nullable|integer',
+            'creation_date' => 'nullable|date_format:Y-m-d',
             'state' => $isCreation ? 'required|string|in:process,approved' : 'sometimes|string|in:process,approved',
             'subject' => $isCreation ? 'required|string|max:255' : 'sometimes|string|max:255',
             'pdf_process' => 'nullable',

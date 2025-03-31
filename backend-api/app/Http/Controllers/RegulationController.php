@@ -264,6 +264,12 @@ class RegulationController extends Controller
         $data = $regulationService->getData();
         $data['number'] = $regulationService->generateNumber($type);
 
+        if ($request->input('creation_date')) {
+            $data['created_at'] = $request->input('creation_date');
+        } else {
+            $data['created_at'] = now(); // Si no se proporciona, usa la fecha actual
+        }
+
         // Cargar PDFs si están presentes
         if ($request->hasFile('pdf_process')) {
             $pdfProcessPath = $regulationService->uploadPDF($request->file('pdf_process'));
