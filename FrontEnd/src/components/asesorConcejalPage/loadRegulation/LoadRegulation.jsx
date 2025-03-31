@@ -29,6 +29,8 @@ function LoadRegulation() {
   const [pdfApproved, setPdfApproved] = useState(null);
   const [errorApproved, setErrorApproved] = useState("");
 
+  const [customDate, setCustomDate] = useState(""); // Fecha customizada
+
   const [type, setType] = useState("");
   const [typeAuthor, setTypeAuthor] = useState("");
   const [subject, setSubject] = useState("");
@@ -318,6 +320,7 @@ function LoadRegulation() {
     }
 
     const formData = new FormData();
+    formData.append("creation_date", customDate); // Fecha customizada
     formData.append("type", type);
     formData.append("author_type", typeAuthor);
     authorsList.forEach((author, index) => {
@@ -352,11 +355,13 @@ function LoadRegulation() {
       });
 
       if (response.status === 201) {
+        console.log(response.data)
         setMessage("Normativa creada correctamente.");
         setMessageType("success");
         window.scrollTo(0, 0);
 
         // Limpiar los campos del formulario
+        setCustomDate("");
         setType("");
         setTypeAuthor("");
         setAuthors("");
@@ -370,9 +375,9 @@ function LoadRegulation() {
         setSelectedItems([]);
         setSelectedItemsModifiedBy([]);
 
-        setTimeout(() => {
-          window.location.reload(); // Recargar la página
-        }, 1500);
+        // setTimeout(() => {
+        //   window.location.reload(); // Recargar la página
+        // }, 1500);
       }
     } catch (error) {
       if (error.response.status === 422) {
@@ -430,7 +435,14 @@ function LoadRegulation() {
         <div className="content-form">
           <Form onSubmit={handleSubmit}>
 
-            {/* Fecha personalizada */}
+            <Form.Group controlId="custom-date" className="mb-3"> {/* Fecha customizada */}
+              <Form.Label>Fecha:</Form.Label>
+              <Form.Control
+                type="date"
+                onChange={(e) => setCustomDate(e.target.value)}
+                value={customDate}
+              />
+            </Form.Group>
 
             <Form.Group controlId="type" className="mb-3">
               <Form.Label>Tipo de normativa:</Form.Label>
