@@ -19,8 +19,8 @@ function ResetPassword() {
   const email = searchParams.get("email"); // Obtener email de la URL
 
   useEffect(() => {
-    console.log(token);
-    console.log(email);
+/*     console.log(token);
+    console.log(email); */
 
     if (!token || !email) {
       window.location.href = "/login";

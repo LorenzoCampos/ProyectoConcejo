@@ -148,7 +148,7 @@ function ListUsers() {
       case "concejal":
         return "Concejal";
       case "cm":
-        return "CM";
+        return "Redes";
       case "user":
         return "Usuario";
       default:
@@ -175,7 +175,7 @@ function ListUsers() {
                 <option value="asesor">Asesor</option>
                 <option value="mesa">Mesa de Entrada</option>
                 <option value="concejal">Concejal</option>
-                <option value="cm">CM</option>
+                <option value="cm">Redes</option>
                 <option value="user">Usuario</option>
               </Form.Select>
             </div>
@@ -224,7 +224,7 @@ function ListUsers() {
                             <option value="asesor">Asesor</option>
                             <option value="mesa">Mesa de Entrada</option>
                             <option value="concejal">Concejal</option>
-                            <option value="cm">CM</option>
+                            <option value="cm">Redes</option>
                             <option value="user">Usuario</option>
                           </Form.Control>
                         </Form.Group>

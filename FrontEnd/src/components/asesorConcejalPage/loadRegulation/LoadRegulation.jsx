@@ -373,7 +373,6 @@ function LoadRegulation() {
         setTimeout(() => {
           window.location.reload(); // Recargar la página
         }, 1500);
-        
       }
     } catch (error) {
       if (error.response.status === 422) {
@@ -486,7 +485,9 @@ function LoadRegulation() {
                 {authorsList.map((a, index) => (
                   <div key={index} className="list">
                     {a}
-                    {index !== 0 && (
+                    {(userRole === "concejal" && index === 0) ? (
+                      null
+                    ) : (
                       <Button
                         className="btn-delete"
                         variant="danger"
@@ -569,8 +570,14 @@ function LoadRegulation() {
                     accept=".pdf"
                     onChange={handlePdfProcessChange}
                   />
-                   {errorProcess && <p className="mt-2 text-danger">{errorProcess}</p>}
-                   {pdfProcess && <p className="mt-2 text-success">Archivo seleccionado: {pdfProcess.name}</p>}
+                  {errorProcess && (
+                    <p className="mt-2 text-danger">{errorProcess}</p>
+                  )}
+                  {pdfProcess && (
+                    <p className="mt-2 text-success">
+                      Archivo seleccionado: {pdfProcess.name}
+                    </p>
+                  )}
                 </Form.Group>
 
                 <Form.Group controlId="pdfApproved" className="mb-3">
@@ -580,8 +587,14 @@ function LoadRegulation() {
                     accept=".pdf"
                     onChange={handlePdfApprovedChange}
                   />
-                  {errorApproved && <p className="mt-2 text-danger">{errorApproved}</p>}
-                  {pdfApproved && <p className="mt-2 text-success">Archivo seleccionado: {pdfApproved.name}</p>}
+                  {errorApproved && (
+                    <p className="mt-2 text-danger">{errorApproved}</p>
+                  )}
+                  {pdfApproved && (
+                    <p className="mt-2 text-success">
+                      Archivo seleccionado: {pdfApproved.name}
+                    </p>
+                  )}
                 </Form.Group>
 
                 {(type === "ordinance" ||

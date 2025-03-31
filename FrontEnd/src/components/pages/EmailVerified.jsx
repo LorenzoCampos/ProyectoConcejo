@@ -31,6 +31,10 @@ function EmailVerified() {
 
           if (response.status === 200) {
             localStorage.removeItem("authToken");
+            localStorage.removeItem("role");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userLastName");
+            localStorage.removeItem("email_verified");
             navigate("/login");
           }
         } catch (error) {
