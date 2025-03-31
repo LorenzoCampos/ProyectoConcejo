@@ -30,7 +30,7 @@ class UserController extends Controller
             // Devolver la respuesta
             return response()->json([
                 'user' => $user,
-                'role' => $this->typeTranslate($role),
+                'role' => $this->roleTranslate($role),
                 'email_verified' => $verified_email
             ], 200);
         } catch (\Exception $e) {
@@ -175,7 +175,7 @@ class UserController extends Controller
         return response()->json($roles, 200);
     }
 
-    public function typeTranslate($role)
+    public function roleTranslate($role)
     {
         switch ($role) {
             case 'admin':
