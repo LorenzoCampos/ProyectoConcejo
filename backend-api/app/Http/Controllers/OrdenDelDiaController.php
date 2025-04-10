@@ -119,88 +119,92 @@ class OrdenDelDiaController extends Controller
 
     public function storeOrderDay(Request $request): JsonResponse
     {
-        // Formato de fecha y acta
-        $date = $request->input('date');
-        $acta = $request->input('acta');
+        try {
+            // Formato de fecha y acta
+            $date = $request->input('date');
+            $acta = $request->input('acta');
 
-        // Obtener las regulaciones desde la base de datos
-        $correspondences = Regulation::whereIn('id', $request->input('correspondence'))->get();
-        $mensajesDem = Regulation::whereIn('id', $request->input('dem_message'))->get();
-        $proyectosConcejales = Regulation::whereIn('id', $request->input('projects'))->get();
+            // Obtener las regulaciones desde la base de datos
+            $correspondences = Regulation::whereIn('id', $request->input('correspondence'))->get();
+            $mensajesDem = Regulation::whereIn('id', $request->input('dem_message'))->get();
+            $proyectosConcejales = Regulation::whereIn('id', $request->input('projects'))->get();
 
-        $comision_gobierno = $request->input('comision_gobierno');
-        $comision_hacienda = $request->input('comision_hacienda');
-        $comision_obras = $request->input('comision_obras');
-        $comision_higiene = $request->input('comision_higiene');
+            $comision_gobierno = $request->input('comision_gobierno');
+            $comision_hacienda = $request->input('comision_hacienda');
+            $comision_obras = $request->input('comision_obras');
+            $comision_higiene = $request->input('comision_higiene');
 
 
-        // Construir el array dinámico
-        $data = [
-            'date' => $date,
-            'acta' => $acta,
-            'correspondencias' => $correspondences->map(function ($item) {
-                return [
-                    'autor/es' => $item->authors->pluck('name')->toArray(),
-                    'subject' => $item->subject,
-                    'number' => $item->number,
-                ];
-            }),
-            'mensajes_dem' => $mensajesDem->map(function ($item) {
-                return [
-                    'subject' => $item->subject,
-                    'number' => $item->number,
-                ];
-            }),
-            'proyectos_concejales' => $proyectosConcejales->map(function ($item) {
-                return [
-                    'type' => $this->typeTranslate($item->type),
-                    'subject' => $item->subject,
-                    'autor/es' => $item->authors->pluck('name')->toArray(),
-                    'number' => $item->number,
-                ];
-            }),
-            'comision_gobierno' => collect($comision_gobierno)->map(function ($item) {
-                return [
-                    'item' => $item,
-                ];
-            }),
-            'comision_hacienda' => collect($comision_hacienda)->map(function ($item) {
-                return [
-                    'item' => $item,
-                ];
-            }),
-            'comision_obras' => collect($comision_obras)->map(function ($item) {
-                return [
-                    'item' => $item,
-                ];
-            }),
-            'comision_higiene' => collect($comision_higiene)->map(function ($item) {
-                return [
-                    'item' => $item,
-                ];
-            }),
-        ];
+            // Construir el array dinámico
+            $data = [
+                'date' => $date,
+                'acta' => $acta,
+                'correspondencias' => $correspondences->map(function ($item) {
+                    return [
+                        'autor/es' => $item->authors->pluck('name')->toArray(),
+                        'subject' => $item->subject,
+                        'number' => $item->number,
+                    ];
+                }),
+                'mensajes_dem' => $mensajesDem->map(function ($item) {
+                    return [
+                        'subject' => $item->subject,
+                        'number' => $item->number,
+                    ];
+                }),
+                'proyectos_concejales' => $proyectosConcejales->map(function ($item) {
+                    return [
+                        'type' => $this->typeTranslate($item->type),
+                        'subject' => $item->subject,
+                        'autor/es' => $item->authors->pluck('name')->toArray(),
+                        'number' => $item->number,
+                    ];
+                }),
+                'comision_gobierno' => collect($comision_gobierno)->map(function ($item) {
+                    return [
+                        'item' => $item,
+                    ];
+                }),
+                'comision_hacienda' => collect($comision_hacienda)->map(function ($item) {
+                    return [
+                        'item' => $item,
+                    ];
+                }),
+                'comision_obras' => collect($comision_obras)->map(function ($item) {
+                    return [
+                        'item' => $item,
+                    ];
+                }),
+                'comision_higiene' => collect($comision_higiene)->map(function ($item) {
+                    return [
+                        'item' => $item,
+                    ];
+                }),
+            ];
 
-        // Generar el PDF con los datos dinámicos
-        $pdf = Pdf::loadView('pdf.orden-del-dia', $data)
-            ->setPaper('legal', 'portrait'); // Cambiar a tamaño oficio
+            // Generar el PDF con los datos dinámicos
+            $pdf = Pdf::loadView('pdf.orden-del-dia', $data)
+                ->setPaper('legal', 'portrait'); // Cambiar a tamaño oficio
 
-        // Crear el nombre del archivo
-        $fileName = 'Orden_del_Dia_' . $date . '.pdf';
+            // Crear el nombre del archivo
+            $fileName = 'Orden_del_Dia_' . $date . '.pdf';
 
-        // Guardar el PDF en el sistema de archivos
-        $filePath = 'day_orders/' . $fileName;
-        Storage::disk('public')->put($filePath, $pdf->output());
+            // Guardar el PDF en el sistema de archivos
+            $filePath = 'day_orders/' . $fileName;
+            Storage::disk('public')->put($filePath, $pdf->output());
 
-        // Generar la URL personalizada del archivo
-        // $endPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/day_orders/' . $fileName;
-        $endPath = 'https://api-concejoarroyoseco.duckdns.org/storage/day_orders/' . $fileName;
+            // Generar la URL personalizada del archivo
+            // $endPath = 'https://bj0b5hq1-443.brs.devtunnels.ms/ProyectoConcejo/backend-api/public/storage/day_orders/' . $fileName;
+            $endPath = 'https://api-concejoarroyoseco.duckdns.org/storage/day_orders/' . $fileName;
 
-        // Guardar en la base de datos
-        $datOrder = DayOrder::create(['pdf_path' => $endPath, 'date_creation' => $date]);
+            // Guardar en la base de datos
+            $datOrder = DayOrder::create(['pdf_path' => $endPath, 'date_creation' => $date]);
 
-        // Retornar la respuesta
-        return response()->json($datOrder, 201);
+            // Retornar la respuesta
+            return response()->json($datOrder, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
+        }
     }
 
     public function typeTranslate($type)
